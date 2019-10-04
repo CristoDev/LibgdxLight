@@ -9,25 +9,34 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Light extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+	Box2DLightsSample sample;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		//img = new Texture("badlogic.jpg");
+		sample=new Box2DLightsSample();
+		sample.create();
 	}
 
 	@Override
 	public void render () {
+		/*
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
 		batch.end();
+		*/
+		sample.render();
+
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		//img.dispose();
+		sample.dispose();
+
 	}
 }
