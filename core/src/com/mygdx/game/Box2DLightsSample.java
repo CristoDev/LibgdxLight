@@ -9,11 +9,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,14 +34,16 @@ public class Box2DLightsSample extends GdxSample {
     private static final float SCENE_WIDTH = 12.80f; // 12.8 metres wide
     private static final float SCENE_HEIGHT = 7.20f; // 7.2 metres high
 
-    private Viewport viewport;
+    //private Viewport viewport;
     private Vector3 point = new Vector3();
     private SpriteBatch batch;
+    private OrthographicCamera camera=null;
 
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private RayHandler rayHandler;
-    private Light light;
+    private Light light, loop;
+    private long startTime;
 
     ShapeRenderer sr;
 
@@ -46,12 +51,18 @@ public class Box2DLightsSample extends GdxSample {
     public void create () {
         super.create();
 
-        viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT);
+        camera = new OrthographicCamera(SCENE_WIDTH, SCENE_HEIGHT);
+        camera.position.set(SCENE_WIDTH*0.5f, SCENE_HEIGHT*0.5f, 0);
+        camera.update();
+
+        //viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT);
         // Center camera
+        /*
         viewport.getCamera().position.set(viewport.getCamera().position.x + SCENE_WIDTH*0.5f,
                 viewport.getCamera().position.y + SCENE_HEIGHT*0.5f
                 , 0);
         viewport.getCamera().update();
+*/
 
         batch = new SpriteBatch();
 
@@ -60,7 +71,7 @@ public class Box2DLightsSample extends GdxSample {
         // Create Physics World
         world = new World(new Vector2(0,-9.8f), true);
         // Instantiate the class in charge of drawing physics shapes
-        debugRenderer = new Box2DDebugRenderer();
+        //debugRenderer = new Box2DDebugRenderer();
         // To add some color to the ground
         sr = new ShapeRenderer();
 
@@ -71,8 +82,14 @@ public class Box2DLightsSample extends GdxSample {
         light.setColor(Color.PURPLE);
         light.setDistance(1.5f);
 
+        loop=new PointLight(rayHandler, 16);
+        loop.setActive(true);
+        loop.setColor(Color.YELLOW);
+        loop.setDistance(0.5f);
+
         createBodies();
         Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 15, SCENE_WIDTH*0.5f, SCENE_HEIGHT-1, 270, 45);
+        startTime = TimeUtils.millis();
     }
 
     private void createBodies() {
@@ -105,7 +122,8 @@ public class Box2DLightsSample extends GdxSample {
         if (button == Input.Buttons.LEFT) {
 
             //Translate screen coordinates into world units
-            viewport.getCamera().unproject(point.set(screenX, screenY, 0));
+            //viewport.getCamera().unproject(point.set(screenX, screenY, 0));
+            camera.unproject(point.set(screenX, screenY, 0));
 
             light.setPosition(point.x, point.y);
             light.setActive(true);
@@ -128,7 +146,8 @@ public class Box2DLightsSample extends GdxSample {
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        viewport.getCamera().unproject(point.set(x, y, 0));
+        //viewport.getCamera().unproject(point.set(x, y, 0));
+        camera.unproject(point.set(x, y, 0));
         if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
             light.setPosition(point.x, point.y);
         }
@@ -137,35 +156,45 @@ public class Box2DLightsSample extends GdxSample {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        //viewport.update(width, height);
     }
 
     @Override
     public void dispose() {
-        debugRenderer.dispose();
+        //debugRenderer.dispose();
 
         batch.dispose();
         rayHandler.dispose();
         world.dispose();
     }
 
+    private void update() {
+        float elapsedTime = TimeUtils.timeSinceMillis(startTime)/1000f;
+
+        loop.setPosition(SCENE_WIDTH/2+3*MathUtils.cos(elapsedTime), SCENE_HEIGHT/2+2*MathUtils.sin(elapsedTime));
+    }
+
     @Override
     public void render () {
+        update();
+        camera.update();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(1/60f, 6, 2);
-
+/*
         sr.setProjectionMatrix(viewport.getCamera().combined);
         sr.begin(ShapeType.Filled);
         sr.setColor(Color.RED);
         sr.rect(0, 0, SCENE_WIDTH, 1f);
         sr.end();
-
-        rayHandler.setCombinedMatrix(viewport.getCamera().combined);
+*/
+        //rayHandler.setCombinedMatrix(viewport.getCamera().combined);
+        rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
 
-        debugRenderer.render(world, viewport.getCamera().combined);
+        //debugRenderer.render(world, viewport.getCamera().combined);
     }
 
 
