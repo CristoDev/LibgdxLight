@@ -4,17 +4,16 @@ import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -25,10 +24,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Box2DLightsSample extends GdxSample {
+public class Box2DLightsSample extends InputAdapter implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
 
     private static final float SCENE_WIDTH = 12.80f; // 12.8 metres wide
@@ -49,8 +46,6 @@ public class Box2DLightsSample extends GdxSample {
 
     @Override
     public void create () {
-        super.create();
-
         camera = new OrthographicCamera(SCENE_WIDTH, SCENE_HEIGHT);
         camera.position.set(SCENE_WIDTH*0.5f, SCENE_HEIGHT*0.5f, 0);
         camera.update();
@@ -88,7 +83,8 @@ public class Box2DLightsSample extends GdxSample {
         loop.setDistance(0.5f);
 
         createBodies();
-        Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 15, SCENE_WIDTH*0.5f, SCENE_HEIGHT-1, 270, 45);
+        Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 20, SCENE_WIDTH*0.5f, SCENE_HEIGHT-1, 270, 45);
+        conelight.setSoft(false);
         startTime = TimeUtils.millis();
     }
 
@@ -197,5 +193,42 @@ public class Box2DLightsSample extends GdxSample {
         //debugRenderer.render(world, viewport.getCamera().combined);
     }
 
+    @Override
+    public void pause() {
 
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return super.keyUp(keycode);
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        Vector2 translate=new Vector2(0, 0);
+        switch (keycode) {
+            case Input.Keys.LEFT:
+                translate.x=-1;
+                break;
+            case Input.Keys.RIGHT:
+                translate.x=1;
+                break;
+            case Input.Keys.UP:
+                translate.y=1;
+                break;
+            case Input.Keys.DOWN:
+                translate.y=-1;
+                break;
+            default:
+        }
+
+        camera.translate(translate);
+
+        return super.keyDown(keycode);
+    }
 }
