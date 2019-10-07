@@ -1,4 +1,5 @@
 package com.mygdx.game;
+
 import box2dLight.ConeLight;
 import box2dLight.Light;
 import box2dLight.PointLight;
@@ -14,22 +15,22 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Box2DLightsSample extends InputAdapter implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
 
-    private static final float SCENE_WIDTH = 12.80f; // 12.8 metres wide
-    private static final float SCENE_HEIGHT = 7.20f; // 7.2 metres high
+    //private static final float SCENE_WIDTH = 12.80f; // 12.8 metres wide
+    //private static final float SCENE_HEIGHT = 7.20f; // 7.2 metres high
 
     //private Viewport viewport;
     private Vector3 point = new Vector3();
@@ -44,11 +45,31 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     ShapeRenderer sr;
 
+
+    private static class VIEWPORT {
+        static float viewportWidth;
+        static float viewportHeight;
+        static float virtualWidth;
+        static float virtualHeight;
+        static float physicalWidth;
+        static float physicalHeight;
+        static float aspectRatio;
+    }
+
+
+    private OrthogonalTiledMapRenderer _mapRenderer=null;
+    private static MyMap _mapMgr;
+
+    private Contact contact=null;
+
     @Override
     public void create () {
-        camera = new OrthographicCamera(SCENE_WIDTH, SCENE_HEIGHT);
-        camera.position.set(SCENE_WIDTH*0.5f, SCENE_HEIGHT*0.5f, 0);
+        setupViewport(15, 15);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        camera.position.set(VIEWPORT.viewportWidth/2f, VIEWPORT.viewportHeight/2, 0);
         camera.update();
+
 
         //viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT);
         // Center camera
@@ -66,7 +87,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         // Create Physics World
         world = new World(new Vector2(0,-9.8f), true);
         // Instantiate the class in charge of drawing physics shapes
-        //debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
         // To add some color to the ground
         sr = new ShapeRenderer();
 
@@ -83,9 +104,11 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         loop.setDistance(0.5f);
 
         createBodies();
-        Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 20, SCENE_WIDTH*0.5f, SCENE_HEIGHT-1, 270, 45);
+        Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 20, 5, 5, 270, 45);
         conelight.setSoft(false);
         startTime = TimeUtils.millis();
+
+        testMap();
     }
 
     private void createBodies() {
@@ -97,20 +120,32 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         //GROUND
         Body groundBody = world.createBody(staticBodyDef);
         PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(SCENE_WIDTH * 0.5f, 0.5f);
+        groundBox.setAsBox(6, 0.5f);
         groundBody.createFixture(groundBox, 0.0f);
         groundBox.dispose();
 
-        groundBody.setTransform(new Vector2(SCENE_WIDTH*0.5f, 0.5f), groundBody.getAngle());
+        groundBody.setTransform(new Vector2(6, 0.5f), groundBody.getAngle());
 
         // BOX
         Body boxBody = world.createBody(staticBodyDef);
         PolygonShape box = new PolygonShape();
-        box.setAsBox(.5f, .5f);
+        box.setAsBox(1f, .5f);
         boxBody.createFixture(box, 0.0f);
         box.dispose();
 
-        boxBody.setTransform(new Vector2(SCENE_WIDTH*0.5f, SCENE_HEIGHT*0.5f), groundBody.getAngle());
+        // !!! milieu de la box
+        boxBody.setTransform(new Vector2(6, 3), 0);
+
+
+        Body boxBody2 = world.createBody(staticBodyDef);
+        PolygonShape box2 = new PolygonShape();
+        box2.setAsBox(1f, 1f);
+        boxBody2.createFixture(box, 0.0f);
+        box2.dispose();
+
+        // !!! milieu de la box
+        boxBody2.setTransform(new Vector2(4, 4), (float) Math.PI/4);
+
     }
 
     @Override
@@ -167,7 +202,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private void update() {
         float elapsedTime = TimeUtils.timeSinceMillis(startTime)/1000f;
 
-        loop.setPosition(SCENE_WIDTH/2+3*MathUtils.cos(elapsedTime), SCENE_HEIGHT/2+2*MathUtils.sin(elapsedTime));
+        loop.setPosition(5+3*MathUtils.cos(elapsedTime), 8+2*MathUtils.sin(elapsedTime));
     }
 
     @Override
@@ -186,11 +221,15 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         sr.rect(0, 0, SCENE_WIDTH, 1f);
         sr.end();
 */
+        _mapRenderer.setView(camera);
+        _mapRenderer.render();
+
         //rayHandler.setCombinedMatrix(viewport.getCamera().combined);
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
 
-        //debugRenderer.render(world, viewport.getCamera().combined);
+
+        debugRenderer.render(world, camera.combined);
     }
 
     @Override
@@ -224,11 +263,85 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             case Input.Keys.DOWN:
                 translate.y=-1;
                 break;
+            case Input.Keys.SPACE:
+                addLight();
+                break;
             default:
         }
 
         camera.translate(translate);
 
         return super.keyDown(keycode);
+    }
+
+
+    private void addLight() {
+        Light tmp=new PointLight(rayHandler, 16);
+        tmp.setColor(Color.DARK_GRAY);
+        //tmp.setDistance(6f);
+        tmp.setDistance(2f);
+        tmp.setPosition(camera.position.x, camera.position.y);
+    }
+
+    public void testMap() {
+        _mapMgr=new MyMap();
+        _mapRenderer=new OrthogonalTiledMapRenderer(_mapMgr.getCurrentMap(), MyMap.UNIT_SCALE);
+        _mapRenderer.setView(camera);
+        isCollisionWithMapLayer();
+    }
+
+    private void setupViewport(int width, int height) {
+        //make the viewport a percentage of the total display area
+        VIEWPORT.virtualWidth=width;
+        VIEWPORT.virtualHeight=height;
+
+        // current viewport dimensions
+        VIEWPORT.viewportWidth=VIEWPORT.virtualWidth;
+        VIEWPORT.viewportHeight=VIEWPORT.virtualHeight;
+
+        // pixel dimensions of display
+        VIEWPORT.physicalWidth=Gdx.graphics.getWidth();
+        VIEWPORT.physicalHeight=Gdx.graphics.getHeight();
+
+        // aspect ratio for current viewport
+        VIEWPORT.aspectRatio=(VIEWPORT.virtualWidth/VIEWPORT.virtualHeight);
+
+        if (VIEWPORT.physicalWidth/VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
+            VIEWPORT.viewportWidth=VIEWPORT.viewportHeight*(VIEWPORT.physicalWidth/VIEWPORT.physicalHeight);
+            VIEWPORT.viewportHeight=VIEWPORT.virtualHeight;
+        }
+        else {
+            VIEWPORT.viewportWidth=VIEWPORT.virtualWidth;
+            VIEWPORT.viewportHeight=VIEWPORT.viewportWidth*(VIEWPORT.physicalHeight/VIEWPORT.physicalWidth);
+        }
+
+        Gdx.app.debug(TAG, "WorldRenderer virtual  " + VIEWPORT.virtualWidth +"/"+VIEWPORT.virtualHeight);
+        Gdx.app.debug(TAG, "WorldRenderer viewport " + VIEWPORT.viewportWidth +"/"+VIEWPORT.viewportHeight);
+        Gdx.app.debug(TAG, "WorldRenderer physical " + VIEWPORT.physicalWidth +"/"+VIEWPORT.physicalHeight);
+    }
+
+
+    private boolean isCollisionWithMapLayer() {
+        MapLayer mapCollisionLayer=_mapMgr.getCollisionLayer();
+
+        if (mapCollisionLayer == null) {
+            return false;
+        }
+
+        for (MapObject object: mapCollisionLayer.getObjects()) {
+            if (object instanceof RectangleMapObject) {
+                Gdx.app.debug(TAG, "objet de type RectangleMapObject");
+            }
+            else {
+                Gdx.app.debug(TAG, "**** objet de type "+object.getClass().getSimpleName());
+            }
+        }
+
+        return false;
+    }
+
+    private void collision() {
+        contact=new MyContact(world, 1l);
+
     }
 }
