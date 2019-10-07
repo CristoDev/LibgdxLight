@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -64,7 +65,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public void create () {
-        setupViewport(15, 15);
+        setupViewport(20, 20);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
         camera.position.set(VIEWPORT.viewportWidth/2f, VIEWPORT.viewportHeight/2, 0);
@@ -96,12 +97,14 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         light = new PointLight(rayHandler, 32);
         light.setActive(false);
         light.setColor(Color.PURPLE);
-        light.setDistance(1.5f);
+        light.setDistance(5f);
 
-        loop=new PointLight(rayHandler, 16);
+        loop=new PointLight(rayHandler, 16, Color.YELLOW, 1f, 5, 5);
         loop.setActive(true);
-        loop.setColor(Color.YELLOW);
-        loop.setDistance(0.5f);
+
+        //loop=new ConeLight(rayHandler, 32, Color.YELLOW, 10, 5, 5, 270, 45);
+        //loop.setSoft(false);
+        //loop=new PointLight(rayHandler, 32, Color.BLUE, 10, 5, 5);
 
         createBodies();
         Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 20, 5, 5, 270, 45);
@@ -140,11 +143,30 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         Body boxBody2 = world.createBody(staticBodyDef);
         PolygonShape box2 = new PolygonShape();
         box2.setAsBox(1f, 1f);
-        boxBody2.createFixture(box, 0.0f);
+        boxBody2.createFixture(box2, 0.0f);
         box2.dispose();
 
         // !!! milieu de la box
         boxBody2.setTransform(new Vector2(4, 4), (float) Math.PI/4);
+
+    }
+
+    //private void createBoxFromRectangleMap(RectangleMapObject rectangleMapObject) {
+    private void createBoxFromRectangleMap(Rectangle rectangle) {
+        BodyDef staticBodyDef = new BodyDef();
+        staticBodyDef.type = BodyType.StaticBody;
+        //Rectangle rectangle=rectangleMapObject.getRectangle();
+
+        Gdx.app.debug(TAG, "rectangle "+rectangle.getX()+"/"+rectangle.y+" W/h "+rectangle.getWidth()+"/"+rectangle.getHeight());
+
+        Body boxBody2 = world.createBody(staticBodyDef);
+        PolygonShape box2 = new PolygonShape();
+        box2.setAsBox(rectangle.getWidth()*MyMap.UNIT_SCALE/2, rectangle.getHeight()*MyMap.UNIT_SCALE/2);
+        boxBody2.createFixture(box2, 0.0f);
+        box2.dispose();
+
+        // !!! milieu de la box
+        boxBody2.setTransform(new Vector2(rectangle.getX()*MyMap.UNIT_SCALE+rectangle.getWidth()*MyMap.UNIT_SCALE/2, rectangle.getY()*MyMap.UNIT_SCALE+rectangle.getHeight()*MyMap.UNIT_SCALE/2), 0);
 
     }
 
@@ -192,7 +214,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public void dispose() {
-        //debugRenderer.dispose();
+        debugRenderer.dispose();
 
         batch.dispose();
         rayHandler.dispose();
@@ -278,8 +300,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private void addLight() {
         Light tmp=new PointLight(rayHandler, 16);
         tmp.setColor(Color.DARK_GRAY);
-        //tmp.setDistance(6f);
-        tmp.setDistance(2f);
+        tmp.setDistance(6f);
+        tmp.setActive(true);
         tmp.setPosition(camera.position.x, camera.position.y);
     }
 
@@ -331,6 +353,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         for (MapObject object: mapCollisionLayer.getObjects()) {
             if (object instanceof RectangleMapObject) {
                 Gdx.app.debug(TAG, "objet de type RectangleMapObject");
+                createBoxFromRectangleMap(((RectangleMapObject) object).getRectangle());
             }
             else {
                 Gdx.app.debug(TAG, "**** objet de type "+object.getClass().getSimpleName());
