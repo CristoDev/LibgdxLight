@@ -13,8 +13,9 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -25,29 +26,26 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.sun.org.apache.xpath.internal.objects.XString;
-
-import java.util.Iterator;
 
 public class Box2DLightsSample extends InputAdapter implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
 
-    //private static final float SCENE_WIDTH = 12.80f; // 12.8 metres wide
-    //private static final float SCENE_HEIGHT = 7.20f; // 7.2 metres high
-
-    //private Viewport viewport;
     private Vector3 point = new Vector3();
-    private SpriteBatch batch;
-    private OrthographicCamera camera=null;
+    private SpriteBatch batch = null;
+    private OrthographicCamera camera = null;
+    private World world = null;
+    private Box2DDebugRenderer debugRenderer = null;
+    private RayHandler rayHandler = null;
+    private Light light = null, loop = null;
+    private OrthogonalTiledMapRenderer _mapRenderer = null;
+    private static MyMap _mapMgr = null;
+    private Sprite item = null;
+    private Body bodyItem = null;
+    private boolean show = true;
 
-    private World world;
-    private Box2DDebugRenderer debugRenderer;
-    private RayHandler rayHandler;
-    private Light light, loop;
     private long startTime;
 
-    ShapeRenderer sr;
-
+    private ListenerClass contactListener=null;
 
     private static class VIEWPORT {
         static float viewportWidth;
@@ -59,70 +57,55 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         static float aspectRatio;
     }
 
-
-    private OrthogonalTiledMapRenderer _mapRenderer=null;
-    private static MyMap _mapMgr;
-
-    private Contact contact=null;
-
     @Override
-    public void create () {
+    public void create() {
         setupViewport(20, 20);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-        camera.position.set(VIEWPORT.viewportWidth/2f, VIEWPORT.viewportHeight/2, 0);
+        camera.position.set(VIEWPORT.viewportWidth / 2f, VIEWPORT.viewportHeight / 2, 0);
         camera.update();
 
-
-        //viewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT);
-        // Center camera
-        /*
-        viewport.getCamera().position.set(viewport.getCamera().position.x + SCENE_WIDTH*0.5f,
-                viewport.getCamera().position.y + SCENE_HEIGHT*0.5f
-                , 0);
-        viewport.getCamera().update();
-*/
-
         batch = new SpriteBatch();
-
         Gdx.input.setInputProcessor(this);
+        startTime = TimeUtils.millis();
 
-        // Create Physics World
-        world = new World(new Vector2(0,-9.8f), true);
+        world = new World(new Vector2(0, 0f), true);
+        //world.setContactListener(new ListenerClass(this));
+        createCollisionListener();
         // Instantiate the class in charge of drawing physics shapes
         debugRenderer = new Box2DDebugRenderer();
-        // To add some color to the ground
-        sr = new ShapeRenderer();
-
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);
+
+        batch.setProjectionMatrix(camera.combined);
+
+        createLights();
+        createBodies();
+        testMap();
+        addItem();
+    }
+
+    private void createLights() {
         light = new PointLight(rayHandler, 32);
         light.setActive(false);
         light.setColor(Color.PURPLE);
         light.setDistance(5f);
 
-        loop=new PointLight(rayHandler, 16, Color.YELLOW, 1f, 5, 5);
+        loop = new PointLight(rayHandler, 16, Color.YELLOW, 1f, 5, 5);
         loop.setActive(true);
 
         //loop=new ConeLight(rayHandler, 32, Color.YELLOW, 10, 5, 5, 270, 45);
         //loop.setSoft(false);
         //loop=new PointLight(rayHandler, 32, Color.BLUE, 10, 5, 5);
 
-        createBodies();
         Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 20, 5, 5, 270, 45);
         conelight.setSoft(false);
-        startTime = TimeUtils.millis();
-
-        testMap();
     }
 
     private void createBodies() {
-
-        // Create a static body definition
         BodyDef staticBodyDef = new BodyDef();
         staticBodyDef.type = BodyType.StaticBody;
 
-        //GROUND
         Body groundBody = world.createBody(staticBodyDef);
         PolygonShape groundBox = new PolygonShape();
         groundBox.setAsBox(6, 0.5f);
@@ -131,53 +114,31 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
         groundBody.setTransform(new Vector2(6, 0.5f), groundBody.getAngle());
 
-        // BOX
         Body boxBody = world.createBody(staticBodyDef);
         PolygonShape box = new PolygonShape();
         box.setAsBox(1f, .5f);
         boxBody.createFixture(box, 0.0f);
         box.dispose();
-
         // !!! milieu de la box
         boxBody.setTransform(new Vector2(6, 3), 0);
-
-
-        Body boxBody2 = world.createBody(staticBodyDef);
-        PolygonShape box2 = new PolygonShape();
-        box2.setAsBox(1f, 1f);
-        boxBody2.createFixture(box2, 0.0f);
-        box2.dispose();
-
-        // !!! milieu de la box
-        boxBody2.setTransform(new Vector2(4, 4), (float) Math.PI/4);
-
     }
 
-    //private void createBoxFromRectangleMap(RectangleMapObject rectangleMapObject) {
     private void createBoxFromRectangleMap(Rectangle rectangle) {
         BodyDef staticBodyDef = new BodyDef();
         staticBodyDef.type = BodyType.StaticBody;
-        //Rectangle rectangle=rectangleMapObject.getRectangle();
-
-        //Gdx.app.debug(TAG, "rectangle "+rectangle.getX()+"/"+rectangle.y+" W/h "+rectangle.getWidth()+"/"+rectangle.getHeight());
 
         Body boxBody2 = world.createBody(staticBodyDef);
         PolygonShape box2 = new PolygonShape();
-        box2.setAsBox(rectangle.getWidth()*MyMap.UNIT_SCALE/2, rectangle.getHeight()*MyMap.UNIT_SCALE/2);
+        box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
         boxBody2.createFixture(box2, 0.0f);
         box2.dispose();
-
-        // !!! milieu de la box
-        boxBody2.setTransform(new Vector2(rectangle.getX()*MyMap.UNIT_SCALE+rectangle.getWidth()*MyMap.UNIT_SCALE/2, rectangle.getY()*MyMap.UNIT_SCALE+rectangle.getHeight()*MyMap.UNIT_SCALE/2), 0);
-
+        boxBody2.setTransform(new Vector2(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2), 0);
     }
 
     @Override
-    public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-
             //Translate screen coordinates into world units
-            //viewport.getCamera().unproject(point.set(screenX, screenY, 0));
             camera.unproject(point.set(screenX, screenY, 0));
 
             light.setPosition(point.x, point.y);
@@ -185,13 +146,13 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
             return true;
         }
+
         return false;
     }
 
     @Override
-    public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-
             light.setActive(false);
 
             return true;
@@ -201,9 +162,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        //viewport.getCamera().unproject(point.set(x, y, 0));
         camera.unproject(point.set(x, y, 0));
-        if(Gdx.input.isButtonPressed(Buttons.LEFT)) {
+        if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
             light.setPosition(point.x, point.y);
         }
         return false;
@@ -211,7 +171,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public void resize(int width, int height) {
-        //viewport.update(width, height);
+        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override
@@ -224,46 +184,52 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     }
 
     private void update() {
-        float elapsedTime = TimeUtils.timeSinceMillis(startTime)/1000f;
-
-        loop.setPosition(5+3*MathUtils.cos(elapsedTime), 8+2*MathUtils.sin(elapsedTime));
+        float elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000f;
+        loop.setPosition(5 + 3 * MathUtils.cos(elapsedTime), 8 + 2 * MathUtils.sin(elapsedTime));
+        camera.update();
     }
 
     @Override
-    public void render () {
+    public void render() {
         update();
-        camera.update();
+
+        world.step(Gdx.graphics.getDeltaTime(), 8, 3);
+
+        int numContacts = world.getContactCount();
+        if (numContacts > 0) {
+            Gdx.app.log("contact", "start of contact list");
+            for (Contact contact : world.getContactList()) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
+            }
+            Gdx.app.log("contact", "end of contact list");
+            Gdx.app.log("contact", "______________________________________________");
+        }
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        world.step(1/60f, 6, 2);
-/*
-        sr.setProjectionMatrix(viewport.getCamera().combined);
-        sr.begin(ShapeType.Filled);
-        sr.setColor(Color.RED);
-        sr.rect(0, 0, SCENE_WIDTH, 1f);
-        sr.end();
-*/
+
         _mapRenderer.setView(camera);
         _mapRenderer.render();
 
-        //rayHandler.setCombinedMatrix(viewport.getCamera().combined);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(item, item.getX(), item.getY(), item.getWidth(), item.getHeight());
+        batch.end();
+
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
-
-
         debugRenderer.render(world, camera.combined);
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
@@ -273,19 +239,19 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public boolean keyDown(int keycode) {
-        Vector2 translate=new Vector2(0, 0);
+        Vector2 translate = new Vector2(0, 0);
         switch (keycode) {
             case Input.Keys.LEFT:
-                translate.x=-1;
+                translate.x = -1;
                 break;
             case Input.Keys.RIGHT:
-                translate.x=1;
+                translate.x = 1;
                 break;
             case Input.Keys.UP:
-                translate.y=1;
+                translate.y = 1;
                 break;
             case Input.Keys.DOWN:
-                translate.y=-1;
+                translate.y = -1;
                 break;
             case Input.Keys.SPACE:
                 addLight();
@@ -293,6 +259,10 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             default:
         }
 
+
+        bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, 0);
+        item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
+        show = true;
         camera.translate(translate);
 
         return super.keyDown(keycode);
@@ -300,77 +270,65 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
 
     private void addLight() {
-        Light tmp=new PointLight(rayHandler, 16);
+        Light tmp = new PointLight(rayHandler, 16);
         tmp.setColor(Color.DARK_GRAY);
         tmp.setDistance(6f);
         tmp.setActive(true);
         tmp.setPosition(camera.position.x, camera.position.y);
+        Gdx.app.debug(TAG, "****************************************");
     }
 
     public void testMap() {
-        _mapMgr=new MyMap();
-        _mapRenderer=new OrthogonalTiledMapRenderer(_mapMgr.getCurrentMap(), MyMap.UNIT_SCALE);
+        _mapMgr = new MyMap();
+        _mapRenderer = new OrthogonalTiledMapRenderer(_mapMgr.getCurrentMap(), MyMap.UNIT_SCALE);
         _mapRenderer.setView(camera);
         isCollisionWithMapLayer();
     }
 
     private void setupViewport(int width, int height) {
         //make the viewport a percentage of the total display area
-        VIEWPORT.virtualWidth=width;
-        VIEWPORT.virtualHeight=height;
+        VIEWPORT.virtualWidth = width;
+        VIEWPORT.virtualHeight = height;
 
         // current viewport dimensions
-        VIEWPORT.viewportWidth=VIEWPORT.virtualWidth;
-        VIEWPORT.viewportHeight=VIEWPORT.virtualHeight;
+        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
+        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
 
         // pixel dimensions of display
-        VIEWPORT.physicalWidth=Gdx.graphics.getWidth();
-        VIEWPORT.physicalHeight=Gdx.graphics.getHeight();
+        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
+        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
 
         // aspect ratio for current viewport
-        VIEWPORT.aspectRatio=(VIEWPORT.virtualWidth/VIEWPORT.virtualHeight);
+        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
 
-        if (VIEWPORT.physicalWidth/VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
-            VIEWPORT.viewportWidth=VIEWPORT.viewportHeight*(VIEWPORT.physicalWidth/VIEWPORT.physicalHeight);
-            VIEWPORT.viewportHeight=VIEWPORT.virtualHeight;
-        }
-        else {
-            VIEWPORT.viewportWidth=VIEWPORT.virtualWidth;
-            VIEWPORT.viewportHeight=VIEWPORT.viewportWidth*(VIEWPORT.physicalHeight/VIEWPORT.physicalWidth);
+        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
+            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
+            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
+        } else {
+            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
+            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
         }
 
-        Gdx.app.debug(TAG, "WorldRenderer virtual  " + VIEWPORT.virtualWidth +"/"+VIEWPORT.virtualHeight);
-        Gdx.app.debug(TAG, "WorldRenderer viewport " + VIEWPORT.viewportWidth +"/"+VIEWPORT.viewportHeight);
-        Gdx.app.debug(TAG, "WorldRenderer physical " + VIEWPORT.physicalWidth +"/"+VIEWPORT.physicalHeight);
+        Gdx.app.debug(TAG, "WorldRenderer virtual  " + VIEWPORT.virtualWidth + "/" + VIEWPORT.virtualHeight);
+        Gdx.app.debug(TAG, "WorldRenderer viewport " + VIEWPORT.viewportWidth + "/" + VIEWPORT.viewportHeight);
+        Gdx.app.debug(TAG, "WorldRenderer physical " + VIEWPORT.physicalWidth + "/" + VIEWPORT.physicalHeight);
     }
 
 
     private boolean isCollisionWithMapLayer() {
-        MapLayer mapCollisionLayer=_mapMgr.getCollisionLayer();
+        MapLayer mapCollisionLayer = _mapMgr.getCollisionLayer();
 
         if (mapCollisionLayer == null) {
             return false;
         }
 
-        for (MapObject object: mapCollisionLayer.getObjects()) {
+        for (MapObject object : mapCollisionLayer.getObjects()) {
             if (object instanceof RectangleMapObject) {
-                //Gdx.app.debug(TAG, "objet de type RectangleMapObject");
                 createBoxFromRectangleMap(((RectangleMapObject) object).getRectangle());
-            }
-            else {
-                Gdx.app.debug(TAG, "**** objet de type "+object.getClass().getSimpleName());
-                MapProperties mp=((PolygonMapObject)object).getProperties();
-
-                Iterator<String> it=mp.getKeys();
-
-                while (it.hasNext()) {
-                    String key=it.next();
-
-                    Gdx.app.debug(TAG, key+"= "+mp.get(key));
-                }
-
-
-                getPolygon(((PolygonMapObject)object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
+            } else {
+                Gdx.app.debug(TAG, "**** objet de type " + object.getClass().getSimpleName());
+                MapProperties mp = ((PolygonMapObject) object).getProperties();
+                getPolygon(((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
             }
         }
 
@@ -378,57 +336,107 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     }
 
     private void getPolygon(Polygon polygon, float x, float y) {
-        float[] tmp=polygon.getVertices();
-        Vector2[] vertices=new Vector2[tmp.length/2];
+        float[] tmp = polygon.getVertices();
+        Vector2[] vertices = new Vector2[tmp.length / 2];
 
-        for (int i=0; i<tmp.length; i+=2) {
-            vertices[i/2]=new Vector2((int)(tmp[i]*MyMap.UNIT_SCALE), (int)(tmp[i+1]*MyMap.UNIT_SCALE));
+        for (int i = 0; i < tmp.length; i += 2) {
+            vertices[i / 2] = new Vector2((int) (tmp[i] * MyMap.UNIT_SCALE), (int) (tmp[i + 1] * MyMap.UNIT_SCALE));
         }
-/*
-        for (int i=0; i<vertices.length; i++) {
-            Gdx.app.debug(TAG, "verticesOK["+i+"] = new Vector2("+vertices[i].x+"f, "+vertices[i].y+"f);");
-        }
-
-
- */
-
 
         BodyDef staticBodyDef = new BodyDef();
         staticBodyDef.type = BodyType.StaticBody;
         Body boxBody0 = world.createBody(staticBodyDef);
 
-        ChainShape shape=new ChainShape();
+        ChainShape shape = new ChainShape();
         shape.createLoop(vertices);
         boxBody0.createFixture(shape, 1f);
         shape.dispose();
+        boxBody0.setTransform(new Vector2(x * MyMap.UNIT_SCALE, y * MyMap.UNIT_SCALE), 0f);
+    }
 
-        boxBody0.setTransform(new Vector2(x*MyMap.UNIT_SCALE, y*MyMap.UNIT_SCALE), 0f);
+    private void createBox() {
+        PolygonShape boxShape = new PolygonShape();
+        boxShape.setAsBox(1, 1);
+
+        BodyDef boxBodyDef = new BodyDef();
+        boxBodyDef.position.set(0, 20);
+        boxBodyDef.angle = MathUtils.PI / 32;
+        boxBodyDef.type = BodyType.DynamicBody;
+        boxBodyDef.fixedRotation = false;
+
+        Body boxBody = world.createBody(boxBodyDef);
+        FixtureDef boxFixtureDef = new FixtureDef();
+        boxFixtureDef.shape = boxShape;
+        boxFixtureDef.restitution = 1.75f;
+        boxFixtureDef.density = 2.0f;
+        boxBody.createFixture(boxFixtureDef);
+
+        boxShape.dispose();
+    }
+
+    private void addItem() {
+        Texture texture = new Texture(Gdx.files.internal("item.png"));
+        item = new Sprite(texture);
+        item.setSize(item.getWidth() * MyMap.UNIT_SCALE, item.getHeight() * MyMap.UNIT_SCALE);
+
+        PolygonShape boxItem = new PolygonShape();
+        boxItem.setAsBox(16 * MyMap.UNIT_SCALE / 2, 16 * MyMap.UNIT_SCALE / 2);
+
+        BodyDef boxBodyDef = new BodyDef();
+        boxBodyDef.position.set(10, 10);
+        boxBodyDef.type = BodyType.DynamicBody;
+
+        bodyItem = world.createBody(boxBodyDef);
+        FixtureDef boxFixtureDef = new FixtureDef();
+        boxFixtureDef.shape = boxItem;
+        boxFixtureDef.restitution = 1.75f;
+        boxFixtureDef.density = 2.0f;
+        bodyItem.createFixture(boxFixtureDef);
+
+
+/*
+        bodyItem = world.createBody(boxBodyDef);
+
+
+        bodyItem.createFixture(boxItem, 1.0f);
+        boxItem.dispose();
+        bodyItem.setTransform(new Vector2(160 * MyMap.UNIT_SCALE, 160 * MyMap.UNIT_SCALE + 16 * MyMap.UNIT_SCALE / 2), 0);
+*/
+        bodyItem.setUserData(item);
+        item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
 
     }
 
-    private void collision() {
-        contact=new MyContact(world, 1l);
+    private void createCollisionListener() {
+        world.setContactListener(new ContactListener() {
 
+            @Override
+            public void beginContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.debug("beginContact", fixtureA.toString());
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+                Gdx.app.debug("end__Contact", fixtureA.toString());
+                Gdx.app.debug("_____", "________________________________________________");
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+                Gdx.app.debug(TAG, "presolve");
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+
+        });
     }
-    /*
-    https://www.reddit.com/r/libgdx/comments/2b2a71/tiled_polygon_to_box2d_polygonshape/cj1qxtw/?context=8&depth=9
 
-_polyShape = new PolygonShape();
-Polygon _polygon = ((PolygonMapObject) _mapObject).getPolygon();
 
-_bdef.position.set((_polygon.getX() * MAP_SCALE / PPM),
-			_polygon.getY() * MAP_SCALE / PPM);
-
-_polygon.setPosition(0, 0);
-_polygon.setScale(MAP_SCALE / PPM, MAP_SCALE / PPM);
-
-_polyShape.set(_polygon.getTransformedVertices());
-_fdef.shape = _polyShape;
-
-m_world.createBody(_bdef).createFixture(_fdef);
-
-PPM = My Pixels per Meter (100)
-
-MAP_SCALE = The amount I scaled my Tiled map by (0.8f)
-     */
 }

@@ -61,10 +61,6 @@ public class MyMap {
         return map;
     }
 
-
-
-
-
     public void loadMap(String mapName){
         String mapFullPath = mapName;
 
