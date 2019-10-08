@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -24,6 +25,9 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.sun.org.apache.xpath.internal.objects.XString;
+
+import java.util.Iterator;
 
 public class Box2DLightsSample extends InputAdapter implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
@@ -91,7 +95,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         sr = new ShapeRenderer();
 
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.25f);
+        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);
         light = new PointLight(rayHandler, 32);
         light.setActive(false);
         light.setColor(Color.PURPLE);
@@ -355,81 +359,50 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             }
             else {
                 Gdx.app.debug(TAG, "**** objet de type "+object.getClass().getSimpleName());
-                getPolygon(((PolygonMapObject)object).getPolygon());
+                MapProperties mp=((PolygonMapObject)object).getProperties();
+
+                Iterator<String> it=mp.getKeys();
+
+                while (it.hasNext()) {
+                    String key=it.next();
+
+                    Gdx.app.debug(TAG, key+"= "+mp.get(key));
+                }
+
+
+                getPolygon(((PolygonMapObject)object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
             }
         }
 
         return false;
     }
 
-    private void getPolygon(Polygon polygon) {
-        polygon.setScale(MyMap.UNIT_SCALE, MyMap.UNIT_SCALE);
+    private void getPolygon(Polygon polygon, float x, float y) {
         float[] tmp=polygon.getVertices();
         Vector2[] vertices=new Vector2[tmp.length/2];
+
         for (int i=0; i<tmp.length; i+=2) {
             vertices[i/2]=new Vector2((int)(tmp[i]*MyMap.UNIT_SCALE), (int)(tmp[i+1]*MyMap.UNIT_SCALE));
         }
-
-        /*
+/*
         for (int i=0; i<vertices.length; i++) {
-            Gdx.app.debug("", "verticesOK["+i+"] = new Vector2("+vertices[i].x+"f, "+vertices[i].y+"f);");
+            Gdx.app.debug(TAG, "verticesOK["+i+"] = new Vector2("+vertices[i].x+"f, "+vertices[i].y+"f);");
         }
 
-         */
+
+ */
 
 
-        /*
-        BodyDef staticBodyDef = new BodyDef();
-        staticBodyDef.type = BodyType.StaticBody;
-        Body boxBody0 = world.createBody(staticBodyDef);
-        PolygonShape box0 = new PolygonShape();
-        //box0.set(vertices);
-        box0.setAsBox(5, 5);
-        boxBody0.createFixture(box0, 0.0f);
-        box0.dispose();
-        // !!! milieu de la box
-        boxBody0.setTransform(new Vector2(0, 0), 0);
-
-
-         */
-
-        /*
-        Vector2[] verticesOK = new Vector2[8];
-
-        verticesOK[0] = new Vector2(0f , -0f  );
-        verticesOK[1] = new Vector2(0f , -4f  );
-        verticesOK[2] = new Vector2(5f , 2f);
-        verticesOK[3] = new Vector2(5f , 3f);
-        verticesOK[4] = new Vector2(12.375f , -3f);
-        verticesOK[5] = new Vector2(12.468f , 3f);
-        verticesOK[6] = new Vector2(15.40625f , 4f);
-        verticesOK[7] = new Vector2(17.1875f , -0.03125f);
-*/
-        Vector2[] verticesOK = new Vector2[8];
-
-        verticesOK[0] = new Vector2(0.0f, 0.0f);
-        verticesOK[1] = new Vector2(0.0f, -4.0f);
-        verticesOK[2] = new Vector2(5.0f, -4.0f);
-        verticesOK[3] = new Vector2(5.0f, -6.0f);
-        verticesOK[4] = new Vector2(12.0f, -6.0f);
-        verticesOK[5] = new Vector2(12.0f, -5.0f);
-        verticesOK[6] = new Vector2(15.0f, -5.0f);
-        verticesOK[7] = new Vector2(15.0f, -4.0f);
-
-        //verticesOK[8] = new Vector2(17.0f, -4.0f);
-        /*
-        verticesOK[9] = new Vector2(17.0f, 0.0f);
-        */
         BodyDef staticBodyDef = new BodyDef();
         staticBodyDef.type = BodyType.StaticBody;
         Body boxBody0 = world.createBody(staticBodyDef);
 
-        PolygonShape shape = new PolygonShape();
-        shape.set(verticesOK);
-        //shape.setAsBox(4, 9);
+        ChainShape shape=new ChainShape();
+        shape.createLoop(vertices);
         boxBody0.createFixture(shape, 1f);
         shape.dispose();
-        boxBody0.setTransform(new Vector2(10, 15), 0f);
+
+        boxBody0.setTransform(new Vector2(x*MyMap.UNIT_SCALE, y*MyMap.UNIT_SCALE), 0f);
 
     }
 
