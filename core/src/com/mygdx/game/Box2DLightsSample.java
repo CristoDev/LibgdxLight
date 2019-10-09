@@ -45,6 +45,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private long startTime, lastTime=0;
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
+    private float velocity=2f;
 
     private static class VIEWPORT {
         static float viewportWidth;
@@ -181,9 +182,13 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     }
 
     private void update() {
-        bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, (float)angle);
+
+        //bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, (float)angle);
+        bodyItem.setLinearVelocity(translate);
+        bodyItem.setTransform(bodyItem.getPosition().x, bodyItem.getPosition().y, (float)angle);
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
         lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
+
         //camera.translate(translate);
         camera.position.set(bodyItem.getPosition().x, bodyItem.getPosition().y, 0);
 
@@ -235,20 +240,20 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private void keyPressed(int keycode, int keyDown) {
         switch (keycode) {
             case Input.Keys.LEFT:
-                translate.x = -0.1f*keyDown;
+                translate.x = -velocity*keyDown;
                 angle=Math.PI;
                 break;
             case Input.Keys.RIGHT:
                 //Gdx.app.debug(TAG, "RIGHT direction");
-                translate.x = 0.1f*keyDown;
+                translate.x = velocity*keyDown;
                 angle=0f;
                 break;
             case Input.Keys.UP:
-                translate.y = 0.1f*keyDown;
+                translate.y = velocity*keyDown;
                 angle=Math.PI/2;
                 break;
             case Input.Keys.DOWN:
-                translate.y = -0.1f*keyDown;
+                translate.y = -velocity*keyDown;
                 angle=3*Math.PI/2;
                 break;
             case Input.Keys.SPACE:
