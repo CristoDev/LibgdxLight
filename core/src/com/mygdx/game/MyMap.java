@@ -42,7 +42,7 @@ public class MyMap {
 
             // tant qu'on charge la map, on bloque la suite du jeu
             _assetManager.finishLoadingAsset(mapFilenamePath);
-            Gdx.app.debug(TAG, "Map loaded " + mapFilenamePath);
+            //Gdx.app.debug(TAG, "Map loaded " + mapFilenamePath);
         } else {
             Gdx.app.debug(TAG, "map doesn't exists! " + mapFilenamePath);
         }

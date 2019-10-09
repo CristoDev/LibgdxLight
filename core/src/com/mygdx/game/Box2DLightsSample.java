@@ -42,7 +42,9 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private Sprite item = null;
     private Body bodyItem = null;
     private Light lightItem=null;
-    private long startTime;
+    private long startTime, lastTime=0;
+    private Vector2 translate = new Vector2(0, 0);
+    private double angle=Math.PI/2;
 
     private static class VIEWPORT {
         static float viewportWidth;
@@ -67,6 +69,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         startTime = TimeUtils.millis();
 
         world = new World(new Vector2(0, 0f), true);
+        world.setContactListener(new ContactManager());
         // Instantiate the class in charge of drawing physics shapes
         debugRenderer = new Box2DDebugRenderer();
         rayHandler = new RayHandler(world);
@@ -74,7 +77,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
         batch.setProjectionMatrix(camera.combined);
 
-        createLights();
+        //createLights();
         createBodies();
         testMap();
         addItem();
@@ -88,10 +91,6 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
         loop = new PointLight(rayHandler, 16, Color.YELLOW, 1f, 5, 5);
         loop.setActive(true);
-
-        //loop=new ConeLight(rayHandler, 32, Color.YELLOW, 10, 5, 5, 270, 45);
-        //loop.setSoft(false);
-        //loop=new PointLight(rayHandler, 32, Color.BLUE, 10, 5, 5);
 
         Light conelight = new ConeLight(rayHandler, 32, Color.WHITE, 20, 5, 5, 270, 45);
         conelight.setSoft(false);
@@ -108,6 +107,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         groundBox.dispose();
 
         groundBody.setTransform(new Vector2(6, 0.5f), groundBody.getAngle());
+        groundBody.setUserData("Ground");
 
         Body boxBody = world.createBody(staticBodyDef);
         PolygonShape box = new PolygonShape();
@@ -116,6 +116,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         box.dispose();
         // !!! milieu de la box
         boxBody.setTransform(new Vector2(6, 3), 0);
+        boxBody.setUserData("Box "+MathUtils.random(0, 10000));
     }
 
     private void createBoxFromRectangleMap(Rectangle rectangle) {
@@ -128,6 +129,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         boxBody2.createFixture(box2, 0.0f);
         box2.dispose();
         boxBody2.setTransform(new Vector2(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2), 0);
+        boxBody2.setUserData("Rectangle "+MathUtils.random(0, 10000));
     }
 
     @Override
@@ -179,32 +181,35 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     }
 
     private void update() {
+        bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, (float)angle);
+        item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
+        lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
+        //camera.translate(translate);
+        camera.position.set(bodyItem.getPosition().x, bodyItem.getPosition().y, 0);
+
         float elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000f;
-        loop.setPosition(5 + 3 * MathUtils.cos(elapsedTime), 8 + 2 * MathUtils.sin(elapsedTime));
+        //loop.setPosition(5 + 3 * MathUtils.cos(elapsedTime), 8 + 2 * MathUtils.sin(elapsedTime));
+
+        // @todo modifier la durée pour ne pas clignoter
+        //lightItem.setColor(127f, 127f, 127f, MathUtils.random(0f, 1f));
+
         camera.update();
+        world.step(Gdx.graphics.getDeltaTime(), 8, 3);
+
+        if (world.getContactCount() > 0) {
+            if (TimeUtils.timeSinceMillis(lastTime) > 1000) {
+                lastTime=TimeUtils.millis();
+                //Gdx.app.debug(TAG, lastTime + " -- " + world.getContactCount());
+            }
+        }
     }
 
     @Override
     public void render() {
         update();
 
-        world.step(Gdx.graphics.getDeltaTime(), 8, 3);
-
-        int numContacts = world.getContactCount();
-        if (numContacts > 0) {
-            Gdx.app.log("contact", "start of contact list");
-            for (Contact contact : world.getContactList()) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                Gdx.app.log("contact", "between " + fixtureA.toString() + " and " + fixtureB.toString());
-            }
-            Gdx.app.log("contact", "end of contact list");
-            Gdx.app.log("contact", "______________________________________________");
-        }
-
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
         _mapRenderer.setView(camera);
         _mapRenderer.render();
@@ -227,30 +232,23 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     public void resume() {
     }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return super.keyUp(keycode);
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        Vector2 translate = new Vector2(0, 0);
-        double angle=Math.PI/2;
+    private void keyPressed(int keycode, int keyDown) {
         switch (keycode) {
             case Input.Keys.LEFT:
-                translate.x = -1;
+                translate.x = -0.1f*keyDown;
                 angle=Math.PI;
                 break;
             case Input.Keys.RIGHT:
-                translate.x = 1;
+                //Gdx.app.debug(TAG, "RIGHT direction");
+                translate.x = 0.1f*keyDown;
                 angle=0f;
                 break;
             case Input.Keys.UP:
-                translate.y = 1;
+                translate.y = 0.1f*keyDown;
                 angle=Math.PI/2;
                 break;
             case Input.Keys.DOWN:
-                translate.y = -1;
+                translate.y = -0.1f*keyDown;
                 angle=3*Math.PI/2;
                 break;
             case Input.Keys.SPACE:
@@ -259,15 +257,21 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             default:
         }
 
+    }
 
-        bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, (float)angle);
-        item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
-        lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
-        camera.translate(translate);
+    @Override
+    public boolean keyUp(int keycode) {
+        keyPressed(keycode, 0);
+        return super.keyUp(keycode);
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        keyPressed(keycode, 1);
+        //bodyItem.setLinearVelocity(new Vector2(0, 0));
 
         return super.keyDown(keycode);
     }
-
 
     private void addLight() {
         Light tmp = new PointLight(rayHandler, 16);
@@ -282,7 +286,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         _mapMgr = new MyMap();
         _mapRenderer = new OrthogonalTiledMapRenderer(_mapMgr.getCurrentMap(), MyMap.UNIT_SCALE);
         _mapRenderer.setView(camera);
-        isCollisionWithMapLayer();
+        createBox2DMapLayer();
     }
 
     private void setupViewport(int width, int height) {
@@ -309,13 +313,15 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
         }
 
+        /*
         Gdx.app.debug(TAG, "WorldRenderer virtual  " + VIEWPORT.virtualWidth + "/" + VIEWPORT.virtualHeight);
         Gdx.app.debug(TAG, "WorldRenderer viewport " + VIEWPORT.viewportWidth + "/" + VIEWPORT.viewportHeight);
         Gdx.app.debug(TAG, "WorldRenderer physical " + VIEWPORT.physicalWidth + "/" + VIEWPORT.physicalHeight);
+         */
     }
 
 
-    private boolean isCollisionWithMapLayer() {
+    private boolean createBox2DMapLayer() {
         MapLayer mapCollisionLayer = _mapMgr.getCollisionLayer();
 
         if (mapCollisionLayer == null) {
@@ -326,7 +332,6 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             if (object instanceof RectangleMapObject) {
                 createBoxFromRectangleMap(((RectangleMapObject) object).getRectangle());
             } else {
-                Gdx.app.debug(TAG, "**** objet de type " + object.getClass().getSimpleName());
                 MapProperties mp = ((PolygonMapObject) object).getProperties();
                 getPolygon(((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
             }
@@ -352,26 +357,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         boxBody0.createFixture(shape, 1f);
         shape.dispose();
         boxBody0.setTransform(new Vector2(x * MyMap.UNIT_SCALE, y * MyMap.UNIT_SCALE), 0f);
-    }
-
-    private void createBox() {
-        PolygonShape boxShape = new PolygonShape();
-        boxShape.setAsBox(1, 1);
-
-        BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(0, 20);
-        boxBodyDef.angle = MathUtils.PI / 32;
-        boxBodyDef.type = BodyType.DynamicBody;
-        boxBodyDef.fixedRotation = false;
-
-        Body boxBody = world.createBody(boxBodyDef);
-        FixtureDef boxFixtureDef = new FixtureDef();
-        boxFixtureDef.shape = boxShape;
-        boxFixtureDef.restitution = 1.75f;
-        boxFixtureDef.density = 2.0f;
-        boxBody.createFixture(boxFixtureDef);
-
-        boxShape.dispose();
+        boxBody0.setUserData("Polygon");
     }
 
     private void addItem() {
@@ -383,13 +369,15 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         boxItem.setAsBox(16 * MyMap.UNIT_SCALE / 2, 16 * MyMap.UNIT_SCALE / 2);
 
         BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(10.5f, 10.5f);
-        boxBodyDef.type = BodyType.KinematicBody;
+        boxBodyDef.position.set(VIEWPORT.viewportWidth / 2f, VIEWPORT.viewportHeight / 2);
+        //camera.position.set(VIEWPORT.viewportWidth / 2f, VIEWPORT.viewportHeight / 2, 0);
+        //boxBodyDef.type = BodyType.KinematicBody;
+        boxBodyDef.type=BodyType.DynamicBody;
 
         bodyItem = world.createBody(boxBodyDef);
         FixtureDef boxFixtureDef = new FixtureDef();
         boxFixtureDef.shape = boxItem;
-        boxFixtureDef.restitution = 1.75f;
+        boxFixtureDef.restitution = 0f;
         boxFixtureDef.density = 2.0f;
         bodyItem.createFixture(boxFixtureDef);
         bodyItem.setUserData(item);
@@ -399,6 +387,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         lightItem.attachToBody(bodyItem);
 
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
+        item.setBounds(item.getX(), item.getY(), item.getWidth(), item.getHeight());
     }
 
 
