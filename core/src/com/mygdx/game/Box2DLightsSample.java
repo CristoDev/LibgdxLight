@@ -41,11 +41,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private static MyMap _mapMgr = null;
     private Sprite item = null;
     private Body bodyItem = null;
-    private boolean show = true;
-
+    private Light lightItem=null;
     private long startTime;
-
-    private ListenerClass contactListener=null;
 
     private static class VIEWPORT {
         static float viewportWidth;
@@ -70,8 +67,6 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         startTime = TimeUtils.millis();
 
         world = new World(new Vector2(0, 0f), true);
-        //world.setContactListener(new ListenerClass(this));
-        createCollisionListener();
         // Instantiate the class in charge of drawing physics shapes
         debugRenderer = new Box2DDebugRenderer();
         rayHandler = new RayHandler(world);
@@ -240,18 +235,23 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     @Override
     public boolean keyDown(int keycode) {
         Vector2 translate = new Vector2(0, 0);
+        double angle=Math.PI/2;
         switch (keycode) {
             case Input.Keys.LEFT:
                 translate.x = -1;
+                angle=Math.PI;
                 break;
             case Input.Keys.RIGHT:
                 translate.x = 1;
+                angle=0f;
                 break;
             case Input.Keys.UP:
                 translate.y = 1;
+                angle=Math.PI/2;
                 break;
             case Input.Keys.DOWN:
                 translate.y = -1;
+                angle=3*Math.PI/2;
                 break;
             case Input.Keys.SPACE:
                 addLight();
@@ -260,9 +260,9 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         }
 
 
-        bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, 0);
+        bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, (float)angle);
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
-        show = true;
+        lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
         camera.translate(translate);
 
         return super.keyDown(keycode);
@@ -383,8 +383,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         boxItem.setAsBox(16 * MyMap.UNIT_SCALE / 2, 16 * MyMap.UNIT_SCALE / 2);
 
         BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(10, 10);
-        boxBodyDef.type = BodyType.DynamicBody;
+        boxBodyDef.position.set(10.5f, 10.5f);
+        boxBodyDef.type = BodyType.KinematicBody;
 
         bodyItem = world.createBody(boxBodyDef);
         FixtureDef boxFixtureDef = new FixtureDef();
@@ -392,50 +392,13 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         boxFixtureDef.restitution = 1.75f;
         boxFixtureDef.density = 2.0f;
         bodyItem.createFixture(boxFixtureDef);
-
-
-/*
-        bodyItem = world.createBody(boxBodyDef);
-
-
-        bodyItem.createFixture(boxItem, 1.0f);
-        boxItem.dispose();
-        bodyItem.setTransform(new Vector2(160 * MyMap.UNIT_SCALE, 160 * MyMap.UNIT_SCALE + 16 * MyMap.UNIT_SCALE / 2), 0);
-*/
         bodyItem.setUserData(item);
+
+        lightItem = new ConeLight(rayHandler, 12, Color.GRAY, 5, 15, 5, 270, 30);
+        lightItem.setSoft(false);
+        lightItem.attachToBody(bodyItem);
+
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
-
-    }
-
-    private void createCollisionListener() {
-        world.setContactListener(new ContactListener() {
-
-            @Override
-            public void beginContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                Gdx.app.debug("beginContact", fixtureA.toString());
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-                Fixture fixtureA = contact.getFixtureA();
-                Fixture fixtureB = contact.getFixtureB();
-                Gdx.app.debug("end__Contact", fixtureA.toString());
-                Gdx.app.debug("_____", "________________________________________________");
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-                Gdx.app.debug(TAG, "presolve");
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-            }
-
-        });
     }
 
 
