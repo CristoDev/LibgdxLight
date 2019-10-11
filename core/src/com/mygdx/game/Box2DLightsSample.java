@@ -129,14 +129,27 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         boxBody.setUserData("Box "+MathUtils.random(0, 10000));
     }
 
-    private void createBoxFromRectangleMap(Rectangle rectangle) {
+    private void createBoxFromRectangleMap(RectangleMapObject object) {
+        Rectangle rectangle=object.getRectangle();
+        MapProperties mp=object.getProperties();
         BodyDef staticBodyDef = new BodyDef();
         staticBodyDef.type = BodyType.StaticBody;
+
+        if (mp.containsKey("type") && mp.get("type").toString().compareTo("ennemy") == 0) {
+            Gdx.app.debug(TAG, "type: "+mp.get("type"));
+            staticBodyDef.type = BodyType.DynamicBody;
+        }
 
         Body boxBody2 = world.createBody(staticBodyDef);
         PolygonShape box2 = new PolygonShape();
         box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
-        boxBody2.createFixture(box2, 0.0f);
+        FixtureDef fixture=new FixtureDef();
+        fixture.restitution = 0f;
+        fixture.density = 10f;
+        fixture.shape = box2;
+
+        boxBody2.createFixture(fixture);
+
         box2.dispose();
         boxBody2.setTransform(new Vector2(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2), 0);
         boxBody2.setUserData("Rectangle "+MathUtils.random(0, 10000));
@@ -154,6 +167,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         }
 
         if (button == Buttons.LEFT) {
+            bodySword.setActive(true);
             bodySword.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getAngle());
 
         }
@@ -166,6 +180,10 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         if (button == Input.Buttons.RIGHT) {
             light.setActive(false);
 
+            return true;
+        }
+        if (button == Input.Buttons.LEFT) {
+            bodySword.setActive(false);
             return true;
         }
         return false;
@@ -350,12 +368,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
         for (MapObject object : mapCollisionLayer.getObjects()) {
             if (object instanceof RectangleMapObject) {
-                createBoxFromRectangleMap(((RectangleMapObject) object).getRectangle());
-                MapProperties mp=object.getProperties();
-
-                if (mp.containsKey("type")) {
-                    Gdx.app.debug(TAG, "type: "+mp.get("type"));
-                }
+                createBoxFromRectangleMap(((RectangleMapObject) object));
             } else {
                 MapProperties mp = object.getProperties();
                 getPolygon(((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
@@ -401,7 +414,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         FixtureDef boxFixtureDef = new FixtureDef();
         boxFixtureDef.shape = boxItem;
         boxFixtureDef.restitution = 0f;
-        boxFixtureDef.density = 2.0f;
+        boxFixtureDef.density = 0.0f;
         bodyItem.createFixture(boxFixtureDef);
         bodyItem.setUserData(item);
 
@@ -427,7 +440,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         };
 
         BodyDef swordBodyDef = new BodyDef();
-        swordBodyDef.type=BodyType.KinematicBody; // en attendant mieux -> utilisation des masques
+        swordBodyDef.type=BodyType.DynamicBody; // en attendant mieux -> utilisation des masques
         bodySword = world.createBody(swordBodyDef);
 
         PolygonShape swordShape=new PolygonShape();

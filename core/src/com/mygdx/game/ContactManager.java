@@ -9,12 +9,12 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        Gdx.app.debug("beginContact", contact.getFixtureA().getBody().getUserData().toString());
+        Gdx.app.debug("beginContact", contact.getFixtureA().getBody().getUserData().toString()+" --> "+contact.getFixtureB().getBody().getUserData().toString());
     }
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.debug("endContact", contact.getFixtureA().getBody().getUserData().toString());
+        Gdx.app.debug("endContact", contact.getFixtureA().getBody().getUserData().toString()+" --> "+contact.getFixtureB().getBody().getUserData().toString());
     }
 
     @Override
