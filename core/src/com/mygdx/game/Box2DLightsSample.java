@@ -27,6 +27,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.Iterator;
+
 public class Box2DLightsSample extends InputAdapter implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
 
@@ -227,8 +229,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //_mapRenderer.setView(camera);
-        //_mapRenderer.render();
+        _mapRenderer.setView(camera);
+        _mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -349,8 +351,13 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         for (MapObject object : mapCollisionLayer.getObjects()) {
             if (object instanceof RectangleMapObject) {
                 createBoxFromRectangleMap(((RectangleMapObject) object).getRectangle());
+                MapProperties mp=object.getProperties();
+
+                if (mp.containsKey("type")) {
+                    Gdx.app.debug(TAG, "type: "+mp.get("type"));
+                }
             } else {
-                MapProperties mp = ((PolygonMapObject) object).getProperties();
+                MapProperties mp = object.getProperties();
                 getPolygon(((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
             }
         }
