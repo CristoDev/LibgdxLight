@@ -40,12 +40,16 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     private OrthogonalTiledMapRenderer _mapRenderer = null;
     private static MyMap _mapMgr = null;
     private Sprite item = null;
-    private Body bodyItem = null;
+    private Body bodyItem = null, bodySword=null;
     private Light lightItem=null;
-    private long startTime, lastTime=0;
+    private long startTime;
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
-    private float velocity=2f;
+    private float velocity=3f;
+    private float candleAlpha=0.8f;
+    private float maxFPS=60f;
+    private float itemWidth=16, swordWidth=10;
+    private double itemDiag;
 
     private static class VIEWPORT {
         static float viewportWidth;
@@ -71,14 +75,17 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
         world = new World(new Vector2(0, 0f), true);
         world.setContactListener(new ContactManager());
-        // Instantiate the class in charge of drawing physics shapes
-        debugRenderer = new Box2DDebugRenderer();
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);
-
         batch.setProjectionMatrix(camera.combined);
 
-        //createLights();
+        debugRenderer = new Box2DDebugRenderer();
+
+        itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
+        Gdx.app.debug(TAG, "diag="+itemDiag);
+
+        createLights();
+        createSword();
         createBodies();
         testMap();
         addItem();
@@ -135,14 +142,18 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
+        if (button == Input.Buttons.RIGHT) {
             //Translate screen coordinates into world units
             camera.unproject(point.set(screenX, screenY, 0));
-
             light.setPosition(point.x, point.y);
             light.setActive(true);
 
             return true;
+        }
+
+        if (button == Buttons.LEFT) {
+            bodySword.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getAngle());
+
         }
 
         return false;
@@ -150,7 +161,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT) {
+        if (button == Input.Buttons.RIGHT) {
             light.setActive(false);
 
             return true;
@@ -182,31 +193,31 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     }
 
     private void update() {
+        int fps = Gdx.graphics.getFramesPerSecond();
 
-        //bodyItem.setTransform(bodyItem.getPosition().x + translate.x, bodyItem.getPosition().y + translate.y, (float)angle);
-        bodyItem.setLinearVelocity(translate);
+        if (fps > 0 && fps < maxFPS) {
+            float ratio=maxFPS / Gdx.graphics.getFramesPerSecond();
+            bodyItem.setLinearVelocity(translate.x*ratio, translate.y*ratio);
+            //Gdx.app.debug(TAG, "FPS: "+fps+ "-- > "+ratio);
+        }
+        else {
+            bodyItem.setLinearVelocity(translate);
+        }
+
         bodyItem.setTransform(bodyItem.getPosition().x, bodyItem.getPosition().y, (float)angle);
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
         lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
-
-        //camera.translate(translate);
         camera.position.set(bodyItem.getPosition().x, bodyItem.getPosition().y, 0);
 
         float elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000f;
-        //loop.setPosition(5 + 3 * MathUtils.cos(elapsedTime), 8 + 2 * MathUtils.sin(elapsedTime));
+        loop.setPosition(5 + 3 * MathUtils.cos(elapsedTime), 8 + 2 * MathUtils.sin(elapsedTime));
 
-        // @todo modifier la durée pour ne pas clignoter
-        //lightItem.setColor(127f, 127f, 127f, MathUtils.random(0f, 1f));
+        // petit effet de bougie sur le cone de lumière
+        candleAlpha=MathUtils.clamp(candleAlpha+MathUtils.random(-0.05f, 0.05f), 0.7f, 1f);
+        lightItem.setColor(127f, 127f, 127f, candleAlpha);
 
         camera.update();
         world.step(Gdx.graphics.getDeltaTime(), 8, 3);
-
-        if (world.getContactCount() > 0) {
-            if (TimeUtils.timeSinceMillis(lastTime) > 1000) {
-                lastTime=TimeUtils.millis();
-                //Gdx.app.debug(TAG, lastTime + " -- " + world.getContactCount());
-            }
-        }
     }
 
     @Override
@@ -216,8 +227,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        _mapRenderer.setView(camera);
-        _mapRenderer.render();
+        //_mapRenderer.setView(camera);
+        //_mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -238,13 +249,13 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     }
 
     private void keyPressed(int keycode, int keyDown) {
+        double currentAngle=angle;
         switch (keycode) {
             case Input.Keys.LEFT:
                 translate.x = -velocity*keyDown;
                 angle=Math.PI;
                 break;
             case Input.Keys.RIGHT:
-                //Gdx.app.debug(TAG, "RIGHT direction");
                 translate.x = velocity*keyDown;
                 angle=0f;
                 break;
@@ -262,6 +273,9 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
             default:
         }
 
+        if (keyDown == 0) {
+            angle=currentAngle;
+        }
     }
 
     @Override
@@ -273,7 +287,6 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     @Override
     public boolean keyDown(int keycode) {
         keyPressed(keycode, 1);
-        //bodyItem.setLinearVelocity(new Vector2(0, 0));
 
         return super.keyDown(keycode);
     }
@@ -371,12 +384,10 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         item.setSize(item.getWidth() * MyMap.UNIT_SCALE, item.getHeight() * MyMap.UNIT_SCALE);
 
         PolygonShape boxItem = new PolygonShape();
-        boxItem.setAsBox(16 * MyMap.UNIT_SCALE / 2, 16 * MyMap.UNIT_SCALE / 2);
+        boxItem.setAsBox(itemWidth * MyMap.UNIT_SCALE / 2, itemWidth * MyMap.UNIT_SCALE / 2);
 
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.position.set(VIEWPORT.viewportWidth / 2f, VIEWPORT.viewportHeight / 2);
-        //camera.position.set(VIEWPORT.viewportWidth / 2f, VIEWPORT.viewportHeight / 2, 0);
-        //boxBodyDef.type = BodyType.KinematicBody;
         boxBodyDef.type=BodyType.DynamicBody;
 
         bodyItem = world.createBody(boxBodyDef);
@@ -391,9 +402,31 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         lightItem.setSoft(false);
         lightItem.attachToBody(bodyItem);
 
-        item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
+        item.setPosition(bodyItem.getPosition().x - itemWidth * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - itemWidth * MyMap.UNIT_SCALE / 2);
         item.setBounds(item.getX(), item.getY(), item.getWidth(), item.getHeight());
     }
 
+    private void createSword() {
+        float length=((float)itemDiag+swordWidth)*MyMap.UNIT_SCALE;
 
+        Vector2[] swordAttack=new Vector2[]{
+                new Vector2(0.5f, -0.5f), //A
+                new Vector2(0.5f, 0.5f), // B
+                new Vector2(length*(float)Math.cos(Math.PI/4), length*(float)Math.sin(Math.PI/4)), //G
+                new Vector2(length*(float)Math.cos(Math.PI/8), length*(float)Math.sin(Math.PI/8)), //K
+                new Vector2(length, 0), //F
+                new Vector2(length*(float)Math.cos(-Math.PI/8), length*(float)Math.sin(-Math.PI/8)), //M
+                new Vector2(length*(float)Math.cos(-Math.PI/4), length*(float)Math.sin(-Math.PI/4)), //H
+        };
+
+        BodyDef swordBodyDef = new BodyDef();
+        swordBodyDef.type=BodyType.KinematicBody; // en attendant mieux -> utilisation des masques
+        bodySword = world.createBody(swordBodyDef);
+
+        PolygonShape swordShape=new PolygonShape();
+        swordShape.set(swordAttack);
+        bodySword.createFixture(swordShape, 1f);
+        bodySword.setUserData("coup de guiche-guiche");
+        swordShape.dispose();
+    }
 }
