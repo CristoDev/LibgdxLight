@@ -78,7 +78,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         world = new World(new Vector2(0, 0f), true);
         world.setContactListener(new ContactManager());
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);
+        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);//0.6f
         batch.setProjectionMatrix(camera.combined);
 
         debugRenderer = new Box2DDebugRenderer();
@@ -192,7 +192,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
         camera.unproject(point.set(x, y, 0));
-        if (Gdx.input.isButtonPressed(Buttons.LEFT)) {
+        if (Gdx.input.isButtonPressed(Buttons.RIGHT)) {
             light.setPosition(point.x, point.y);
         }
         return false;
@@ -446,6 +446,16 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         PolygonShape swordShape=new PolygonShape();
         swordShape.set(swordAttack);
         bodySword.createFixture(swordShape, 1f);
+
+        /*
+        FixtureDef swordFixtureDef = new FixtureDef();
+        swordFixtureDef.shape = swordShape;
+        swordFixtureDef.restitution = 0f;
+        swordFixtureDef.density = 0.0f;
+        swordFixtureDef.isSensor=true;
+        bodySword.createFixture(swordFixtureDef);
+        */
+
         bodySword.setUserData("coup de guiche-guiche");
         swordShape.dispose();
     }
