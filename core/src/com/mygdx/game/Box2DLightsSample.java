@@ -457,6 +457,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         */
 
         bodySword.setUserData("coup de guiche-guiche");
+        bodySword.setActive(false);
         swordShape.dispose();
     }
 }

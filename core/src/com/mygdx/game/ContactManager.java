@@ -19,7 +19,6 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
-        Gdx.app.debug("preSolve", contact.getFixtureA().getBody().getUserData().toString()+" --> "+contact.getFixtureB().getBody().getUserData().toString());
     }
 
     @Override
