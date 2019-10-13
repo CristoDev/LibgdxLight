@@ -145,7 +145,8 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
         FixtureDef fixture=new FixtureDef();
         fixture.restitution = 0f;
-        fixture.density = 10f;
+        fixture.friction=100f;
+        fixture.density = 100f;
         fixture.shape = box2;
 
         boxBody2.createFixture(fixture);
@@ -414,7 +415,7 @@ public class Box2DLightsSample extends InputAdapter implements ApplicationListen
         FixtureDef boxFixtureDef = new FixtureDef();
         boxFixtureDef.shape = boxItem;
         boxFixtureDef.restitution = 0f;
-        boxFixtureDef.density = 0.0f;
+        boxFixtureDef.density = 100.0f;
         bodyItem.createFixture(boxFixtureDef);
         bodyItem.setUserData(item);
 
