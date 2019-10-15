@@ -1,4 +1,4 @@
-package com.mygdx.game.desktop;
+package com.light.v1.desktop;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;

@@ -1,10 +1,10 @@
-package com.mygdx.game.desktop;
+package com.light.v1.desktop;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.mygdx.game.Box2DLightsSample;
+import com.light.v1.Box2DLightsSample;
 
 
 public class DesktopLauncher {

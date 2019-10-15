@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.06.20" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="45">
+<map version="1.2" tiledversion="2019.06.20" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="56">
  <tileset firstgid="1" name="overworld" tilewidth="16" tileheight="16" tilecount="1440" columns="40">
   <image source="Overworld.png" trans="ff00ff" width="640" height="576"/>
  </tileset>
@@ -72,7 +72,6 @@
 </data>
  </layer>
  <objectgroup id="3" name="collision">
-  <object id="2" x="0.5" y="1" width="126" height="78"/>
   <object id="5" x="204.5" y="0.5">
    <polygon points="0,0 1,65.5 81.5,66.5 80.5,97 198,99 199.5,80 246.5,83.5 247,66 274,67 275,0.5"/>
   </object>
@@ -109,5 +108,10 @@
   <object id="42" type="ennemy" x="402.167" y="274.5" width="11.6667" height="12.3333"/>
   <object id="43" type="ennemy" x="353.5" y="354.5" width="11.6667" height="12.3333"/>
   <object id="44" type="ennemy" x="321.833" y="354.5" width="11.6667" height="12.3333"/>
+  <object id="51" x="0.666667" y="80.3333">
+   <polygon points="0,0 33,0.333333 32,-16.6667 63,-16.3333 62.3333,1 128.667,0.666667 128,-80.6667 -1.33333,-80"/>
+  </object>
+  <object id="54" type="warp" x="34" y="65" width="14.3333" height="6.33333"/>
+  <object id="55" type="warp" x="32.8334" y="176" width="14.3333" height="15.3333"/>
  </objectgroup>
 </map>
