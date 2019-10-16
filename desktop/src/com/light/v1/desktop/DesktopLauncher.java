@@ -4,7 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.light.v1.Box2DLightsSample;
+import com.light.v1.LightGame;
 
 
 public class DesktopLauncher {
@@ -16,7 +16,7 @@ public class DesktopLauncher {
 		config.width=1027;
 		config.height=768;
 
-		Application app=new LwjglApplication(new Box2DLightsSample(), config);
+		Application app=new LwjglApplication(new LightGame(), config);
 
 		Gdx.app=app;
 		//Gdx.app.setLogLevel(Application.LOG_INFO);

@@ -29,6 +29,7 @@ public class MyMap {
 
     public void loadMapAsset(String mapFilenamePath) {
         if (mapFilenamePath == null || mapFilenamePath.isEmpty()) {
+            Gdx.app.debug(TAG, "file null");
             return;
         }
 
@@ -83,7 +84,8 @@ public class MyMap {
         }
 
         _collisionLayer = _currentMap.getLayers().get(MAP_COLLISION_LAYER);
-        if( _collisionLayer == null ){
+
+        if( _collisionLayer == null ) {
             Gdx.app.debug(TAG, "No collision layer!");
         }
 

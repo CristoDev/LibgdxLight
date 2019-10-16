@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
@@ -18,20 +17,13 @@ import tools.MyMap;
 public class LightMap {
     private static final String TAG = "LightMap";
     private static MyMap _mapMgr = null;
-    private OrthogonalTiledMapRenderer _mapRenderer = null;
+    private OrthographicCamera camera;
 
-    public LightMap(OrthographicCamera camera) {
+    public LightMap() {
         _mapMgr = new MyMap();
-        _mapRenderer = new OrthogonalTiledMapRenderer(_mapMgr.getCurrentMap(), MyMap.UNIT_SCALE);
-        _mapRenderer.setView(camera);
     }
 
-    public void render(OrthographicCamera camera) {
-        _mapRenderer.setView(camera);
-        _mapRenderer.render();
-    }
-
-    public boolean createBox2DMapLayer(World world) {
+    public boolean buildMap(World world) {
         MapLayer mapCollisionLayer = _mapMgr.getCollisionLayer();
 
         if (mapCollisionLayer == null) {
@@ -40,17 +32,17 @@ public class LightMap {
 
         for (MapObject object : mapCollisionLayer.getObjects()) {
             if (object instanceof RectangleMapObject) {
-                createBoxFromRectangleMap(world, ((RectangleMapObject) object));
+                createRectangle(world, ((RectangleMapObject) object));
+                Gdx.app.debug(TAG, "rectangle");
             } else {
                 MapProperties mp = object.getProperties();
-                getPolygon(world, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
+                createPolygon(world, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
             }
         }
         return false;
     }
 
-
-    private void getPolygon(World world, Polygon polygon, float x, float y) {
+    private void createPolygon(World world, Polygon polygon, float x, float y) {
         float[] tmp = polygon.getVertices();
         Vector2[] vertices = new Vector2[tmp.length / 2];
 
@@ -69,7 +61,7 @@ public class LightMap {
         boxBody0.setUserData("Polygon");
     }
 
-    private void createBoxFromRectangleMap(World world, RectangleMapObject object) {
+    private void createRectangle(World world, RectangleMapObject object) {
         Rectangle rectangle=object.getRectangle();
         MapProperties mp=object.getProperties();
         BodyDef staticBodyDef = new BodyDef();
@@ -77,13 +69,11 @@ public class LightMap {
         String name="Rectangle "+ MathUtils.random(0, 10000);
 
         if (mp.containsKey("type") && mp.get("type").toString().compareTo("ennemy") == 0) {
-            Gdx.app.debug(TAG, "type: "+mp.get("type"));
             staticBodyDef.type = BodyDef.BodyType.DynamicBody;
             name="Ennemy "+MathUtils.random(0, 10000);
         }
 
         if (mp.containsKey("type") && mp.get("type").toString().compareTo("warp") == 0) {
-            Gdx.app.debug(TAG, "type: "+mp.get("type"));
             staticBodyDef.type = BodyDef.BodyType.KinematicBody;
             name="Warp "+MathUtils.random(0, 10000);
         }
@@ -102,6 +92,10 @@ public class LightMap {
         box2.dispose();
         boxBody2.setTransform(new Vector2(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2), 0);
         boxBody2.setUserData(name);
+    }
+
+    public static MyMap getMap() {
+        return _mapMgr;
     }
 
 }

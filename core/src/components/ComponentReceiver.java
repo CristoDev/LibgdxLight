@@ -1,6 +1,11 @@
 package components;
 
 public interface ComponentReceiver {
+    public static enum Event {
+
+
+    }
+
 /*
     public static final String MESSAGE_TOKEN = ":::::";
 
@@ -21,6 +26,6 @@ public interface ComponentReceiver {
 
  */
 
-
+    void dispose();
     void receiveMessage(String event, String message);
 }

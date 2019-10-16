@@ -7,22 +7,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import tools.ContactManager;
+import tools.MyMap;
 
-public class Box2DLightsSample implements ApplicationListener {
+public class LightGame implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
 
-    private SpriteBatch batch = null;
-    private OrthographicCamera camera = null;
-    private World world = null;
-    private Box2DDebugRenderer debugRenderer = null;
-    private RayHandler rayHandler = null;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private World world;
+    private OrthogonalTiledMapRenderer mapRenderer;
+    private Box2DDebugRenderer debugRenderer;
+    private RayHandler rayHandler;
 
     private LightMap lightMap;
     private LightPlayer lightPlayer;
+    private ObserverNotifier observerManager;
 
     public static class VIEWPORT { // classe public au lieu de private en attendant le refactoring complet
         static float viewportWidth;
@@ -46,8 +49,10 @@ public class Box2DLightsSample implements ApplicationListener {
 
         world = new World(new Vector2(0, 0f), true);
         world.setContactListener(new ContactManager());
+
         rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);//0.6f
+
         batch.setProjectionMatrix(camera.combined);
 
         debugRenderer = new Box2DDebugRenderer();
@@ -55,33 +60,12 @@ public class Box2DLightsSample implements ApplicationListener {
         lightPlayer=new LightPlayer(rayHandler, camera, world);
         lightPlayer.createLights();
 
-        createBodies();
+        lightMap=new LightMap();
+        mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
+        lightMap.buildMap(world);
 
-        lightMap=new LightMap(camera);
-        lightMap.createBox2DMapLayer(world);
-    }
-
-
-    private void createBodies() {
-        BodyDef staticBodyDef = new BodyDef();
-        staticBodyDef.type = BodyType.StaticBody;
-
-        Body groundBody = world.createBody(staticBodyDef);
-        PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(6, 0.5f);
-        groundBody.createFixture(groundBox, 0.0f);
-        groundBox.dispose();
-        groundBody.setTransform(new Vector2(6, 0.5f), groundBody.getAngle());
-        groundBody.setUserData("Ground");
-
-        Body boxBody = world.createBody(staticBodyDef);
-        PolygonShape box = new PolygonShape();
-        box.setAsBox(1f, .5f);
-        boxBody.createFixture(box, 0.0f);
-        box.dispose();
-        // !!! milieu de la box
-        boxBody.setTransform(new Vector2(6, 3), 0);
-        boxBody.setUserData("Box "+MathUtils.random(0, 10000));
+        observerManager=new ObserverNotifier();
+        observerManager.addObserver(lightPlayer);
     }
 
     @Override
@@ -112,11 +96,11 @@ public class Box2DLightsSample implements ApplicationListener {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        lightMap.render(camera);
+        mapRenderer.setView(camera);
+        mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        //batch.draw(item, item.getX(), item.getY(), item.getWidth(), item.getHeight());
         lightPlayer.render(batch);
         batch.end();
 
@@ -151,6 +135,12 @@ public class Box2DLightsSample implements ApplicationListener {
         }
     }
 
+    public Vector3 unproject(Vector3 point) {
+        return camera.unproject(point);
+    }
 
+    public Vector3 unproject(float x, float y, float z) {
+        return unproject(new Vector3(x, y, z));
+    }
 
 }

@@ -1,41 +1,42 @@
-package components;
+package com.light.v1;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.light.v1.LightPlayer;
 
-public class InputPlayer extends ComponentInput implements InputProcessor {
-    /*
-    à chaque update, on envoi un message pour dire quelle touche a ete utilisée et son état (up/down)
+public class LightInput extends ObserverNotifier implements InputProcessor {
+    private static final String TAG = "LightInput";
+    private boolean keyDown=false;
+    private int keyCode=-1;
 
-
-     */
-    private static final String TAG = "InputPlayer";
-
-
-    @Override
-    public void dispose() {
-
+    public LightInput() {
+        //Gdx.input.setInputProcessor(this);
     }
 
-    @Override
     public void update(LightPlayer lightPlayer, float delta) {
-        Gdx.app.debug(TAG, "udpate");
-        // appel sendMessage ici
+        if (keyCode != -1) {
+            lightPlayer.sendMessage("key", "code: " + keyCode + " etat: " + keyDown);
+        }
     }
 
-    @Override
     public void receiveMessage(String event, String message) {
-        Gdx.app.debug(TAG, "receiveMessage - Event: "+event+" // Message: "+message);
+        Gdx.app.debug(TAG, "Message reçu: "+event+" // "+message);
+
     }
+
 
     @Override
     public boolean keyDown(int keycode) {
+        keyDown=true;
+        keyCode=keycode;
+
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        keyDown=false;
+        keyCode=keycode;
+
         return false;
     }
 
