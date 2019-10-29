@@ -1,43 +1,53 @@
 package com.light.v1;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.g2d.Batch;
 
-public class LightInput extends ObserverNotifier implements InputProcessor {
+public class LightInput implements InputProcessor, Component {
     private static final String TAG = "LightInput";
-    private boolean keyDown=false;
+    private int keyDown=0;
     private int keyCode=-1;
 
     public LightInput() {
-        //Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(this);
     }
 
-    public void update(LightPlayer lightPlayer, float delta) {
+    @Override
+    public void update(LightPlayer lightPlayer, Batch batch, float delta) {
         if (keyCode != -1) {
-            lightPlayer.sendMessage("key", "code: " + keyCode + " etat: " + keyDown);
+            lightPlayer.sendMessage("key", json.toJson(keyCode+MESSAGE_TOKEN+keyDown));
         }
     }
 
-    public void receiveMessage(String event, String message) {
-        Gdx.app.debug(TAG, "Message reçu: "+event+" // "+message);
-
+    @Override
+    public void dispose() {
+        Gdx.app.debug(TAG, "dispose");
     }
 
-
     @Override
-    public boolean keyDown(int keycode) {
-        keyDown=true;
-        keyCode=keycode;
+    public void receiveMessage(String event, String message) {
+        String[] string = message.split(MESSAGE_TOKEN);
+        //Gdx.app.debug(TAG, "Message reçu : "+event+" // "+message);
 
-        return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        keyDown=false;
+        Gdx.app.debug(TAG, "clic...");
         keyCode=keycode;
+        keyDown=0;
 
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        keyCode=keycode;
+        keyDown=1;
+
+        return true;
     }
 
     @Override
@@ -47,16 +57,39 @@ public class LightInput extends ObserverNotifier implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.RIGHT) {
+            //Translate screen coordinates into world units
+            //camera.unproject(point.set(screenX, screenY, 0));
+            //elementLight.activate(point);
+            Gdx.app.debug(TAG, "elementLight.activate(point); + camera");
+
+            return true;
+        }
+
+        if (button == Input.Buttons.LEFT) {
+            //lightGraphics.updateSword();
+            Gdx.app.debug(TAG, "lightGraphics.updateSword();");
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.RIGHT) {
+            //elementLight.setActive(false);
+            Gdx.app.debug(TAG, "elementLight.setActive(false);");
+            return true;
+        }
+        if (button == Input.Buttons.LEFT) {
+            //lightGraphics.setActiveSword(false);
+            Gdx.app.debug(TAG, "lightGraphics.setActiveSword(false);");
+            return true;
+        }
         return false;
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
+    public boolean touchDragged(int x, int y, int pointer) {
         return false;
     }
 

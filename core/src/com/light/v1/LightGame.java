@@ -25,7 +25,6 @@ public class LightGame implements ApplicationListener {
 
     private LightMap lightMap;
     private LightPlayer lightPlayer;
-    private ObserverNotifier observerManager;
 
     public static class VIEWPORT { // classe public au lieu de private en attendant le refactoring complet
         static float viewportWidth;
@@ -63,9 +62,6 @@ public class LightGame implements ApplicationListener {
         lightMap=new LightMap();
         mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightMap.buildMap(world);
-
-        observerManager=new ObserverNotifier();
-        observerManager.addObserver(lightPlayer);
     }
 
     @Override
@@ -84,8 +80,6 @@ public class LightGame implements ApplicationListener {
 
     private void update() {
         camera.position.set(lightPlayer.getPosition().x, lightPlayer.getPosition().y, 0);
-        lightPlayer.update();
-        camera.update();
         world.step(Gdx.graphics.getDeltaTime(), 8, 3);
     }
 
@@ -100,8 +94,10 @@ public class LightGame implements ApplicationListener {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
+        lightPlayer.update(batch);
+
         batch.begin();
-        lightPlayer.render(batch);
+        camera.update();
         batch.end();
 
         rayHandler.setCombinedMatrix(camera);

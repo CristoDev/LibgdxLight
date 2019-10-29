@@ -87,7 +87,8 @@ public class LightMap {
         fixture.density = 100f;
         fixture.shape = box2;
 
-        boxBody2.setLinearDamping(1f);
+        boxBody2.setLinearDamping(2f);
+        boxBody2.setAngularDamping(10f);
         boxBody2.createFixture(fixture);
         box2.dispose();
         boxBody2.setTransform(new Vector2(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2), 0);

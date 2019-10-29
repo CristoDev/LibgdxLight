@@ -4,6 +4,7 @@ import box2dLight.ConeLight;
 import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import tools.MyMap;
 
-public class LightPlayerGraphics extends ObserverNotifier {
+public class LightPlayerGraphics implements Component {
     private static final String TAG = "LightGraphics";
     private Sprite item = null;
     private float itemWidth=16, swordWidth=10;
@@ -25,12 +26,16 @@ public class LightPlayerGraphics extends ObserverNotifier {
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
 
+    private LightPlayer player;
+
     public LightPlayerGraphics() {
         itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
     }
 
-    public void update(LightPlayer lightPlayer, float delta) {
-        //Gdx.app.debug(TAG, "void(0)");
+    @Override
+    public void update(LightPlayer lightPlayer, Batch batch, float delta) {
+        player=lightPlayer;
+        //Gdx.app.debug(TAG, "update "+delta);
         int fps = Gdx.graphics.getFramesPerSecond();
 
         if (fps > 0 && fps < maxFPS) {
@@ -48,13 +53,30 @@ public class LightPlayerGraphics extends ObserverNotifier {
         // petit effet de bougie sur le cone de lumière
         candleAlpha= MathUtils.clamp(candleAlpha+MathUtils.random(-0.05f, 0.05f), 0.7f, 1f);
         lightItem.setColor(127f, 127f, 127f, candleAlpha);
+
+        render(batch);
     }
 
+    private void render(Batch batch) {
+        batch.begin();
+        item.draw(batch);
+        batch.end();
+    }
+
+    @Override
+    public void dispose() {
+        Gdx.app.debug(TAG, "dispose");
+    }
+
+    @Override
     public void receiveMessage(String event, String message) {
+        String[] string = message.split(MESSAGE_TOKEN);
+
         Gdx.app.debug(TAG, "Message reçu: "+event+" // "+message);
-
+        if (event.compareTo("key") == 0) {
+            keyPressed(string[0], string[1]);
+        }
     }
-
 
     public void addItem(World world, RayHandler rayHandler) {
         Texture texture = new Texture(Gdx.files.internal("item.png"));
@@ -143,7 +165,51 @@ public class LightPlayerGraphics extends ObserverNotifier {
         return bodyItem.getPosition();
     }
 
-    public void render(Batch batch) {
-        item.draw(batch);
+
+    // @TODO doit etre appele lors d'un update avec key pressed event
+    private void keyPressed(String keycode, String keyDown) {
+        keyPressed(Integer.parseInt(keycode), Integer.parseInt(keyDown));
+    }
+
+    // @TODO doit etre appele lors d'un update avec key pressed event
+    private void keyPressed(int keycode, int keyDown) {
+        float velocity=player.getVelocity();
+        double currentAngle=getAngle();
+        double angle=currentAngle;
+        Vector2 translate=new Vector2(0, 0);
+
+        switch (keycode) {
+            case Input.Keys.LEFT:
+                translate.x = -velocity * keyDown;
+                angle = Math.PI;
+                break;
+            case Input.Keys.RIGHT:
+                translate.x = velocity * keyDown;
+                angle = 0f;
+                break;
+            default:
+        }
+
+        switch (keycode) {
+            case Input.Keys.UP:
+                translate.y = velocity*keyDown;
+                angle = Math.PI / 2;
+                break;
+            case Input.Keys.DOWN:
+                translate.y = -velocity*keyDown;
+                angle=3*Math.PI/2;
+                break;
+            case Input.Keys.SPACE:
+                //addLight();
+                break;
+            default:
+        }
+
+        if (keyDown == 0) {
+            angle=currentAngle;
+        }
+
+        setAngle(angle);
+        setTranslate(translate);
     }
 }

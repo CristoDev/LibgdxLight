@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class WorldLightTest implements WorldElement {
-    private static final String TAG = "ElementLight";
+    private static final String TAG = "WorldLightTest";
     protected Light element, loop;
 
     public WorldLightTest(RayHandler rayHandler) {

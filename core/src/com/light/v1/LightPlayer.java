@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.element.WorldLightTest;
 import com.light.v1.element.WorldTorch;
 
-public class LightPlayer implements InputProcessor, Observer {
+public class LightPlayer { //implements InputProcessor {
     private static final String TAG = "LightPlayer";
 
     private Vector3 point = new Vector3();
@@ -31,7 +31,7 @@ public class LightPlayer implements InputProcessor, Observer {
 
     public LightPlayer(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {
         // @todo modifier le code pour utiliser lightInput
-        Gdx.input.setInputProcessor(this);
+        //Gdx.input.setInputProcessor(this);
 
         rayHandler=_rayHandler;
         camera=_camera;
@@ -49,6 +49,14 @@ public class LightPlayer implements InputProcessor, Observer {
     private void addLight() {
         new WorldTorch(rayHandler, camera.position);
     }
+
+    public void update(Batch batch) {
+        lightInput.update(this, batch, 0);
+        lightGraphics.update(this, batch, 0);
+
+        elementLight.update();
+    }
+/*
 
     private void keyPressed(int keycode, int keyDown) {
         double currentAngle=lightGraphics.getAngle();
@@ -90,12 +98,6 @@ public class LightPlayer implements InputProcessor, Observer {
         lightGraphics.setTranslate(translate);
     }
 
-    public void update() {
-        lightInput.update(this, 0);
-        lightGraphics.update(this, 0);
-
-        elementLight.update();
-    }
 
     @Override
     public boolean keyUp(int keycode) {
@@ -161,23 +163,17 @@ public class LightPlayer implements InputProcessor, Observer {
     public boolean scrolled(int amount) {
         return false;
     }
-
-
+*/
     public Vector2 getPosition() {
         return lightGraphics.getPosition();
-    }
-
-    public void render(Batch batch) {
-        lightGraphics.render(batch);
-    }
-
-    @Override
-    public void onNotify(ObserverNotifier.Event event, String message) {
-        Gdx.app.debug(TAG, "onNotify -> LightPlayer");
     }
 
     public void sendMessage(String event, String message) {
         lightInput.receiveMessage(event, message);
         lightGraphics.receiveMessage(event, message);
+    }
+
+    public float getVelocity() {
+        return velocity;
     }
 }

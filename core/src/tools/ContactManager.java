@@ -14,7 +14,7 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.debug("endContact  ", TimeUtils.millis()+" // "+contact.getFixtureA().getBody().getUserData().toString()+" --> "+contact.getFixtureB().getBody().getUserData().toString());
+        //Gdx.app.debug("endContact  ", TimeUtils.millis()+" // "+contact.getFixtureA().getBody().getUserData().toString()+" --> "+contact.getFixtureB().getBody().getUserData().toString());
     }
 
     @Override
