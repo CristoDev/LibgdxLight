@@ -74,7 +74,8 @@ public class LightPlayerGraphics extends LightGraphics {
 
         Gdx.app.debug(TAG, "Message reçu: "+event+" // "+message);
         if (event.compareTo("key") == 0) {
-            keyPressed(string[0], string[1]);
+            Gdx.app.debug(TAG, "deplacement "+string[0]+" -- "+string[1]);
+            //keyPressed(string[0], string[1]);
         }
     }
 

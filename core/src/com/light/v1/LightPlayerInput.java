@@ -5,10 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
+import java.util.Map;
+
 public class LightPlayerInput extends LightInput implements InputProcessor {
     private static final String TAG = "LightInput";
-    private int keyDown=0;
-    private int keyCode=-1;
 
     public LightPlayerInput() {
         Gdx.input.setInputProcessor(this);
@@ -16,13 +16,21 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public void update(LightPlayer lightPlayer, float delta, Batch batch) {
-        if (keyCode != -1) {
-            lightPlayer.sendMessage("key", json.toJson(keyCode+MESSAGE_TOKEN+keyDown));
+        for (Map.Entry<Keys, Boolean> entry : keys.entrySet()) {
+            if (entry.getValue()) {
+                // @todo indiquer la direction
+                lightPlayer.sendMessage("key", json.toJson(entry.getKey()+MESSAGE_TOKEN+1));
+            }
+        }
 
+        /*
+        if (keyCode != -1) {
+            // @TODO mettre en place une table/file d'attente pour gérer plusieurs touches
             if (keyDown == 0) {
                 keyCode=-1;
             }
         }
+         */
     }
 
     @Override
@@ -39,17 +47,14 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        Gdx.app.debug(TAG, "clic...");
-        keyCode=keycode;
-        keyDown=0;
+        keyPressed(keycode, false);
 
         return true;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        keyCode=keycode;
-        keyDown=1;
+        keyPressed(keycode, true);
 
         return true;
     }
