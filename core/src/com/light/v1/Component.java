@@ -9,5 +9,5 @@ public interface Component {
 
     void dispose();
     void receiveMessage(String event, String message);
-    void update(LightPlayer lightPlayer, Batch batch, float delta);
+    void update(LightPlayer lightPlayer, float delta, Batch batch);
 }

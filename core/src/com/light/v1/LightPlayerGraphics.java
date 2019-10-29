@@ -14,8 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import tools.MyMap;
 
-public class LightPlayerGraphics implements Component {
-    private static final String TAG = "LightGraphics";
+public class LightPlayerGraphics extends LightGraphics {
+    private static final String TAG = "LightPlayerGraphics";
     private Sprite item = null;
     private float itemWidth=16, swordWidth=10;
     private Body bodyItem = null, bodySword=null;
@@ -33,7 +33,7 @@ public class LightPlayerGraphics implements Component {
     }
 
     @Override
-    public void update(LightPlayer lightPlayer, Batch batch, float delta) {
+    public void update(LightPlayer lightPlayer, float delta, Batch batch) {
         player=lightPlayer;
         //Gdx.app.debug(TAG, "update "+delta);
         int fps = Gdx.graphics.getFramesPerSecond();
