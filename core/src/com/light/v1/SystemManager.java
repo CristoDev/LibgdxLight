@@ -5,8 +5,13 @@ import java.util.HashMap;
 
 public class SystemManager {
     private HashMap<String, ArrayList<Component>> ecsData=new HashMap<String, ArrayList<Component>>();
+    private static SystemManager systemManager=new SystemManager();
 
-    public SystemManager() {
+    private SystemManager() {
+    }
+
+    public static SystemManager getInstance() {
+        return systemManager;
     }
 
     public ArrayList<Component> getEntityComponents(LightEntity entity) {
