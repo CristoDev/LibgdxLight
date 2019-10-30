@@ -29,6 +29,7 @@ public class LightPlayer extends LightEntity {
         lightGraphics.createSword(world);
 
         Gdx.app.debug(TAG, "ID light player: "+this.toString());
+
     }
 
     public void createLights() {
@@ -50,7 +51,7 @@ public class LightPlayer extends LightEntity {
         return lightGraphics.getPosition();
     }
 
-    public void sendMessage(String event, String message) {
+    public void sendMessage(SystemManager.MESSAGE event, String message) {
         lightPlayerInput.receiveMessage(event, message);
         lightGraphics.receiveMessage(event, message);
     }

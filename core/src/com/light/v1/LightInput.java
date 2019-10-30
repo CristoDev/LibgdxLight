@@ -6,11 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class LightInput implements Component {
-    protected int keyDown=0;
-    protected int keyCode=-1;
-
     protected enum Keys {
-        LEFT, RIGHT, UP, DOWN, QUIT, PAUSE
+        LEFT, RIGHT, UP, DOWN,
+        QUIT, PAUSE
+    }
+
+    protected enum Buttons {
+        RIGHT_CLICK, LEFT_CLICK
     }
 
     protected static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
@@ -24,6 +26,13 @@ public abstract class LightInput implements Component {
         keys.put(Keys.PAUSE, false);
     };
 
+    protected static Map<Buttons, Boolean> buttons = new HashMap<Buttons, Boolean>();
+
+    static {
+        buttons.put(Buttons.LEFT_CLICK, false);
+        buttons.put(Buttons.RIGHT_CLICK, false);
+    };
+
     protected void keyPressed(int keycode, boolean pressed) {
         switch (keycode) {
             case Input.Keys.LEFT:
@@ -32,9 +41,6 @@ public abstract class LightInput implements Component {
             case Input.Keys.RIGHT:
                 keys.put(Keys.RIGHT, pressed);
                 break;
-        }
-
-        switch (keycode) {
             case Input.Keys.UP:
                 keys.put(Keys.UP, pressed);
                 break;

@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 import java.util.Map;
 
+import static com.light.v1.SystemManager.MESSAGE_TOKEN;
+
 public class LightPlayerInput extends LightInput implements InputProcessor {
     private static final String TAG = "LightInput";
 
@@ -14,23 +16,22 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         Gdx.input.setInputProcessor(this);
     }
 
+
     @Override
     public void update(LightPlayer lightPlayer, float delta, Batch batch) {
+        boolean idle=true;
         for (Map.Entry<Keys, Boolean> entry : keys.entrySet()) {
+
+
             if (entry.getValue()) {
-                // @todo indiquer la direction
-                lightPlayer.sendMessage("key", json.toJson(entry.getKey()+MESSAGE_TOKEN+1));
+                lightPlayer.sendMessage(SystemManager.MESSAGE.CURRENT_DIRECTION, json.toJson(entry.getKey()));
+                idle=false;
             }
         }
 
-        /*
-        if (keyCode != -1) {
-            // @TODO mettre en place une table/file d'attente pour gérer plusieurs touches
-            if (keyDown == 0) {
-                keyCode=-1;
-            }
+        if (idle) {
+            lightPlayer.sendMessage(SystemManager.MESSAGE.CURRENT_STATE, json.toJson(SystemManager.STATE.IDLE));
         }
-         */
     }
 
     @Override
@@ -38,8 +39,9 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         Gdx.app.debug(TAG, "dispose");
     }
 
+
     @Override
-    public void receiveMessage(String event, String message) {
+    public void receiveMessage(SystemManager.MESSAGE event, String message) {
         String[] string = message.split(MESSAGE_TOKEN);
         //Gdx.app.debug(TAG, "Message reçu : "+event+" // "+message);
 
@@ -78,6 +80,7 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         if (button == Input.Buttons.LEFT) {
             //lightGraphics.updateSword();
             Gdx.app.debug(TAG, "lightGraphics.updateSword();");
+
         }
         return false;
     }

@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import tools.MyMap;
 
+import static com.light.v1.SystemManager.MESSAGE_TOKEN;
+
 public class LightPlayerGraphics extends LightGraphics {
     private static final String TAG = "LightPlayerGraphics";
     private Sprite item = null;
@@ -69,13 +71,15 @@ public class LightPlayerGraphics extends LightGraphics {
     }
 
     @Override
-    public void receiveMessage(String event, String message) {
+    public void receiveMessage(SystemManager.MESSAGE event, String message) {
         String[] string = message.split(MESSAGE_TOKEN);
 
-        Gdx.app.debug(TAG, "Message reçu: "+event+" // "+message);
-        if (event.compareTo("key") == 0) {
-            Gdx.app.debug(TAG, "deplacement "+string[0]+" -- "+string[1]);
-            //keyPressed(string[0], string[1]);
+        if (event == SystemManager.MESSAGE.CURRENT_DIRECTION) {
+            Gdx.app.debug(TAG, "deplacement "+string[0]);
+            keyPressed(string[0], 1);
+        }
+        else if (event == SystemManager.MESSAGE.CURRENT_STATE) {
+            changeState(string[0]);
         }
     }
 
@@ -166,44 +170,28 @@ public class LightPlayerGraphics extends LightGraphics {
         return bodyItem.getPosition();
     }
 
-
     // @TODO doit etre appele lors d'un update avec key pressed event
-    private void keyPressed(String keycode, String keyDown) {
-        keyPressed(Integer.parseInt(keycode), Integer.parseInt(keyDown));
-    }
-
-    // @TODO doit etre appele lors d'un update avec key pressed event
-    private void keyPressed(int keycode, int keyDown) {
+    private void keyPressed(String direction, int keyDown) {
         float velocity=player.getVelocity();
         double currentAngle=getAngle();
         double angle=currentAngle;
-        Vector2 translate=new Vector2(0, 0);
+        //Vector2 translate=new Vector2(0, 0);
 
-        switch (keycode) {
-            case Input.Keys.LEFT:
-                translate.x = -velocity * keyDown;
-                angle = Math.PI;
-                break;
-            case Input.Keys.RIGHT:
-                translate.x = velocity * keyDown;
-                angle = 0f;
-                break;
-            default:
+        if (direction.compareTo("LEFT") == 0) {
+            translate.x = -velocity * keyDown;
+            angle = Math.PI;
         }
-
-        switch (keycode) {
-            case Input.Keys.UP:
-                translate.y = velocity*keyDown;
-                angle = Math.PI / 2;
-                break;
-            case Input.Keys.DOWN:
+        else if (direction.compareTo("RIGHT") == 0) {
+            translate.x = velocity * keyDown;
+            angle = 0f;
+        }
+        else if (direction.compareTo("UP") == 0) {
+            translate.y = velocity * keyDown;
+            angle = Math.PI / 2;
+        }
+        else if (direction.compareTo("DOWN") == 0) {
                 translate.y = -velocity*keyDown;
                 angle=3*Math.PI/2;
-                break;
-            case Input.Keys.SPACE:
-                //addLight();
-                break;
-            default:
         }
 
         if (keyDown == 0) {
@@ -212,5 +200,11 @@ public class LightPlayerGraphics extends LightGraphics {
 
         setAngle(angle);
         setTranslate(translate);
+    }
+
+    public void changeState(String state) {
+        if (state.compareTo("IDLE") == 0) {
+            translate=new Vector2(0, 0);
+        }
     }
 }

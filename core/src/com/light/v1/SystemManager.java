@@ -4,6 +4,43 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SystemManager {
+    public static final String MESSAGE_TOKEN = ":::::";
+
+    public enum MESSAGE {
+        CURRENT_POSITION,
+        INIT_START_POSITION,
+        CURRENT_DIRECTION,
+        CURRENT_STATE,
+        CURRENT_ACTION,
+        COLLISION_WITH_MAP,
+        COLLISION_WITH_ENTITY,
+        LOAD_ANIMATIONS,
+        INIT_DIRECTION,
+        INIT_STATE,
+        INIT_SELECT_ENTITY,
+        ENTITY_SELECTED,
+        ENTITY_DESELECTED
+    }
+
+    public enum STATE {
+        WALKING,
+        IMMOBILE,
+        IDLE
+    };
+
+    public enum ACTION {
+        START,
+        CONTINUE,
+        STOP
+    };
+
+    public enum DIRECTION {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
     private HashMap<String, ArrayList<Component>> ecsData=new HashMap<String, ArrayList<Component>>();
     private static SystemManager systemManager=new SystemManager();
 
@@ -41,7 +78,7 @@ public class SystemManager {
         addEntityComponents(entity, components);
     }
 
-    public void sendMessage(LightEntity entity, String event, String message) {
+    public void sendMessage(LightEntity entity, MESSAGE event, String message) {
         ArrayList<Component> components=getEntityComponents(entity);
 
         for (Component component : components) {

@@ -4,10 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Json;
 
 public interface Component {
-    String MESSAGE_TOKEN = ":::::";
+
     Json json=new Json();
 
     void dispose();
-    void receiveMessage(String event, String message);
+    void receiveMessage(SystemManager.MESSAGE event, String message);
     void update(LightPlayer lightPlayer, float delta, Batch batch);
 }
