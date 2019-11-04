@@ -4,17 +4,15 @@ import box2dLight.ConeLight;
 import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import tools.MyMap;
-
-import static com.light.v1.SystemManager.MESSAGE_TOKEN;
 
 public class LightPlayerGraphics extends LightGraphics {
     private static final String TAG = "LightPlayerGraphics";
@@ -27,6 +25,8 @@ public class LightPlayerGraphics extends LightGraphics {
     private float maxFPS=60f;
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
+    private Vector3 point=new Vector3();
+
 
     private LightPlayer player;
 
@@ -37,13 +37,11 @@ public class LightPlayerGraphics extends LightGraphics {
     @Override
     public void update(LightPlayer lightPlayer, float delta, Batch batch) {
         player=lightPlayer;
-        //Gdx.app.debug(TAG, "update "+delta);
         int fps = Gdx.graphics.getFramesPerSecond();
 
         if (fps > 0 && fps < maxFPS) {
             float ratio=maxFPS / Gdx.graphics.getFramesPerSecond();
             bodyItem.setLinearVelocity(translate.x*ratio, translate.y*ratio);
-            //Gdx.app.debug(TAG, "FPS: "+fps+ "-- > "+ratio);
         }
         else {
             bodyItem.setLinearVelocity(translate);
@@ -71,15 +69,15 @@ public class LightPlayerGraphics extends LightGraphics {
     }
 
     @Override
-    public void receiveMessage(SystemManager.MESSAGE event, String message) {
-        String[] string = message.split(MESSAGE_TOKEN);
+    public void receiveMessage(ECSEvent.EVENT event, String message) {
+        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
 
-        if (event == SystemManager.MESSAGE.CURRENT_DIRECTION) {
-            Gdx.app.debug(TAG, "deplacement "+string[0]);
-            keyPressed(string[0], 1);
+        if (event == ECSEvent.EVENT.CURRENT_DIRECTION) {
+            keyPressed(string[0], string[1]);
         }
-        else if (event == SystemManager.MESSAGE.CURRENT_STATE) {
-            changeState(string[0]);
+        else if (event == ECSEvent.EVENT.CURRENT_ACTION) {
+            //Gdx.app.debug(TAG, "action "+string[0]+" -- "+string[1]);
+            buttonPressed(string);
         }
     }
 
@@ -156,6 +154,7 @@ public class LightPlayerGraphics extends LightGraphics {
     }
 
     public void updateSword() {
+        setActiveSword(false);
         bodySword.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle())* MyMap.UNIT_SCALE, bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getAngle());
         bodySword.setLinearDamping(5f);
         bodySword.setAngularVelocity(0.01f);
@@ -170,41 +169,78 @@ public class LightPlayerGraphics extends LightGraphics {
         return bodyItem.getPosition();
     }
 
-    // @TODO doit etre appele lors d'un update avec key pressed event
-    private void keyPressed(String direction, int keyDown) {
+    private void keyPressed(String direction, String keyState) {
         float velocity=player.getVelocity();
         double currentAngle=getAngle();
         double angle=currentAngle;
-        //Vector2 translate=new Vector2(0, 0);
 
         if (direction.compareTo("LEFT") == 0) {
-            translate.x = -velocity * keyDown;
-            angle = Math.PI;
+            translate.x=0;
+            if (keyState.compareTo("KEY_PRESSED") == 0) {
+                translate.x = -velocity;
+                angle = Math.PI + Math.PI/4*Math.signum(translate.y);
+            }
         }
         else if (direction.compareTo("RIGHT") == 0) {
-            translate.x = velocity * keyDown;
-            angle = 0f;
+            translate.x=0;
+            if (keyState.compareTo("KEY_PRESSED") == 0) {
+                translate.x = velocity;
+                angle = 0f + Math.PI/4*Math.signum(translate.y);
+            }
         }
         else if (direction.compareTo("UP") == 0) {
-            translate.y = velocity * keyDown;
-            angle = Math.PI / 2;
+            translate.y=0;
+            if (keyState.compareTo("KEY_PRESSED") == 0) {
+                translate.y = velocity;
+                angle = Math.PI / 2 - Math.PI/4*Math.signum(translate.x);
+            }
         }
         else if (direction.compareTo("DOWN") == 0) {
-                translate.y = -velocity*keyDown;
-                angle=3*Math.PI/2;
-        }
-
-        if (keyDown == 0) {
-            angle=currentAngle;
+            translate.y=0;
+            if (keyState.compareTo("KEY_PRESSED") == 0) {
+                translate.y = -velocity;
+                angle = 3*Math.PI / 2 + Math.PI/4*Math.signum(translate.x);
+            }
         }
 
         setAngle(angle);
         setTranslate(translate);
     }
 
-    public void changeState(String state) {
-        if (state.compareTo("IDLE") == 0) {
-            translate=new Vector2(0, 0);
+    private void buttonPressed(String[] string) {
+        // @TODO problème pour desactiver l'épée: soit elle l'est tout de suite et il n'y a pas de collision
+        // @TODO soit elle ne l'est jamais mais il y a trop de collisions (avec le héros entre autre)
+        // @TODO modifier le type pour l'épée pour que la lumière passe au travers + filtre avec les types d'entités (héros VS monstres)
+        String button=string[0];
+        String buttonState=string[1];
+        float screenX=Float.parseFloat(string[2]);
+        float screenY=Float.parseFloat(string[3]);
+
+
+        if (button.compareTo("LEFT") == 0) {
+            if (buttonState.compareTo("BUTTON_RELEASED") == 0) {
+                updateSword();
+            }
         }
+        else if (button.compareTo("RIGHT") == 0) {
+            if (buttonState.compareTo("BUTTON_CLICK") == 0) {
+                //camera.unproject(point.set(screenX, screenY, 0));
+                //elementLight.activate(point);
+                // @TODO modifier le code (elementLight est public ...)
+                player.camera.unproject(point.set(screenX, screenY, 0));
+                player.elementLight.activate(point);
+                Gdx.app.debug(TAG, "clic");
+
+            }
+            else if (buttonState.compareTo("BUTTON_RELEASED") == 0) {
+                player.elementLight.setActive(false);
+            }
+        }
+
+
+
+
+
     }
+
 }

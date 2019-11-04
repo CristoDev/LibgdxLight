@@ -1,52 +1,46 @@
 package com.light.v1;
 
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class LightInput implements Component {
-    protected enum Keys {
-        LEFT, RIGHT, UP, DOWN,
-        QUIT, PAUSE
-    }
-
-    protected enum Buttons {
-        RIGHT_CLICK, LEFT_CLICK
-    }
-
-    protected static Map<Keys, Boolean> keys = new HashMap<Keys, Boolean>();
+    protected static Map<ECSEventInput.Keys, ECSEventInput.KeyState> keys = new HashMap<ECSEventInput.Keys, ECSEventInput.KeyState>();
 
     static {
-        keys.put(Keys.LEFT, false);
-        keys.put(Keys.RIGHT, false);
-        keys.put(Keys.UP, false);
-        keys.put(Keys.DOWN, false);
-        keys.put(Keys.QUIT, false);
-        keys.put(Keys.PAUSE, false);
+        keys.put(ECSEventInput.Keys.LEFT, ECSEventInput.KeyState.KEY_IDLE);
+        keys.put(ECSEventInput.Keys.RIGHT, ECSEventInput.KeyState.KEY_IDLE);
+        keys.put(ECSEventInput.Keys.UP, ECSEventInput.KeyState.KEY_IDLE);
+        keys.put(ECSEventInput.Keys.DOWN, ECSEventInput.KeyState.KEY_IDLE);
+        keys.put(ECSEventInput.Keys.QUIT, ECSEventInput.KeyState.KEY_IDLE);
+        keys.put(ECSEventInput.Keys.PAUSE, ECSEventInput.KeyState.KEY_IDLE);
     };
 
-    protected static Map<Buttons, Boolean> buttons = new HashMap<Buttons, Boolean>();
+    protected static Map<ECSEventInput.Button, ECSEventInput.ButtonState> buttons = new HashMap<ECSEventInput.Button, ECSEventInput.ButtonState>();
 
     static {
-        buttons.put(Buttons.LEFT_CLICK, false);
-        buttons.put(Buttons.RIGHT_CLICK, false);
+        buttons.put(ECSEventInput.Button.LEFT, ECSEventInput.ButtonState.BUTTON_IDLE);
+        buttons.put(ECSEventInput.Button.RIGHT, ECSEventInput.ButtonState.BUTTON_IDLE);
     };
 
-    protected void keyPressed(int keycode, boolean pressed) {
+    protected void keyPressed(int keycode, ECSEventInput.KeyState state) {
         switch (keycode) {
             case Input.Keys.LEFT:
-                keys.put(Keys.LEFT, pressed);
+                keys.put(ECSEventInput.Keys.LEFT, state);
                 break;
             case Input.Keys.RIGHT:
-                keys.put(Keys.RIGHT, pressed);
+                keys.put(ECSEventInput.Keys.RIGHT, state);
                 break;
             case Input.Keys.UP:
-                keys.put(Keys.UP, pressed);
+                keys.put(ECSEventInput.Keys.UP, state);
                 break;
             case Input.Keys.DOWN:
-                keys.put(Keys.DOWN, pressed);
+                keys.put(ECSEventInput.Keys.DOWN, state);
                 break;
         }
     }
+
+    protected static Vector2 mousePosition=new Vector2(0, 0);
 }

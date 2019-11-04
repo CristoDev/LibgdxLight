@@ -8,6 +8,6 @@ public interface Component {
     Json json=new Json();
 
     void dispose();
-    void receiveMessage(SystemManager.MESSAGE event, String message);
+    void receiveMessage(ECSEvent.EVENT event, String message);
     void update(LightPlayer lightPlayer, float delta, Batch batch);
 }

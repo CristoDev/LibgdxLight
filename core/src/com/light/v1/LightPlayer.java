@@ -14,7 +14,7 @@ public class LightPlayer extends LightEntity {
 
     private float velocity=3f;
 
-    private WorldLightTest elementLight;
+    public WorldLightTest elementLight;
 
     private LightPlayerInput lightPlayerInput;
     private LightPlayerGraphics lightGraphics;
@@ -51,7 +51,14 @@ public class LightPlayer extends LightEntity {
         return lightGraphics.getPosition();
     }
 
+    /*
     public void sendMessage(SystemManager.MESSAGE event, String message) {
+        lightPlayerInput.receiveMessage(event, message);
+        lightGraphics.receiveMessage(event, message);
+    }
+     */
+
+    public void sendMessage(ECSEvent.EVENT event, String message) {
         lightPlayerInput.receiveMessage(event, message);
         lightGraphics.receiveMessage(event, message);
     }
