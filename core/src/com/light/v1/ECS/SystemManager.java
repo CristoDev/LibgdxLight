@@ -1,10 +1,13 @@
-package com.light.v1;
+package com.light.v1.ECS;
+
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.light.v1.LightPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SystemManager {
-
+    private static final String TAG = "SystemManager";
     private HashMap<String, ArrayList<Component>> ecsData=new HashMap<String, ArrayList<Component>>();
     private static SystemManager systemManager=new SystemManager();
 
@@ -48,5 +51,15 @@ public class SystemManager {
         for (Component component : components) {
             component.receiveMessage(event, message);
         }
+    }
+
+    // @TODO modifier le code pour utiliser entity et non pas player
+    public void update(LightEntity entity, LightPlayer player, float delta, Batch batch) {
+        ArrayList<Component> components=getEntityComponents(entity);
+
+        for (Component component : components) {
+            component.update(player, delta, batch);
+        }
+
     }
 }

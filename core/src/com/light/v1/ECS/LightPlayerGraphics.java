@@ -1,4 +1,4 @@
-package com.light.v1;
+package com.light.v1.ECS;
 
 import box2dLight.ConeLight;
 import box2dLight.Light;
@@ -10,9 +10,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import tools.MyMap;
+import com.light.v1.LightGame;
+import com.light.v1.LightPlayer;
+import com.light.v1.tools.MyMap;
 
 public class LightPlayerGraphics extends LightGraphics {
     private static final String TAG = "LightPlayerGraphics";
@@ -25,8 +26,6 @@ public class LightPlayerGraphics extends LightGraphics {
     private float maxFPS=60f;
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
-    private Vector3 point=new Vector3();
-
 
     private LightPlayer player;
 
@@ -74,7 +73,6 @@ public class LightPlayerGraphics extends LightGraphics {
             keyPressed(message);
         }
         else if (event == ECSEvent.EVENT.CURRENT_ACTION) {
-            //Gdx.app.debug(TAG, "action "+string[0]+" -- "+string[1]);
             buttonPressed(message);
         }
     }
@@ -139,19 +137,19 @@ public class LightPlayerGraphics extends LightGraphics {
         swordShape.dispose();
     }
 
-    public double getAngle() {
+    private double getAngle() {
         return angle;
     }
 
-    public void setAngle(double angle) {
+    private void setAngle(double angle) {
         this.angle = angle;
     }
 
-    public void setTranslate(Vector2 translate) {
+    private void setTranslate(Vector2 translate) {
         this.translate = translate;
     }
 
-    public void updateSword() {
+    private void updateSword() {
         setActiveSword(false);
         bodySword.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle())* MyMap.UNIT_SCALE, bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getAngle());
         bodySword.setLinearDamping(5f);
@@ -159,7 +157,7 @@ public class LightPlayerGraphics extends LightGraphics {
         bodySword.setActive(true);
     }
 
-    public void setActiveSword(boolean active) {
+    private void setActiveSword(boolean active) {
         bodySword.setActive(active);
     }
 
@@ -169,10 +167,8 @@ public class LightPlayerGraphics extends LightGraphics {
 
     private void keyPressed(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
-
         float velocity=player.getVelocity();
-        double currentAngle=getAngle();
-        double angle=currentAngle;
+        double angle=getAngle();
 
         ECSEventInput.Keys direction = json.fromJson(ECSEventInput.Keys.class, string[0]);
         ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
@@ -212,14 +208,8 @@ public class LightPlayerGraphics extends LightGraphics {
 
     private void buttonPressed(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
-        // @TODO problème pour desactiver l'épée: soit elle l'est tout de suite et il n'y a pas de collision
-        // @TODO soit elle ne l'est jamais mais il y a trop de collisions (avec le héros entre autre)
-        // @TODO modifier le type pour l'épée pour que la lumière passe au travers + filtre avec les types d'entités (héros VS monstres)
-
         ECSEventInput.Buttons button=json.fromJson(ECSEventInput.Buttons.class, string[0]);
         ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
-        float screenX=Float.parseFloat(string[2]);
-        float screenY=Float.parseFloat(string[3]);
 
         if (button == ECSEventInput.Buttons.LEFT) {
             if (state == ECSEventInput.States.DOWN) {
@@ -231,20 +221,12 @@ public class LightPlayerGraphics extends LightGraphics {
         }
         else if (button == ECSEventInput.Buttons.RIGHT) {
             if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
-                // @TODO modifier le code (elementLight est public ...)
-                player.camera.unproject(point.set(screenX, screenY, 0));
-                player.elementLight.activate(point);
+                player.elementLightActivate(Float.parseFloat(string[2]), Float.parseFloat(string[3]));
             }
             else if (state == ECSEventInput.States.UP) {
-
-                player.elementLight.setActive(false);
+                player.elementLightSetActive(false);
             }
         }
-
-
-
-
-
     }
 
 }

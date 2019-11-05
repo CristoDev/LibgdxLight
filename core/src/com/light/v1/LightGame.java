@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
-import tools.ContactManager;
-import tools.MyMap;
+import com.light.v1.tools.ContactManager;
+import com.light.v1.tools.MyMap;
 
 public class LightGame implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
@@ -27,13 +27,13 @@ public class LightGame implements ApplicationListener {
     private LightPlayer lightPlayer;
 
     public static class VIEWPORT { // classe public au lieu de private en attendant le refactoring complet
-        static float viewportWidth;
-        static float viewportHeight;
-        static float virtualWidth;
-        static float virtualHeight;
-        static float physicalWidth;
-        static float physicalHeight;
-        static float aspectRatio;
+        public static float viewportWidth;
+        public static float viewportHeight;
+        public static float virtualWidth;
+        public static float virtualHeight;
+        public static float physicalWidth;
+        public static float physicalHeight;
+        public static float aspectRatio;
     }
 
     @Override
@@ -113,7 +113,7 @@ public class LightGame implements ApplicationListener {
     public void resume() {
     }
 
-    private void setupViewport(int width, int height) {
+    public void setupViewport(int width, int height) {
         VIEWPORT.virtualWidth = width;
         VIEWPORT.virtualHeight = height;
         VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;

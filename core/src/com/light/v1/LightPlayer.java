@@ -1,11 +1,15 @@
 package com.light.v1;
 
 import box2dLight.RayHandler;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.light.v1.ECS.ECSEvent;
+import com.light.v1.ECS.LightEntity;
+import com.light.v1.ECS.LightPlayerGraphics;
+import com.light.v1.ECS.LightPlayerInput;
 import com.light.v1.element.WorldLightTest;
 import com.light.v1.element.WorldTorch;
 
@@ -27,9 +31,6 @@ public class LightPlayer extends LightEntity {
         lightGraphics=new LightPlayerGraphics();
         lightGraphics.addItem(world, rayHandler);
         lightGraphics.createSword(world);
-
-        Gdx.app.debug(TAG, "ID light player: "+this.toString());
-
     }
 
     public void createLights() {
@@ -51,13 +52,6 @@ public class LightPlayer extends LightEntity {
         return lightGraphics.getPosition();
     }
 
-    /*
-    public void sendMessage(SystemManager.MESSAGE event, String message) {
-        lightPlayerInput.receiveMessage(event, message);
-        lightGraphics.receiveMessage(event, message);
-    }
-     */
-
     public void sendMessage(ECSEvent.EVENT event, String message) {
         lightPlayerInput.receiveMessage(event, message);
         lightGraphics.receiveMessage(event, message);
@@ -65,5 +59,15 @@ public class LightPlayer extends LightEntity {
 
     public float getVelocity() {
         return velocity;
+    }
+
+    public void elementLightActivate(float screenX, float screenY) {
+        Vector3 point=new Vector3(0, 0, 0);
+        camera.unproject(point.set(screenX, screenY, 0));
+        elementLight.activate(point);
+    }
+
+    public void elementLightSetActive(boolean active) {
+        elementLight.setActive(active);
     }
 }

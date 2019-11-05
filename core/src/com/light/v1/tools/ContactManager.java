@@ -1,4 +1,4 @@
-package tools;
+package com.light.v1.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;

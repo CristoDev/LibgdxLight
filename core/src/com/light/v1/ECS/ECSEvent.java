@@ -1,4 +1,4 @@
-package com.light.v1;
+package com.light.v1.ECS;
 
 public interface ECSEvent {
     String MESSAGE_TOKEN = ":::::";

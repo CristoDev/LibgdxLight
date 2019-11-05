@@ -1,15 +1,16 @@
-package com.light.v1;
+package com.light.v1.ECS;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.light.v1.LightPlayer;
 
 import java.util.Map;
 
 public class LightPlayerInput extends LightInput implements InputProcessor {
-    private static final String TAG = "LightInput";
+    private static final String TAG = "LightPlayerInput";
 
     public LightPlayerInput() {
         Gdx.input.setInputProcessor(this);
@@ -28,7 +29,6 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
                 lightPlayer.sendMessage(ECSEvent.EVENT.CURRENT_DIRECTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()));
             }
 
-            // si on lache la touche, on a envoyé le message juste avant on change l'état à IDLE pour ne plus rien envoyer
             if (entry.getValue() == ECSEventInput.States.DOWN) {
                 keys.put(entry.getKey(), ECSEventInput.States.PRESSED);
             }
@@ -45,7 +45,6 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
                 lightPlayer.sendMessage(ECSEvent.EVENT.CURRENT_ACTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y));
             }
 
-            // si on lache le bouton, on a envoyé le message juste avant on change l'état à IDLE pour ne plus rien envoyer
             if (entry.getValue() == ECSEventInput.States.DOWN) {
                 buttons.put(entry.getKey(), ECSEventInput.States.PRESSED);
             }

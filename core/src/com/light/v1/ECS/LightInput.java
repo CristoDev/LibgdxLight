@@ -1,4 +1,4 @@
-package com.light.v1;
+package com.light.v1.ECS;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
@@ -6,8 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class LightInput implements Component {
-    protected static Map<ECSEventInput.Keys, ECSEventInput.States> keys = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
+abstract class LightInput implements Component {
+    static Map<ECSEventInput.Keys, ECSEventInput.States> keys = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
 
     static {
         keys.put(ECSEventInput.Keys.LEFT, ECSEventInput.States.IDLE);
@@ -18,14 +18,14 @@ public abstract class LightInput implements Component {
         keys.put(ECSEventInput.Keys.PAUSE, ECSEventInput.States.IDLE);
     };
 
-    protected static Map<ECSEventInput.Buttons, ECSEventInput.States> buttons = new HashMap<ECSEventInput.Buttons, ECSEventInput.States>();
+    static Map<ECSEventInput.Buttons, ECSEventInput.States> buttons = new HashMap<ECSEventInput.Buttons, ECSEventInput.States>();
 
     static {
         buttons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.IDLE);
         buttons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.IDLE);
     };
 
-    protected void keyPressed(int keycode, ECSEventInput.States state) {
+    void keyPressed(int keycode, ECSEventInput.States state) {
         switch (keycode) {
             case Input.Keys.LEFT:
                 keys.put(ECSEventInput.Keys.LEFT, state);
@@ -42,5 +42,5 @@ public abstract class LightInput implements Component {
         }
     }
 
-    protected static Vector2 mousePosition=new Vector2(0, 0);
+    static Vector2 mousePosition=new Vector2(0, 0);
 }

@@ -1,6 +1,5 @@
 package com.light.v1;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -12,7 +11,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import tools.MyMap;
+import com.light.v1.tools.MyMap;
 
 public class LightMap {
     private static final String TAG = "LightMap";
@@ -33,7 +32,6 @@ public class LightMap {
         for (MapObject object : mapCollisionLayer.getObjects()) {
             if (object instanceof RectangleMapObject) {
                 createRectangle(world, ((RectangleMapObject) object));
-                Gdx.app.debug(TAG, "rectangle");
             } else {
                 MapProperties mp = object.getProperties();
                 createPolygon(world, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));

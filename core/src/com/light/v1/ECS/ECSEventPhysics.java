@@ -1,4 +1,4 @@
-package com.light.v1;
+package com.light.v1.ECS;
 
 public class ECSEventPhysics implements ECSEvent {
     public enum ENTITY_STATE {
