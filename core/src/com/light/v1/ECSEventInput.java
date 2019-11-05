@@ -6,20 +6,15 @@ public class ECSEventInput implements ECSEvent {
         QUIT, PAUSE
     }
 
-    public enum KeyState {
-        KEY_PRESSED,
-        KEY_RELEASED,
-        KEY_IDLE
-    };
-
-    public enum Button {
+    public enum Buttons {
         LEFT,
         RIGHT
     };
 
-    public enum ButtonState {
-        BUTTON_CLICK,
-        BUTTON_RELEASED,
-        BUTTON_IDLE
+    public enum States {
+        DOWN,
+        PRESSED,
+        UP,
+        IDLE
     };
 }

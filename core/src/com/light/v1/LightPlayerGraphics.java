@@ -70,14 +70,12 @@ public class LightPlayerGraphics extends LightGraphics {
 
     @Override
     public void receiveMessage(ECSEvent.EVENT event, String message) {
-        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
-
         if (event == ECSEvent.EVENT.CURRENT_DIRECTION) {
-            keyPressed(string[0], string[1]);
+            keyPressed(message);
         }
         else if (event == ECSEvent.EVENT.CURRENT_ACTION) {
             //Gdx.app.debug(TAG, "action "+string[0]+" -- "+string[1]);
-            buttonPressed(string);
+            buttonPressed(message);
         }
     }
 
@@ -169,35 +167,40 @@ public class LightPlayerGraphics extends LightGraphics {
         return bodyItem.getPosition();
     }
 
-    private void keyPressed(String direction, String keyState) {
+    private void keyPressed(String message) {
+        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
+
         float velocity=player.getVelocity();
         double currentAngle=getAngle();
         double angle=currentAngle;
 
-        if (direction.compareTo("LEFT") == 0) {
+        ECSEventInput.Keys direction = json.fromJson(ECSEventInput.Keys.class, string[0]);
+        ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
+
+        if (direction == ECSEventInput.Keys.LEFT) {
             translate.x=0;
-            if (keyState.compareTo("KEY_PRESSED") == 0) {
+            if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
                 translate.x = -velocity;
                 angle = Math.PI + Math.PI/4*Math.signum(translate.y);
             }
         }
-        else if (direction.compareTo("RIGHT") == 0) {
+        else if (direction == ECSEventInput.Keys.RIGHT) {
             translate.x=0;
-            if (keyState.compareTo("KEY_PRESSED") == 0) {
+            if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
                 translate.x = velocity;
                 angle = 0f + Math.PI/4*Math.signum(translate.y);
             }
         }
-        else if (direction.compareTo("UP") == 0) {
+        else if (direction == ECSEventInput.Keys.UP) {
             translate.y=0;
-            if (keyState.compareTo("KEY_PRESSED") == 0) {
+            if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
                 translate.y = velocity;
                 angle = Math.PI / 2 - Math.PI/4*Math.signum(translate.x);
             }
         }
-        else if (direction.compareTo("DOWN") == 0) {
+        else if (direction == ECSEventInput.Keys.DOWN) {
             translate.y=0;
-            if (keyState.compareTo("KEY_PRESSED") == 0) {
+            if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
                 translate.y = -velocity;
                 angle = 3*Math.PI / 2 + Math.PI/4*Math.signum(translate.x);
             }
@@ -207,32 +210,33 @@ public class LightPlayerGraphics extends LightGraphics {
         setTranslate(translate);
     }
 
-    private void buttonPressed(String[] string) {
+    private void buttonPressed(String message) {
+        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         // @TODO problème pour desactiver l'épée: soit elle l'est tout de suite et il n'y a pas de collision
         // @TODO soit elle ne l'est jamais mais il y a trop de collisions (avec le héros entre autre)
         // @TODO modifier le type pour l'épée pour que la lumière passe au travers + filtre avec les types d'entités (héros VS monstres)
-        String button=string[0];
-        String buttonState=string[1];
+
+        ECSEventInput.Buttons button=json.fromJson(ECSEventInput.Buttons.class, string[0]);
+        ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
         float screenX=Float.parseFloat(string[2]);
         float screenY=Float.parseFloat(string[3]);
 
-
-        if (button.compareTo("LEFT") == 0) {
-            if (buttonState.compareTo("BUTTON_RELEASED") == 0) {
+        if (button == ECSEventInput.Buttons.LEFT) {
+            if (state == ECSEventInput.States.DOWN) {
                 updateSword();
             }
+            else if (state == ECSEventInput.States.UP) {
+                setActiveSword(false);
+            }
         }
-        else if (button.compareTo("RIGHT") == 0) {
-            if (buttonState.compareTo("BUTTON_CLICK") == 0) {
-                //camera.unproject(point.set(screenX, screenY, 0));
-                //elementLight.activate(point);
+        else if (button == ECSEventInput.Buttons.RIGHT) {
+            if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
                 // @TODO modifier le code (elementLight est public ...)
                 player.camera.unproject(point.set(screenX, screenY, 0));
                 player.elementLight.activate(point);
-                Gdx.app.debug(TAG, "clic");
-
             }
-            else if (buttonState.compareTo("BUTTON_RELEASED") == 0) {
+            else if (state == ECSEventInput.States.UP) {
+
                 player.elementLight.setActive(false);
             }
         }

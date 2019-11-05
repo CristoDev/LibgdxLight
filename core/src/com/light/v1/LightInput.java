@@ -7,25 +7,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class LightInput implements Component {
-    protected static Map<ECSEventInput.Keys, ECSEventInput.KeyState> keys = new HashMap<ECSEventInput.Keys, ECSEventInput.KeyState>();
+    protected static Map<ECSEventInput.Keys, ECSEventInput.States> keys = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
 
     static {
-        keys.put(ECSEventInput.Keys.LEFT, ECSEventInput.KeyState.KEY_IDLE);
-        keys.put(ECSEventInput.Keys.RIGHT, ECSEventInput.KeyState.KEY_IDLE);
-        keys.put(ECSEventInput.Keys.UP, ECSEventInput.KeyState.KEY_IDLE);
-        keys.put(ECSEventInput.Keys.DOWN, ECSEventInput.KeyState.KEY_IDLE);
-        keys.put(ECSEventInput.Keys.QUIT, ECSEventInput.KeyState.KEY_IDLE);
-        keys.put(ECSEventInput.Keys.PAUSE, ECSEventInput.KeyState.KEY_IDLE);
+        keys.put(ECSEventInput.Keys.LEFT, ECSEventInput.States.IDLE);
+        keys.put(ECSEventInput.Keys.RIGHT, ECSEventInput.States.IDLE);
+        keys.put(ECSEventInput.Keys.UP, ECSEventInput.States.IDLE);
+        keys.put(ECSEventInput.Keys.DOWN, ECSEventInput.States.IDLE);
+        keys.put(ECSEventInput.Keys.QUIT, ECSEventInput.States.IDLE);
+        keys.put(ECSEventInput.Keys.PAUSE, ECSEventInput.States.IDLE);
     };
 
-    protected static Map<ECSEventInput.Button, ECSEventInput.ButtonState> buttons = new HashMap<ECSEventInput.Button, ECSEventInput.ButtonState>();
+    protected static Map<ECSEventInput.Buttons, ECSEventInput.States> buttons = new HashMap<ECSEventInput.Buttons, ECSEventInput.States>();
 
     static {
-        buttons.put(ECSEventInput.Button.LEFT, ECSEventInput.ButtonState.BUTTON_IDLE);
-        buttons.put(ECSEventInput.Button.RIGHT, ECSEventInput.ButtonState.BUTTON_IDLE);
+        buttons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.IDLE);
+        buttons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.IDLE);
     };
 
-    protected void keyPressed(int keycode, ECSEventInput.KeyState state) {
+    protected void keyPressed(int keycode, ECSEventInput.States state) {
         switch (keycode) {
             case Input.Keys.LEFT:
                 keys.put(ECSEventInput.Keys.LEFT, state);

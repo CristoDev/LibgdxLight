@@ -23,27 +23,35 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
     }
 
     private void updateKeys(LightPlayer lightPlayer, float delta, Batch batch) {
-        for (Map.Entry<ECSEventInput.Keys, ECSEventInput.KeyState> entry : keys.entrySet()) {
-            if (entry.getValue() != ECSEventInput.KeyState.KEY_IDLE) {
+        for (Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry : keys.entrySet()) {
+            if (entry.getValue() != ECSEventInput.States.IDLE) {
                 lightPlayer.sendMessage(ECSEvent.EVENT.CURRENT_DIRECTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()));
             }
 
             // si on lache la touche, on a envoyé le message juste avant on change l'état à IDLE pour ne plus rien envoyer
-            if (entry.getValue() == ECSEventInput.KeyState.KEY_RELEASED) {
-                keys.put(entry.getKey(), ECSEventInput.KeyState.KEY_IDLE);
+            if (entry.getValue() == ECSEventInput.States.DOWN) {
+                keys.put(entry.getKey(), ECSEventInput.States.PRESSED);
+            }
+
+            if (entry.getValue() == ECSEventInput.States.UP) {
+                keys.put(entry.getKey(), ECSEventInput.States.IDLE);
             }
         }
     }
 
     private void updateButtons(LightPlayer lightPlayer, float delta, Batch batch) {
-        for (Map.Entry<ECSEventInput.Button, ECSEventInput.ButtonState> entry : buttons.entrySet()) {
-            if (entry.getValue() != ECSEventInput.ButtonState.BUTTON_IDLE) {
+        for (Map.Entry<ECSEventInput.Buttons, ECSEventInput.States> entry : buttons.entrySet()) {
+            if (entry.getValue() != ECSEventInput.States.IDLE) {
                 lightPlayer.sendMessage(ECSEvent.EVENT.CURRENT_ACTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y));
             }
 
             // si on lache le bouton, on a envoyé le message juste avant on change l'état à IDLE pour ne plus rien envoyer
-            if (entry.getValue() == ECSEventInput.ButtonState.BUTTON_RELEASED) {
-                buttons.put(entry.getKey(), ECSEventInput.ButtonState.BUTTON_IDLE);
+            if (entry.getValue() == ECSEventInput.States.DOWN) {
+                buttons.put(entry.getKey(), ECSEventInput.States.PRESSED);
+            }
+
+            if (entry.getValue() == ECSEventInput.States.UP) {
+                buttons.put(entry.getKey(), ECSEventInput.States.IDLE);
             }
         }
     }
@@ -59,15 +67,13 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        keyPressed(keycode, ECSEventInput.KeyState.KEY_RELEASED);
-
+        keyPressed(keycode, ECSEventInput.States.UP);
         return true;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        keyPressed(keycode, ECSEventInput.KeyState.KEY_PRESSED);
-
+        keyPressed(keycode, ECSEventInput.States.DOWN);
         return true;
     }
 
@@ -81,14 +87,12 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         mousePosition=new Vector2(screenX, screenY);
 
         if (button == Input.Buttons.RIGHT) {
-            buttons.put(ECSEventInput.Button.RIGHT, ECSEventInput.ButtonState.BUTTON_CLICK);
-            Gdx.app.debug(TAG, "TODO - elementLight.activate(point); + camera");
-
+            buttons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.DOWN);
             return true;
         }
-
-        if (button == Input.Buttons.LEFT) {
-            buttons.put(ECSEventInput.Button.LEFT, ECSEventInput.ButtonState.BUTTON_CLICK);
+        else if (button == Input.Buttons.LEFT) {
+            buttons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.DOWN);
+            return true;
         }
         return false;
     }
@@ -98,15 +102,11 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         mousePosition=new Vector2(screenX, screenY);
 
         if (button == Input.Buttons.RIGHT) {
-            buttons.put(ECSEventInput.Button.RIGHT, ECSEventInput.ButtonState.BUTTON_RELEASED);
-            //elementLight.setActive(false);
-            Gdx.app.debug(TAG, "TODO - elementLight.setActive(false);");
+            buttons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.UP);
             return true;
         }
-        if (button == Input.Buttons.LEFT) {
-            buttons.put(ECSEventInput.Button.LEFT, ECSEventInput.ButtonState.BUTTON_RELEASED);
-            //lightGraphics.setActiveSword(false);
-            Gdx.app.debug(TAG, "TODO - lightGraphics.setActiveSword(false);");
+        else if (button == Input.Buttons.LEFT) {
+            buttons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.UP);
             return true;
         }
         return false;
@@ -114,9 +114,8 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public boolean touchDragged(int x, int y, int pointer) {
-        Gdx.app.debug(TAG, "dragged");
-
-        return false;
+        mousePosition=new Vector2(x, y);
+        return true;
     }
 
     @Override
