@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.LightGame;
-import com.light.v1.LightPlayer;
 import com.light.v1.tools.MyMap;
 
 public class LightPlayerGraphics extends LightGraphics {
@@ -27,15 +26,15 @@ public class LightPlayerGraphics extends LightGraphics {
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
 
-    private LightPlayer player;
+    private LightPlayerEntity player;
 
     public LightPlayerGraphics() {
         itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
     }
 
     @Override
-    public void update(LightPlayer lightPlayer, float delta, Batch batch) {
-        player=lightPlayer;
+    public void update(LightEntity lightEntity, Batch batch) {
+        player= (LightPlayerEntity)lightEntity;
         int fps = Gdx.graphics.getFramesPerSecond();
 
         if (fps > 0 && fps < maxFPS) {
@@ -177,7 +176,7 @@ public class LightPlayerGraphics extends LightGraphics {
             translate.x=0;
             if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
                 translate.x = -velocity;
-                angle = Math.PI + Math.PI/4*Math.signum(translate.y);
+                angle = Math.PI - Math.PI/4*Math.signum(translate.y);
             }
         }
         else if (direction == ECSEventInput.Keys.RIGHT) {
@@ -229,4 +228,7 @@ public class LightPlayerGraphics extends LightGraphics {
         }
     }
 
+    public String getData() {
+        return "GET DATA!!";
+    }
 }

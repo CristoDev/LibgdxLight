@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
+import com.light.v1.ECS.*;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.MyMap;
+
+import java.util.ArrayList;
 
 public class LightGame implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
@@ -22,9 +25,10 @@ public class LightGame implements ApplicationListener {
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box2DDebugRenderer debugRenderer;
     private RayHandler rayHandler;
+    private static SystemManager systemManager=SystemManager.getInstance();
 
     private LightMap lightMap;
-    private LightPlayer lightPlayer;
+    private LightPlayerEntity lightPlayerEntity;
 
     public static class VIEWPORT { // classe public au lieu de private en attendant le refactoring complet
         public static float viewportWidth;
@@ -56,12 +60,36 @@ public class LightGame implements ApplicationListener {
 
         debugRenderer = new Box2DDebugRenderer();
 
-        lightPlayer=new LightPlayer(rayHandler, camera, world);
-        lightPlayer.createLights();
+        //systemManager.addEntity();
+        lightPlayerEntity =new LightPlayerEntity(rayHandler, camera, world);
+        lightPlayerEntity.createLights();
 
         lightMap=new LightMap();
         mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightMap.buildMap(world);
+
+
+
+        // @TODO temporaire----------------------------
+        systemManager.addEntity(lightPlayerEntity);
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput());
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerGraphics());
+
+        ArrayList<Component> elements=systemManager.getEntityComponents(lightPlayerEntity);
+        for (int i=0; i<elements.size(); i++) {
+            String name=elements.get(i).getClass().getSimpleName();
+            Gdx.app.debug(TAG, "element "+name);
+            if (name.compareTo(LightPlayerGraphics.class.getSimpleName()) == 0) {
+                Gdx.app.debug(TAG, "element graphic trouvé");
+                Gdx.app.debug(TAG, ((LightPlayerGraphics)elements.get(i)).getData());
+            }
+        }
+
+        // @TODO ajouter un test "null"
+        LightPlayerGraphics x =(LightPlayerGraphics)systemManager.getComponent(lightPlayerEntity, LightPlayerGraphics.class.getSimpleName());
+
+        Gdx.app.debug(TAG, "test sur x "+x.getData());
+        // @TODO temporaire----------------------------
     }
 
     @Override
@@ -79,7 +107,7 @@ public class LightGame implements ApplicationListener {
     }
 
     private void update() {
-        camera.position.set(lightPlayer.getPosition().x, lightPlayer.getPosition().y, 0);
+        camera.position.set(lightPlayerEntity.getPosition().x, lightPlayerEntity.getPosition().y, 0);
         world.step(Gdx.graphics.getDeltaTime(), 8, 3);
     }
 
@@ -94,7 +122,8 @@ public class LightGame implements ApplicationListener {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
-        lightPlayer.update(batch);
+        lightPlayerEntity.update(batch);
+        //systemManager.update(batch);
 
         batch.begin();
         camera.update();

@@ -1,29 +1,26 @@
-package com.light.v1;
+package com.light.v1.ECS;
 
 import box2dLight.RayHandler;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.light.v1.ECS.ECSEvent;
-import com.light.v1.ECS.LightEntity;
-import com.light.v1.ECS.LightPlayerGraphics;
-import com.light.v1.ECS.LightPlayerInput;
 import com.light.v1.element.WorldLightTest;
 import com.light.v1.element.WorldTorch;
 
-public class LightPlayer extends LightEntity {
-    private static final String TAG = "LightPlayer";
+public class LightPlayerEntity extends LightEntity {
+    private static final String TAG = "LightPlayerEntity";
 
-    private float velocity=3f;
+
 
     public WorldLightTest elementLight;
 
     private LightPlayerInput lightPlayerInput;
     private LightPlayerGraphics lightGraphics;
 
-    public LightPlayer(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {
+    public LightPlayerEntity(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {
         rayHandler=_rayHandler;
         camera=_camera;
         world=_world;
@@ -31,6 +28,7 @@ public class LightPlayer extends LightEntity {
         lightGraphics=new LightPlayerGraphics();
         lightGraphics.addItem(world, rayHandler);
         lightGraphics.createSword(world);
+
     }
 
     public void createLights() {
@@ -42,8 +40,14 @@ public class LightPlayer extends LightEntity {
     }
 
     public void update(Batch batch) {
-        lightPlayerInput.update(this, 0, batch);
-        lightGraphics.update(this, 0, batch);
+        // @TODO temporaire pour les tests sur les components
+        LightPlayerGraphics zz=(LightPlayerGraphics)SystemManager.getInstance().getComponent(this, LightPlayerGraphics.class.getSimpleName());
+        Gdx.app.debug(TAG, "on est dans player // "+zz.getData());
+
+
+
+        lightPlayerInput.update(this, batch);
+        lightGraphics.update(this, batch);
 
         elementLight.update();
     }

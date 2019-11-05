@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 import java.util.Map;
 
-abstract class LightInput implements Component {
+public abstract class LightInput implements Component {
     static Map<ECSEventInput.Keys, ECSEventInput.States> keys = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
 
     static {

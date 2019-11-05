@@ -1,8 +1,9 @@
 package com.light.v1.ECS;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.light.v1.LightPlayer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,10 +27,25 @@ public class SystemManager {
         addEntityComponents(entity, new ArrayList<Component>());
     }
 
+    public ArrayList<Component> getComponents(LightEntity entity) {
+        return ecsData.get(entity);
+    }
+
+    public Component getComponent(LightEntity entity, String className) {
+        ArrayList<Component> components=getEntityComponents(entity);
+
+        for (Component component : components) {
+            if (component.getClass().getSimpleName().compareTo(className) == 0) {
+                return component;
+            }
+        }
+
+        return null;
+    }
+
     public void addEntityComponents(LightEntity entity, ArrayList<Component> components) {
         ecsData.put(entity.toString(), components);
     }
-
 
     public void addEntityComponent(LightEntity entity, Component component) {
         ArrayList<Component> components=getEntityComponents(entity);
@@ -53,13 +69,11 @@ public class SystemManager {
         }
     }
 
-    // @TODO modifier le code pour utiliser entity et non pas player
-    public void update(LightEntity entity, LightPlayer player, float delta, Batch batch) {
+    public void update(LightEntity entity, Batch batch) {
         ArrayList<Component> components=getEntityComponents(entity);
 
         for (Component component : components) {
-            component.update(player, delta, batch);
+            component.update(entity, batch);
         }
-
     }
 }

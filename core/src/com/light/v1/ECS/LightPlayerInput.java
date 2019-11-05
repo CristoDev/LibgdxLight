@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.light.v1.LightPlayer;
 
 import java.util.Map;
 
@@ -18,15 +17,16 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
 
     @Override
-    public void update(LightPlayer lightPlayer, float delta, Batch batch) {
-        updateKeys(lightPlayer, delta, batch);
-        updateButtons(lightPlayer, delta, batch);
+    public void update(LightEntity lightEntity, Batch batch) {
+        LightPlayerEntity lightPlayerEntity=(LightPlayerEntity)lightEntity;
+        updateKeys(lightPlayerEntity);
+        updateButtons(lightPlayerEntity);
     }
 
-    private void updateKeys(LightPlayer lightPlayer, float delta, Batch batch) {
+    private void updateKeys(LightPlayerEntity lightPlayerEntity) {
         for (Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry : keys.entrySet()) {
             if (entry.getValue() != ECSEventInput.States.IDLE) {
-                lightPlayer.sendMessage(ECSEvent.EVENT.CURRENT_DIRECTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()));
+                lightPlayerEntity.sendMessage(ECSEvent.EVENT.CURRENT_DIRECTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()));
             }
 
             if (entry.getValue() == ECSEventInput.States.DOWN) {
@@ -39,10 +39,10 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         }
     }
 
-    private void updateButtons(LightPlayer lightPlayer, float delta, Batch batch) {
+    private void updateButtons(LightPlayerEntity lightPlayerEntity) {
         for (Map.Entry<ECSEventInput.Buttons, ECSEventInput.States> entry : buttons.entrySet()) {
             if (entry.getValue() != ECSEventInput.States.IDLE) {
-                lightPlayer.sendMessage(ECSEvent.EVENT.CURRENT_ACTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y));
+                lightPlayerEntity.sendMessage(ECSEvent.EVENT.CURRENT_ACTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y));
             }
 
             if (entry.getValue() == ECSEventInput.States.DOWN) {
