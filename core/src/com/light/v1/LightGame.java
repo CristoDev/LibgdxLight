@@ -60,36 +60,12 @@ public class LightGame implements ApplicationListener {
 
         debugRenderer = new Box2DDebugRenderer();
 
-        //systemManager.addEntity();
-        lightPlayerEntity =new LightPlayerEntity(rayHandler, camera, world);
-        lightPlayerEntity.createLights();
-
         lightMap=new LightMap();
         mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightMap.buildMap(world);
 
-
-
-        // @TODO temporaire----------------------------
-        systemManager.addEntity(lightPlayerEntity);
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput());
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerGraphics());
-
-        ArrayList<Component> elements=systemManager.getEntityComponents(lightPlayerEntity);
-        for (int i=0; i<elements.size(); i++) {
-            String name=elements.get(i).getClass().getSimpleName();
-            Gdx.app.debug(TAG, "element "+name);
-            if (name.compareTo(LightPlayerGraphics.class.getSimpleName()) == 0) {
-                Gdx.app.debug(TAG, "element graphic trouvé");
-                Gdx.app.debug(TAG, ((LightPlayerGraphics)elements.get(i)).getData());
-            }
-        }
-
-        // @TODO ajouter un test "null"
-        LightPlayerGraphics x =(LightPlayerGraphics)systemManager.getComponent(lightPlayerEntity, LightPlayerGraphics.class.getSimpleName());
-
-        Gdx.app.debug(TAG, "test sur x "+x.getData());
-        // @TODO temporaire----------------------------
+        createPlayer();
+        createPlayerOptional();
     }
 
     @Override
@@ -122,8 +98,8 @@ public class LightGame implements ApplicationListener {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
-        lightPlayerEntity.update(batch);
-        //systemManager.update(batch);
+        //lightPlayerEntity.update(batch);
+        systemManager.update(lightPlayerEntity, batch);
 
         batch.begin();
         camera.update();
@@ -140,6 +116,23 @@ public class LightGame implements ApplicationListener {
 
     @Override
     public void resume() {
+    }
+
+    public void createPlayer() {
+        lightPlayerEntity =new LightPlayerEntity(rayHandler, camera, world);
+        systemManager.addEntity(lightPlayerEntity);
+
+        LightPlayerGraphics lightGraphics=new LightPlayerGraphics(lightPlayerEntity);
+        lightGraphics.addItem(world, rayHandler);
+        lightGraphics.createSword(world);
+
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput(lightPlayerEntity));
+        systemManager.addEntityComponent(lightPlayerEntity, lightGraphics);
+    }
+
+    private void createPlayerOptional() {
+        lightPlayerEntity.createLights();
+
     }
 
     public void setupViewport(int width, int height) {

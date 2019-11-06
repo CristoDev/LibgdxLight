@@ -3,6 +3,7 @@ package com.light.v1.ECS;
 public class ECSEventInput implements ECSEvent {
     public enum Keys {
         LEFT, RIGHT, UP, DOWN,
+        SPACE,
         QUIT, PAUSE
     }
 

@@ -12,10 +12,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.LightGame;
+import com.light.v1.element.WorldTorch;
 import com.light.v1.tools.MyMap;
 
 public class LightPlayerGraphics extends LightGraphics {
     private static final String TAG = "LightPlayerGraphics";
+
     private Sprite item = null;
     private float itemWidth=16, swordWidth=10;
     private Body bodyItem = null, bodySword=null;
@@ -26,15 +28,16 @@ public class LightPlayerGraphics extends LightGraphics {
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
 
+    // @TODO voir pour la gestion de lightPlayer --> voir le code de bludBourne
     private LightPlayerEntity player;
 
-    public LightPlayerGraphics() {
+    public LightPlayerGraphics(LightPlayerEntity entity) {
+        player=entity;
         itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
     }
 
     @Override
-    public void update(LightEntity lightEntity, Batch batch) {
-        player= (LightPlayerEntity)lightEntity;
+    public void update(Batch batch) {
         int fps = Gdx.graphics.getFramesPerSecond();
 
         if (fps > 0 && fps < maxFPS) {
@@ -68,11 +71,14 @@ public class LightPlayerGraphics extends LightGraphics {
 
     @Override
     public void receiveMessage(ECSEvent.EVENT event, String message) {
-        if (event == ECSEvent.EVENT.CURRENT_DIRECTION) {
-            keyPressed(message);
+        if (event == ECSEvent.EVENT.KEY_DIRECTION) {
+            keyDirectionsPressed(message);
         }
-        else if (event == ECSEvent.EVENT.CURRENT_ACTION) {
-            buttonPressed(message);
+        else if (event == ECSEvent.EVENT.KEY_ACTION) {
+            keyActionsPressed(message);
+        }
+        else if (event == ECSEvent.EVENT.MOUSE_ACTION) {
+            mouseButtonsPressed(message);
         }
     }
 
@@ -164,7 +170,7 @@ public class LightPlayerGraphics extends LightGraphics {
         return bodyItem.getPosition();
     }
 
-    private void keyPressed(String message) {
+    private void keyDirectionsPressed(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         float velocity=player.getVelocity();
         double angle=getAngle();
@@ -205,7 +211,19 @@ public class LightPlayerGraphics extends LightGraphics {
         setTranslate(translate);
     }
 
-    private void buttonPressed(String message) {
+    private void keyActionsPressed(String message) {
+        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
+        ECSEventInput.Keys direction = json.fromJson(ECSEventInput.Keys.class, string[0]);
+        ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
+
+        if (direction == ECSEventInput.Keys.SPACE) {
+            if (state == ECSEventInput.States.DOWN) {
+                new WorldTorch(player.rayHandler, player.camera.position);
+            }
+        }
+    }
+
+    private void mouseButtonsPressed(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         ECSEventInput.Buttons button=json.fromJson(ECSEventInput.Buttons.class, string[0]);
         ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
@@ -226,9 +244,5 @@ public class LightPlayerGraphics extends LightGraphics {
                 player.elementLightSetActive(false);
             }
         }
-    }
-
-    public String getData() {
-        return "GET DATA!!";
     }
 }

@@ -3,7 +3,6 @@ package com.light.v1.ECS;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,7 +72,31 @@ public class SystemManager {
         ArrayList<Component> components=getEntityComponents(entity);
 
         for (Component component : components) {
-            component.update(entity, batch);
+            component.update(batch);
         }
+
+        entity.update(batch);
+    }
+
+    public void codeTest() {
+        /*
+        systemManager.addEntity(lightPlayerEntity);
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput());
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerGraphics());
+
+        ArrayList<Component> elements=systemManager.getEntityComponents(lightPlayerEntity);
+        for (int i=0; i<elements.size(); i++) {
+            String name=elements.get(i).getClass().getSimpleName();
+            Gdx.app.debug(TAG, "element "+name);
+            if (name.compareTo(LightPlayerGraphics.class.getSimpleName()) == 0) {
+                Gdx.app.debug(TAG, "element graphic trouvé");
+                Gdx.app.debug(TAG, ((LightPlayerGraphics)elements.get(i)).getData());
+            }
+        }
+
+        // nécessite un test  == null
+        LightPlayerGraphics x =(LightPlayerGraphics)systemManager.getComponent(lightPlayerEntity, LightPlayerGraphics.class.getSimpleName());
+        Gdx.app.debug(TAG, "test sur x "+x.getData());
+         */
     }
 }

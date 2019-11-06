@@ -16,7 +16,10 @@ public interface ECSEvent {
         INIT_SELECT_ENTITY,
         ENTITY_SELECTED,
         ENTITY_DESELECTED,
-        CURRENT_ACTION
+        CURRENT_ACTION,
+        MOUSE_ACTION,
+        KEY_ACTION,
+        KEY_DIRECTION
     }
 
     enum DIRECTION {

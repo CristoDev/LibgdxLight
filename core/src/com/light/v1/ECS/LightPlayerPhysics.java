@@ -22,8 +22,8 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     @Override
-    public void update(LightEntity lightEntity, Batch batch) {
-        LightPlayerEntity lightPlayerEntity=(LightPlayerEntity)lightEntity;
+    public void update(Batch batch) {
+        //LightPlayerEntity lightPlayerEntity=(LightPlayerEntity)lightEntity;
     }
 /*
     private void keyPressed(String message) {

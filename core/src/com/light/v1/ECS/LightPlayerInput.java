@@ -5,54 +5,24 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import javafx.scene.effect.Light;
 
 import java.util.Map;
 
 public class LightPlayerInput extends LightInput implements InputProcessor {
     private static final String TAG = "LightPlayerInput";
+    private LightPlayerEntity player;
 
-    public LightPlayerInput() {
+    public LightPlayerInput(LightPlayerEntity entity) {
+        player=entity;
         Gdx.input.setInputProcessor(this);
     }
 
-
     @Override
-    public void update(LightEntity lightEntity, Batch batch) {
-        LightPlayerEntity lightPlayerEntity=(LightPlayerEntity)lightEntity;
-        updateKeys(lightPlayerEntity);
-        updateButtons(lightPlayerEntity);
-    }
-
-    private void updateKeys(LightPlayerEntity lightPlayerEntity) {
-        for (Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry : keys.entrySet()) {
-            if (entry.getValue() != ECSEventInput.States.IDLE) {
-                lightPlayerEntity.sendMessage(ECSEvent.EVENT.CURRENT_DIRECTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()));
-            }
-
-            if (entry.getValue() == ECSEventInput.States.DOWN) {
-                keys.put(entry.getKey(), ECSEventInput.States.PRESSED);
-            }
-
-            if (entry.getValue() == ECSEventInput.States.UP) {
-                keys.put(entry.getKey(), ECSEventInput.States.IDLE);
-            }
-        }
-    }
-
-    private void updateButtons(LightPlayerEntity lightPlayerEntity) {
-        for (Map.Entry<ECSEventInput.Buttons, ECSEventInput.States> entry : buttons.entrySet()) {
-            if (entry.getValue() != ECSEventInput.States.IDLE) {
-                lightPlayerEntity.sendMessage(ECSEvent.EVENT.CURRENT_ACTION, json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y));
-            }
-
-            if (entry.getValue() == ECSEventInput.States.DOWN) {
-                buttons.put(entry.getKey(), ECSEventInput.States.PRESSED);
-            }
-
-            if (entry.getValue() == ECSEventInput.States.UP) {
-                buttons.put(entry.getKey(), ECSEventInput.States.IDLE);
-            }
-        }
+    public void update(Batch batch) {
+        updateKeyDirections(player);
+        updateKeyActions(player);
+        updateButtons(player);
     }
 
     @Override
@@ -86,11 +56,11 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         mousePosition=new Vector2(screenX, screenY);
 
         if (button == Input.Buttons.RIGHT) {
-            buttons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.DOWN);
+            mouseButtons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.DOWN);
             return true;
         }
         else if (button == Input.Buttons.LEFT) {
-            buttons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.DOWN);
+            mouseButtons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.DOWN);
             return true;
         }
         return false;
@@ -101,11 +71,11 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         mousePosition=new Vector2(screenX, screenY);
 
         if (button == Input.Buttons.RIGHT) {
-            buttons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.UP);
+            mouseButtons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.UP);
             return true;
         }
         else if (button == Input.Buttons.LEFT) {
-            buttons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.UP);
+            mouseButtons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.UP);
             return true;
         }
         return false;
