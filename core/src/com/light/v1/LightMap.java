@@ -23,13 +23,23 @@ public class LightMap {
     }
 
     public boolean buildMap(World world) {
-        MapLayer mapCollisionLayer = _mapMgr.getCollisionLayer();
+        boolean result=true;
 
-        if (mapCollisionLayer == null) {
+        //result = result && buildLayer(world, _mapMgr.getCollisionLayer());
+        //result = result && buildLayer(world, _mapMgr.getInteractionLayer());
+
+        buildLayer(world, _mapMgr.getCollisionLayer());
+        buildLayer(world, _mapMgr.getInteractionLayer());
+
+        return result;
+    }
+
+    private boolean buildLayer(World world, MapLayer layer) {
+        if (layer == null) {
             return false;
         }
 
-        for (MapObject object : mapCollisionLayer.getObjects()) {
+        for (MapObject object : layer.getObjects()) {
             if (object instanceof RectangleMapObject) {
                 createRectangle(world, ((RectangleMapObject) object));
             } else {
@@ -37,15 +47,17 @@ public class LightMap {
                 createPolygon(world, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
             }
         }
+
         return false;
     }
+
 
     private void createPolygon(World world, Polygon polygon, float x, float y) {
         float[] tmp = polygon.getVertices();
         Vector2[] vertices = new Vector2[tmp.length / 2];
 
         for (int i = 0; i < tmp.length; i += 2) {
-            vertices[i / 2] = new Vector2((int) (tmp[i] * MyMap.UNIT_SCALE), (int) (tmp[i + 1] * MyMap.UNIT_SCALE));
+            vertices[i / 2] = new Vector2(tmp[i] * MyMap.UNIT_SCALE, (tmp[i + 1] * MyMap.UNIT_SCALE));
         }
 
         BodyDef staticBodyDef = new BodyDef();
@@ -63,7 +75,7 @@ public class LightMap {
         Rectangle rectangle=object.getRectangle();
         MapProperties mp=object.getProperties();
         BodyDef staticBodyDef = new BodyDef();
-        staticBodyDef.type = BodyDef.BodyType.StaticBody;
+        //staticBodyDef.type = BodyDef.BodyType.StaticBody;
         String name="Rectangle "+ MathUtils.random(0, 10000);
 
         if (mp.containsKey("type") && mp.get("type").toString().compareTo("ennemy") == 0) {

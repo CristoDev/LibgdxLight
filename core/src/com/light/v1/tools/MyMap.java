@@ -4,14 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+
+import java.util.HashMap;
 
 public class MyMap {
     private String mapName="test.tmx", _currentMapName="";
     private TiledMap _currentMap=null;
-    private MapLayer _collisionLayer=null;
-    private final static String MAP_COLLISION_LAYER = "collision";
+    private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
+
+    private final static String COLLISION_LAYER = "collision";
+    private final static String INTERACTION_LAYER="interaction";
 
     private static final String TAG = MyMap.class.getSimpleName();
     private static InternalFileHandleResolver _filePathResolver = new InternalFileHandleResolver();
@@ -83,12 +88,11 @@ public class MyMap {
             return;
         }
 
-        _collisionLayer = _currentMap.getLayers().get(MAP_COLLISION_LAYER);
+        MapLayers maps=_currentMap.getLayers();
 
-        if( _collisionLayer == null ) {
-            Gdx.app.debug(TAG, "No collision layer!");
+        for (int i=0; i<maps.size(); i++) {
+            mapLayers.put(maps.get(i).getName(), maps.get(i));
         }
-
     }
 
     public static boolean isAssetLoaded(String filename) {
@@ -103,8 +107,16 @@ public class MyMap {
         return _currentMap;
     }
 
-    public MapLayer getCollisionLayer(){
-        return _collisionLayer;
+    private MapLayer getLayer(String name) {
+        return mapLayers.get(name);
+    }
+
+    public MapLayer getCollisionLayer() {
+        return getLayer(COLLISION_LAYER);
+    }
+
+    public MapLayer getInteractionLayer() {
+        return getLayer(INTERACTION_LAYER);
     }
 
 }
