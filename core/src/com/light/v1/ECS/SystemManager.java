@@ -26,10 +26,6 @@ public class SystemManager {
         addEntityComponents(entity, new ArrayList<Component>());
     }
 
-    public ArrayList<Component> getComponents(LightEntity entity) {
-        return ecsData.get(entity);
-    }
-
     public Component getComponent(LightEntity entity, String className) {
         ArrayList<Component> components=getEntityComponents(entity);
 

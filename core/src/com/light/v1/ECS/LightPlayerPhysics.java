@@ -6,6 +6,18 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 public class LightPlayerPhysics extends LightPhysics {
     private static final String TAG = "LightPlayerPhysics";
 
+    /*
+
+    utilisation de la classe
+    - calcul de la direction, position et angle en fonction des touches et de ces informations en T-1
+    - envoyer un message en indiquant l'angle et la direction
+    - envoyer un message en fonction des actions (si besoin --> coup d'épée dans la bonne direction?)
+
+
+
+     */
+
+
     @Override
     public void dispose() {
         Gdx.app.debug(TAG, "dispose");

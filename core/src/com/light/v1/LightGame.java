@@ -98,7 +98,6 @@ public class LightGame implements ApplicationListener {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
-        //lightPlayerEntity.update(batch);
         systemManager.update(lightPlayerEntity, batch);
 
         batch.begin();
@@ -120,19 +119,17 @@ public class LightGame implements ApplicationListener {
 
     public void createPlayer() {
         lightPlayerEntity =new LightPlayerEntity(rayHandler, camera, world);
-        systemManager.addEntity(lightPlayerEntity);
-
         LightPlayerGraphics lightGraphics=new LightPlayerGraphics(lightPlayerEntity);
         lightGraphics.addItem(world, rayHandler);
         lightGraphics.createSword(world);
 
+        systemManager.addEntity(lightPlayerEntity);
         systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput(lightPlayerEntity));
         systemManager.addEntityComponent(lightPlayerEntity, lightGraphics);
     }
 
     private void createPlayerOptional() {
         lightPlayerEntity.createLights();
-
     }
 
     public void setupViewport(int width, int height) {

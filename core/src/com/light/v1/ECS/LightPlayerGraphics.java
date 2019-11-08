@@ -29,6 +29,16 @@ public class LightPlayerGraphics extends LightGraphics {
     private double angle=Math.PI/2;
 
     // @TODO voir pour la gestion de lightPlayer --> voir le code de bludBourne
+    /*
+    utilisation de la classe
+    - affichage du sprite en fonction de la direction et de la position
+      --> prise en compte du message pour les touches
+      --> ou alors utiliser un nouveau message de la part de physics qui va indiquer l'angle et la direction
+            ce qui évite de tout refaire au niveau des tests
+
+    - affichage des animations
+
+     */
     private LightPlayerEntity player;
 
     public LightPlayerGraphics(LightPlayerEntity entity) {
