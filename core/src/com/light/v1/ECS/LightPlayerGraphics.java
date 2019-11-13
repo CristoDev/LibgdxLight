@@ -120,6 +120,7 @@ public class LightPlayerGraphics extends LightGraphics {
         item.setBounds(item.getX(), item.getY(), item.getWidth(), item.getHeight());
     }
 
+    // @todo modifier le code pour uniquement faire une action en fonction de l'équipement ou de l'objet devant (pnj/panneau/monstre)
     public void createSword(World world) {
         float length=((float)itemDiag+swordWidth)*MyMap.UNIT_SCALE;
 
