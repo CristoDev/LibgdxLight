@@ -165,6 +165,7 @@ public class LightPlayerGraphics extends LightGraphics {
         this.translate = translate;
     }
 
+    // @todo à déplacer dans une autre classe (action?)
     private void updateSword() {
         setActiveSword(false);
         bodySword.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle())* MyMap.UNIT_SCALE, bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getAngle());
