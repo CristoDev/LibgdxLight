@@ -1,5 +1,6 @@
 package com.light.v1;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.light.v1.element.Sign;
 import com.light.v1.tools.MyMap;
 
 public class LightMap {
@@ -23,19 +25,12 @@ public class LightMap {
     }
 
     public boolean buildMap(World world) {
-        boolean result=true;
-
-        //result = result && buildLayer(world, _mapMgr.getCollisionLayer());
-        //result = result && buildLayer(world, _mapMgr.getInteractionLayer());
-
-        buildLayer(world, _mapMgr.getCollisionLayer());
-        buildLayer(world, _mapMgr.getInteractionLayer());
-
-        return result;
+        return buildLayer(world, _mapMgr.getCollisionLayer()) && buildLayer(world, _mapMgr.getInteractionLayer());
     }
 
     private boolean buildLayer(World world, MapLayer layer) {
         if (layer == null) {
+            Gdx.app.debug(TAG, "FALSE! ");
             return false;
         }
 
@@ -48,9 +43,8 @@ public class LightMap {
             }
         }
 
-        return false;
+        return true;
     }
-
 
     private void createPolygon(World world, Polygon polygon, float x, float y) {
         float[] tmp = polygon.getVertices();
@@ -77,15 +71,23 @@ public class LightMap {
         BodyDef staticBodyDef = new BodyDef();
         //staticBodyDef.type = BodyDef.BodyType.StaticBody;
         String name="Rectangle "+ MathUtils.random(0, 10000);
+        Sign sign=null;
 
         if (mp.containsKey("type") && mp.get("type").toString().compareTo("ennemy") == 0) {
             staticBodyDef.type = BodyDef.BodyType.DynamicBody;
             name="Ennemy "+MathUtils.random(0, 10000);
         }
-
-        if (mp.containsKey("type") && mp.get("type").toString().compareTo("warp") == 0) {
+        else if (mp.containsKey("type") && mp.get("type").toString().compareTo("warp") == 0) {
             staticBodyDef.type = BodyDef.BodyType.KinematicBody;
             name="Warp "+MathUtils.random(0, 10000);
+        }
+        else if (mp.containsKey("type") && mp.get("type").toString().compareTo("info") == 0) {
+            staticBodyDef.type = BodyDef.BodyType.StaticBody;
+            name="Info "+MathUtils.random(0, 10000);
+            sign=new Sign(name, mp.get("message").toString());
+        }
+        else {
+            staticBodyDef.type = BodyDef.BodyType.StaticBody;
         }
 
         Body boxBody2 = world.createBody(staticBodyDef);
@@ -102,7 +104,13 @@ public class LightMap {
         boxBody2.createFixture(fixture);
         box2.dispose();
         boxBody2.setTransform(new Vector2(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2), 0);
-        boxBody2.setUserData(name);
+
+        if (sign != null) {
+            boxBody2.setUserData(sign);
+        }
+        else {
+            boxBody2.setUserData(name);
+        }
     }
 
     public static MyMap getMap() {

@@ -57,7 +57,7 @@ public abstract class LightInput implements Component {
 
         for (Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry : entries.entrySet()) {
             if (entry.getValue() != ECSEventInput.States.IDLE) {
-                sendMessage(lightPlayerEntity, event, buildMessageKeyDirections(entry));
+                sendMessage(lightPlayerEntity, event, buildMessageKey(entry));
             }
 
             if (entry.getValue() == ECSEventInput.States.DOWN) {
@@ -102,11 +102,7 @@ public abstract class LightInput implements Component {
         SystemManager.getInstance().sendMessage(lightPlayerEntity, event, message);
     }
 
-    protected String buildMessageKeyDirections(Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry) {
-        return json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y);
-    }
-
-    protected String buildMessageKeyActions(Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry) {
+    protected String buildMessageKey(Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry) {
         return json.toJson(entry.getKey()+ECSEvent.MESSAGE_TOKEN+entry.getValue()+ECSEvent.MESSAGE_TOKEN+mousePosition.x+ECSEvent.MESSAGE_TOKEN+mousePosition.y);
     }
 
