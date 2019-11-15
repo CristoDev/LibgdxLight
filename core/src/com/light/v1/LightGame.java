@@ -62,7 +62,7 @@ public class LightGame implements ApplicationListener {
 
         lightMap=new LightMap();
         mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
-        lightMap.buildMap(world);
+        lightMap.buildMap(world, rayHandler);
 
         createPlayer();
         createPlayerOptional();
@@ -98,7 +98,8 @@ public class LightGame implements ApplicationListener {
         mapRenderer.render();
 
         batch.setProjectionMatrix(camera.combined);
-        systemManager.update(lightPlayerEntity, batch);
+        //systemManager.update(lightPlayerEntity, batch);
+        systemManager.update(batch);
 
         batch.begin();
         camera.update();

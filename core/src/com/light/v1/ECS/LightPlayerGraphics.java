@@ -20,7 +20,7 @@ public class LightPlayerGraphics extends LightGraphics {
 
     private Sprite item = null;
     private float itemWidth=16, swordWidth=10;
-    private Body bodyItem = null, bodySword=null;
+    private Body bodyItem = null, bodySword=null, bodyCollision=null;
     private Light lightItem=null;
     private float candleAlpha=0.8f;
     private double itemDiag;
@@ -61,6 +61,7 @@ public class LightPlayerGraphics extends LightGraphics {
         bodyItem.setTransform(bodyItem.getPosition().x, bodyItem.getPosition().y, (float)angle);
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
         lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
+
         // petit effet de bougie sur le cone de lumière
         candleAlpha= MathUtils.clamp(candleAlpha+MathUtils.random(-0.05f, 0.05f), 0.7f, 1f);
         lightItem.setColor(127f, 127f, 127f, candleAlpha);
@@ -70,7 +71,8 @@ public class LightPlayerGraphics extends LightGraphics {
 
     private void render(Batch batch) {
         batch.begin();
-        item.draw(batch);
+        //item.draw(batch);
+        ((Sprite)bodyItem.getUserData()).draw(batch);
         batch.end();
     }
 
@@ -97,6 +99,7 @@ public class LightPlayerGraphics extends LightGraphics {
         // @TODO creer une classe pour ajouter un nom au sprite et l'utiliser dans bodyItem.setUserData
         item = new Sprite(texture);
         item.setSize(item.getWidth() * MyMap.UNIT_SCALE, item.getHeight() * MyMap.UNIT_SCALE);
+        Gdx.app.debug(TAG, "item "+item.getWidth());
 
         PolygonShape boxItem = new PolygonShape();
         boxItem.setAsBox(itemWidth*0.8f * MyMap.UNIT_SCALE / 2, itemWidth*0.8f * MyMap.UNIT_SCALE / 2);
@@ -151,6 +154,23 @@ public class LightPlayerGraphics extends LightGraphics {
         bodySword.setUserData("coup de guiche-guiche");
 
         swordShape.dispose();
+
+        BodyDef collisionBodyDef=new BodyDef();
+        collisionBodyDef.type= BodyDef.BodyType.DynamicBody;
+        bodyCollision=world.createBody(collisionBodyDef);
+        bodyCollision.setActive(false);
+        PolygonShape collisionShape=new PolygonShape();
+        collisionShape.setAsBox(0.4f, 0.2f);
+
+        FixtureDef collisionFixtureDef=new FixtureDef();
+        collisionFixtureDef.shape=collisionShape;
+        collisionFixtureDef.restitution=0f;
+        collisionFixtureDef.density=0f;
+        collisionFixtureDef.isSensor=true;
+        bodyCollision.createFixture(collisionFixtureDef);
+        bodyCollision.setUserData("Verification collision");
+
+        collisionShape.dispose();
     }
 
     private double getAngle() {
@@ -167,6 +187,12 @@ public class LightPlayerGraphics extends LightGraphics {
 
     // @todo à déplacer dans une autre classe (action?)
     private void updateSword() {
+        bodyCollision.setActive(false);
+        bodyCollision.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle()) * (1 + MyMap.UNIT_SCALE), bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*(1+MyMap.UNIT_SCALE), bodyItem.getAngle());
+        bodyCollision.setLinearDamping(5f);
+        bodyCollision.setAngularVelocity(0.01f);
+        bodyCollision.setActive(true);
+
         setActiveSword(false);
         bodySword.setTransform(bodyItem.getPosition().x+(float)Math.cos(bodyItem.getAngle())* MyMap.UNIT_SCALE, bodyItem.getPosition().y+(float)Math.sin(bodyItem.getAngle())*MyMap.UNIT_SCALE, bodyItem.getAngle());
         bodySword.setLinearDamping(5f);

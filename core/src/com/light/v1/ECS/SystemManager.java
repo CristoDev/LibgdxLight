@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 public class SystemManager {
     private static final String TAG = "SystemManager";
+    private ArrayList<LightEntity> entities=new ArrayList<LightEntity>();
     private HashMap<String, ArrayList<Component>> ecsData=new HashMap<String, ArrayList<Component>>();
     private static SystemManager systemManager=new SystemManager();
 
@@ -23,6 +24,7 @@ public class SystemManager {
     }
 
     public void addEntity(LightEntity entity) {
+        entities.add(entity);
         addEntityComponents(entity, new ArrayList<Component>());
     }
 
@@ -61,6 +63,12 @@ public class SystemManager {
 
         for (Component component : components) {
             component.receiveMessage(event, message);
+        }
+    }
+
+    public void update(Batch batch) {
+        for (LightEntity entity : entities) {
+            update(entity, batch);
         }
     }
 
