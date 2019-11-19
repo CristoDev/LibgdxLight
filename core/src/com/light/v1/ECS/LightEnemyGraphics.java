@@ -22,7 +22,6 @@ public class LightEnemyGraphics extends LightGraphics {
 
     private Vector2 currentPosition;
     private Vector2 startPosition;
-
     private Vector2[] positions=new Vector2[4];
     private int currentIndex=0;
 
