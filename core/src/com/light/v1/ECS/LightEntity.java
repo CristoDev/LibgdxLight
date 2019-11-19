@@ -23,14 +23,14 @@ public class LightEntity {
     }
 
     public Vector2 getPosition() {
-        LightPlayerGraphics graphics =(LightPlayerGraphics)SystemManager.getInstance().getComponent(this, LightPlayerGraphics.class.getSimpleName());
+        LightPlayerPhysics component =(LightPlayerPhysics)SystemManager.getInstance().getComponent(this, LightPlayerPhysics.class.getSimpleName());
 
-        if (graphics == null) {
+        if (component == null) {
             Gdx.app.error(TAG, "Component LightPlayerGraphics not found -> position to (0,0)");
             return new Vector2(0, 0);
         }
 
-        return graphics.getPosition();
+        return component.getPosition();
     }
 
     public float getVelocity() {
@@ -38,5 +38,10 @@ public class LightEntity {
     }
 
     public void update(Batch batch) {
+
+    }
+
+    public void render(Batch batch) {
+
     }
 }

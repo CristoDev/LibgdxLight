@@ -26,6 +26,11 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
     }
 
     @Override
+    public void render(Batch batch) {
+
+    }
+
+    @Override
     public void dispose() {
         Gdx.app.debug(TAG, "dispose");
     }

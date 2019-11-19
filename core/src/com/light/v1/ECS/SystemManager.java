@@ -82,6 +82,23 @@ public class SystemManager {
         entity.update(batch);
     }
 
+    public void render(Batch batch) {
+        for (LightEntity entity : entities) {
+            render(entity, batch);
+        }
+    }
+
+    public void render(LightEntity entity, Batch batch) {
+        ArrayList<Component> components=getEntityComponents(entity);
+
+        for (Component component : components) {
+            component.render(batch);
+        }
+
+        entity.render(batch);
+
+    }
+
     public void codeTest() {
         /*
         systemManager.addEntity(lightPlayerEntity);

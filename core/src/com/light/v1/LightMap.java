@@ -122,14 +122,22 @@ public class LightMap {
     public static MyMap getMap() {
         return _mapMgr;
     }
+
     public void createEnemy(World world, RayHandler rayHandler, Rectangle rectangle) {
         LightEnemyEntity entity =new LightEnemyEntity(rayHandler, camera, world);
         LightEnemyGraphics lightGraphics=new LightEnemyGraphics(entity);
         lightGraphics.addItem(world, rayHandler, rectangle);
 
         systemManager.addEntity(entity);
+        systemManager.addEntityComponent(entity, new LightEnemyPhysics(entity));
         systemManager.addEntityComponent(entity, lightGraphics);
     }
 
+    public int[] getBackLayers() {
+        return _mapMgr.getBackLayers();
+    }
 
+    public int[] getFrontLayers() {
+        return _mapMgr.getFrontLayers();
+    }
 }

@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -22,6 +20,14 @@ public class LightEnemyGraphics extends LightGraphics {
     private float itemWidth=16;
     private Body bodyItem = null;
 
+    private Vector2 currentPosition;
+    private Vector2 startPosition;
+
+    private Vector2[] positions=new Vector2[4];
+    private int currentIndex=0;
+
+    private float velocity=0.2f;
+
     private LightEnemyEntity enemy;
 
     public LightEnemyGraphics(LightEnemyEntity entity) {
@@ -33,12 +39,9 @@ public class LightEnemyGraphics extends LightGraphics {
         item.setPosition(bodyItem.getPosition().x - 16 * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - 16 * MyMap.UNIT_SCALE / 2);
         item.setOriginCenter();
         item.setRotation(bodyItem.getAngle()*180f/(float)Math.PI);
-
-        //Gdx.app.debug(TAG, "angle "+bodyItem.getAngle());
-        render(batch);
     }
 
-    private void render(Batch batch) {
+    public void render(Batch batch) {
         batch.begin();
         ((Sprite)bodyItem.getUserData()).draw(batch);
         batch.end();
@@ -86,31 +89,15 @@ public class LightEnemyGraphics extends LightGraphics {
 
         item.setPosition(bodyItem.getPosition().x - itemWidth * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - itemWidth * MyMap.UNIT_SCALE / 2);
         item.setBounds(item.getX(), item.getY(), item.getWidth(), item.getHeight());
+
+        startPosition=bodyItem.getPosition();
     }
 
-
-    public void addItem0(World world, RayHandler rayHandler, Rectangle rectangle) {
-        Texture texture = new Texture(Gdx.files.internal("enemy.png"));
-        // @TODO creer une classe pour ajouter un nom au sprite et l'utiliser dans bodyItem.setUserData
-        item = new Sprite(texture);
-        item.setSize(item.getWidth() * MyMap.UNIT_SCALE, item.getHeight() * MyMap.UNIT_SCALE);
-
-        PolygonShape boxItem = new PolygonShape();
-        boxItem.setAsBox(itemWidth*0.8f * MyMap.UNIT_SCALE / 2, itemWidth*0.8f * MyMap.UNIT_SCALE / 2);
-        BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
-        boxBodyDef.type= BodyDef.BodyType.DynamicBody;
-
-        bodyItem = world.createBody(boxBodyDef);
-        FixtureDef boxFixtureDef = new FixtureDef();
-        boxFixtureDef.shape = boxItem;
-        boxFixtureDef.restitution = 0f;
-        boxFixtureDef.density = 0f;
-        bodyItem.createFixture(boxFixtureDef);
-        bodyItem.setUserData(item);
-
-        item.setPosition(bodyItem.getPosition().x - itemWidth * MyMap.UNIT_SCALE / 2, bodyItem.getPosition().y - itemWidth * MyMap.UNIT_SCALE / 2);
-        item.setBounds(item.getX(), item.getY(), item.getWidth(), item.getHeight());
+    private void initPositions() {
+        positions[0]=startPosition;
+        positions[1]=new Vector2(startPosition.x+3, startPosition.y);
+        positions[2]=new Vector2(startPosition.x+3, startPosition.y+3);
+        positions[3]=new Vector2(startPosition.x, startPosition.y+3);
     }
 
     public Vector2 getPosition() {

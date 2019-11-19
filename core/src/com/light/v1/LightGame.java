@@ -85,6 +85,7 @@ public class LightGame implements ApplicationListener {
     private void update() {
         camera.position.set(lightPlayerEntity.getPosition().x, lightPlayerEntity.getPosition().y, 0);
         world.step(Gdx.graphics.getDeltaTime(), 8, 3);
+        systemManager.update(batch);
     }
 
     @Override
@@ -95,15 +96,16 @@ public class LightGame implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mapRenderer.setView(camera);
-        mapRenderer.render();
+        mapRenderer.render(lightMap.getBackLayers());
 
         batch.setProjectionMatrix(camera.combined);
-        //systemManager.update(lightPlayerEntity, batch);
-        systemManager.update(batch);
+        systemManager.render(batch);
 
         batch.begin();
         camera.update();
         batch.end();
+
+        mapRenderer.render(lightMap.getFrontLayers());
 
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
@@ -120,13 +122,11 @@ public class LightGame implements ApplicationListener {
 
     public void createPlayer() {
         lightPlayerEntity =new LightPlayerEntity(rayHandler, camera, world);
-        LightPlayerGraphics lightGraphics=new LightPlayerGraphics(lightPlayerEntity);
-        lightGraphics.addItem(world, rayHandler);
-        lightGraphics.createSword(world);
 
         systemManager.addEntity(lightPlayerEntity);
         systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput(lightPlayerEntity));
-        systemManager.addEntityComponent(lightPlayerEntity, lightGraphics);
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerPhysics(lightPlayerEntity, world, rayHandler));
+        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerGraphics(lightPlayerEntity));
     }
 
     private void createPlayerOptional() {

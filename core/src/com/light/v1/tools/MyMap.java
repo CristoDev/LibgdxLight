@@ -10,13 +10,25 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 import java.util.HashMap;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
+
 public class MyMap {
     private String mapName="test.tmx", _currentMapName="";
     private TiledMap _currentMap=null;
     private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
 
-    private final static String COLLISION_LAYER = "collision";
-    private final static String INTERACTION_LAYER="interaction";
+    private final static String COLLISION_OBJECT_LAYER = "collision_object";
+    private final static String INTERACTION_OBJECT_LAYER="interaction_object";
+
+    private final static String BACKGROUND_TILE_LAYER="background_tile";
+    private final static String COLLISION_TILE_LAYER="collision_tile";
+    private final static String FRONT_LAYER = "front_tile";
+
+    private HashMap<String, Integer> mapsIDs=new HashMap<String, Integer>();
+
+    private String[] back={BACKGROUND_TILE_LAYER, COLLISION_TILE_LAYER};
+    private String[] front={FRONT_LAYER};
+
 
     private static final String TAG = MyMap.class.getSimpleName();
     private static InternalFileHandleResolver _filePathResolver = new InternalFileHandleResolver();
@@ -92,6 +104,7 @@ public class MyMap {
 
         for (int i=0; i<maps.size(); i++) {
             mapLayers.put(maps.get(i).getName(), maps.get(i));
+            mapsIDs.put(maps.get(i).getName(), maps.getIndex(maps.get(i)));
         }
     }
 
@@ -112,11 +125,29 @@ public class MyMap {
     }
 
     public MapLayer getCollisionLayer() {
-        return getLayer(COLLISION_LAYER);
+        return getLayer(COLLISION_OBJECT_LAYER);
     }
 
     public MapLayer getInteractionLayer() {
-        return getLayer(INTERACTION_LAYER);
+        return getLayer(INTERACTION_OBJECT_LAYER);
     }
 
+    private int[] getLayers(String[] layers) {
+        int[] result=new int[layers.length];
+
+        for (int i=0; i<layers.length; i++) {
+            result[i]=mapsIDs.get(layers[i]);
+        }
+
+        return result;
+
+    }
+
+    public int[] getBackLayers() {
+        return getLayers(back);
+    }
+
+    public int[] getFrontLayers() {
+        return getLayers(front);
+    }
 }
