@@ -23,7 +23,6 @@ public class LightMap {
     private OrthographicCamera camera;
     private static SystemManager systemManager=SystemManager.getInstance();
 
-
     public LightMap() {
         _mapMgr = new MyMap();
     }
@@ -81,6 +80,7 @@ public class LightMap {
             staticBodyDef.type = BodyDef.BodyType.DynamicBody;
             name="Ennemy "+MathUtils.random(0, 10000);
             createEnemy(world, rayHandler, rectangle);
+
             return ;
         }
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("warp") == 0) {
@@ -125,12 +125,10 @@ public class LightMap {
 
     public void createEnemy(World world, RayHandler rayHandler, Rectangle rectangle) {
         LightEnemyEntity entity =new LightEnemyEntity(rayHandler, camera, world);
-        LightEnemyGraphics lightGraphics=new LightEnemyGraphics(entity);
-        lightGraphics.addItem(world, rayHandler, rectangle);
 
         systemManager.addEntity(entity);
-        systemManager.addEntityComponent(entity, new LightEnemyPhysics(entity));
-        systemManager.addEntityComponent(entity, lightGraphics);
+        systemManager.addEntityComponent(entity, new LightEnemyPhysics(entity, world, rectangle));
+        systemManager.addEntityComponent(entity, new LightEnemyGraphics(entity));
     }
 
     public int[] getBackLayers() {

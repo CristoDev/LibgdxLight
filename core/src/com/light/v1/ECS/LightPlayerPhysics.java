@@ -5,9 +5,7 @@ import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -26,7 +24,6 @@ public class LightPlayerPhysics extends LightPhysics {
     private Vector2 translate = new Vector2(0, 0);
     private double angle=Math.PI/2;
     private float swordWidth=10;
-    private float itemWidth=16;
 
     /*
     utilisation de la classe
@@ -43,7 +40,7 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     public void init(World world, RayHandler rayHandler) {
-        itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
+        itemDiag=Math.sqrt(Math.pow(player.getItemWidth()/2d, 2)*2);
         addItem(world, rayHandler);
         createSword(world);
 
@@ -80,32 +77,23 @@ public class LightPlayerPhysics extends LightPhysics {
         }
 
         bodyItem.setTransform(bodyItem.getPosition().x, bodyItem.getPosition().y, (float)angle);
-
         lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
 
         // petit effet de bougie sur le cone de lumière
         candleAlpha= MathUtils.clamp(candleAlpha+MathUtils.random(-0.05f, 0.05f), 0.7f, 1f);
         lightItem.setColor(127f, 127f, 127f, candleAlpha);
+
+        player.setPosition(bodyItem.getPosition());
     }
 
+    @Override
     public void render(Batch batch) {
 
     }
 
-    public Sprite getUserData() {
-        return ((Sprite)bodyItem.getUserData());
-    }
-
-    public void setUserData(Sprite sprite) {
-        bodyItem.setUserData(sprite);
-    }
-
-
     private void addItem(World world, RayHandler rayHandler) {
-        //Gdx.app.debug(TAG, "item "+item.getWidth());
-
         PolygonShape boxItem = new PolygonShape();
-        boxItem.setAsBox(itemWidth*0.8f * MyMap.UNIT_SCALE / 2, itemWidth*0.8f * MyMap.UNIT_SCALE / 2);
+        boxItem.setAsBox(player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2, player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2);
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.position.set(LightGame.VIEWPORT.viewportWidth / 2f, LightGame.VIEWPORT.viewportHeight / 2);
         boxBodyDef.type= BodyDef.BodyType.DynamicBody;
@@ -116,14 +104,12 @@ public class LightPlayerPhysics extends LightPhysics {
         boxFixtureDef.restitution = 0f;
         boxFixtureDef.density = 0f;
         bodyItem.createFixture(boxFixtureDef);
-        //bodyItem.setUserData(item);
-
+        bodyItem.setUserData(player);
         boxItem.dispose();
 
         lightItem = new ConeLight(rayHandler, 12, Color.GRAY, 5, 15, 5, 270, 30);
         lightItem.setSoft(false);
         lightItem.attachToBody(bodyItem);
-
     }
 
     // @todo modifier le code pour uniquement faire une action en fonction de l'équipement ou de l'objet devant (pnj/panneau/monstre)
@@ -201,14 +187,12 @@ public class LightPlayerPhysics extends LightPhysics {
         bodySword.setLinearDamping(5f);
         bodySword.setAngularVelocity(0.01f);
         bodySword.setActive(true);
+
+        player.setPosition(bodyItem.getPosition());
     }
 
     private void setActiveSword(boolean active) {
         bodySword.setActive(active);
-    }
-
-    public Vector2 getPosition() {
-        return bodyItem.getPosition();
     }
 
     private void keyDirectionsPressed(String message) {
