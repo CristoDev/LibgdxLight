@@ -42,14 +42,22 @@ public class LightMap {
                 createRectangle(world, rayHandler, ((RectangleMapObject) object));
             } else {
                 MapProperties mp = object.getProperties();
-                createPolygon(world, rayHandler, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()));
+                String type="Polygon";
+
+                if (mp.containsKey("type")) {
+                    Gdx.app.debug(TAG, "type " + mp.get("type").toString());
+                    type=mp.get("type").toString();
+                }
+
+
+                createPolygon(world, rayHandler, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()), type);
             }
         }
 
         return true;
     }
 
-    private void createPolygon(World world, RayHandler rayHandler, Polygon polygon, float x, float y) {
+    private void createPolygon(World world, RayHandler rayHandler, Polygon polygon, float x, float y, String type) {
         float[] tmp = polygon.getVertices();
         Vector2[] vertices = new Vector2[tmp.length / 2];
 
@@ -62,10 +70,23 @@ public class LightMap {
         Body boxBody0 = world.createBody(staticBodyDef);
         ChainShape shape = new ChainShape();
         shape.createLoop(vertices);
-        boxBody0.createFixture(shape, 1f);
+        FixtureDef fixtureDef=new FixtureDef();
+        fixtureDef.shape=shape;
+
+
+        if (type.compareTo("water") == 0) {
+            fixtureDef.isSensor=true;
+        }
+        else {
+            fixtureDef.density=1f;
+        }
+
+        boxBody0.createFixture(fixtureDef);
+
+
         shape.dispose();
         boxBody0.setTransform(new Vector2(x * MyMap.UNIT_SCALE, y * MyMap.UNIT_SCALE), 0f);
-        boxBody0.setUserData("Polygon");
+        boxBody0.setUserData(type);
     }
 
     private void createRectangle(World world, RayHandler rayHandler, RectangleMapObject object) {
@@ -86,6 +107,11 @@ public class LightMap {
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("warp") == 0) {
             staticBodyDef.type = BodyDef.BodyType.KinematicBody;
             name="Warp "+MathUtils.random(0, 10000);
+        }
+        else if (mp.containsKey("type") && mp.get("type").toString().compareTo("water") == 0) {
+            staticBodyDef.type = BodyDef.BodyType.StaticBody;
+            name="Water "+MathUtils.random(0, 10000);
+            Gdx.app.debug(TAG,"eau detectee");
         }
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("info") == 0) {
             staticBodyDef.type = BodyDef.BodyType.StaticBody;
