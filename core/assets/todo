@@ -1,3 +1,11 @@
+map --> ajouter un layer pour le type de sol afin de les récupérer plus facilement lors de la lecture de la map
+--> dans le layer 'sols' --> isSensor = true
+
+voir:
+https://stackoverflow.com/questions/16721382/collision-in-libgdx-box2d-failing-for-some-bodies
+problème de collision avec les polygons dans l'eau alors que c'est ok avec les rectangles
+--> polygon.set
+
 voir issues:
 https://github.com/CristoDev/LibgdxLight/issues
 --> factory entity

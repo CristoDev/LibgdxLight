@@ -10,7 +10,7 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        // @todo à voir comment mieux gérer les types
+        // @todo à voir comment mieux gérer les types --> ameliorer le tests des contacts (player/water...)
         Object data=contact.getFixtureA().getBody().getUserData();
         String message=" // " + contact.getFixtureA().getBody().getUserData().toString() + " --> " + contact.getFixtureB().getBody().getUserData().toString();
 
@@ -24,7 +24,8 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-        //Gdx.app.debug("endContact  ", TimeUtils.millis()+" // "+contact.getFixtureA().getBody().getUserData().toString()+" --> "+contact.getFixtureB().getBody().getUserData().toString());
+        String message=" // " + contact.getFixtureA().getBody().getUserData().toString() + " --> " + contact.getFixtureB().getBody().getUserData().toString();
+        Gdx.app.debug("endContact",  (TimeUtils.millis()%100000) + message);
     }
 
     @Override

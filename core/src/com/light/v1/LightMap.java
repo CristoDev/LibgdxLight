@@ -49,7 +49,6 @@ public class LightMap {
                     type=mp.get("type").toString();
                 }
 
-
                 createPolygon(world, rayHandler, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()), type);
             }
         }
@@ -58,6 +57,7 @@ public class LightMap {
     }
 
     private void createPolygon(World world, RayHandler rayHandler, Polygon polygon, float x, float y, String type) {
+
         float[] tmp = polygon.getVertices();
         Vector2[] vertices = new Vector2[tmp.length / 2];
 
@@ -70,11 +70,12 @@ public class LightMap {
         Body boxBody0 = world.createBody(staticBodyDef);
         ChainShape shape = new ChainShape();
         shape.createLoop(vertices);
+
         FixtureDef fixtureDef=new FixtureDef();
         fixtureDef.shape=shape;
 
-
         if (type.compareTo("water") == 0) {
+            Gdx.app.debug(TAG, "create polygon for " + type);
             fixtureDef.isSensor=true;
         }
         else {
@@ -82,20 +83,30 @@ public class LightMap {
         }
 
         boxBody0.createFixture(fixtureDef);
-
-
         shape.dispose();
         boxBody0.setTransform(new Vector2(x * MyMap.UNIT_SCALE, y * MyMap.UNIT_SCALE), 0f);
         boxBody0.setUserData(type);
     }
 
     private void createRectangle(World world, RayHandler rayHandler, RectangleMapObject object) {
+
         Rectangle rectangle=object.getRectangle();
         MapProperties mp=object.getProperties();
         BodyDef staticBodyDef = new BodyDef();
         //staticBodyDef.type = BodyDef.BodyType.StaticBody;
         String name="Rectangle "+ MathUtils.random(0, 10000);
         Sign sign=null;
+
+        PolygonShape box2 = new PolygonShape();
+        box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
+
+        FixtureDef fixture=new FixtureDef();
+        fixture.restitution = 0.1f;
+        fixture.friction=100f;
+        fixture.density = 100f;
+        fixture.shape = box2;
+
+
 
         if (mp.containsKey("type") && mp.get("type").toString().compareTo("ennemy") == 0) {
             staticBodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -109,9 +120,17 @@ public class LightMap {
             name="Warp "+MathUtils.random(0, 10000);
         }
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("water") == 0) {
+            Gdx.app.debug(TAG, "create rectangle for " +mp.get("type").toString());
             staticBodyDef.type = BodyDef.BodyType.StaticBody;
+            fixture.isSensor=true;
             name="Water "+MathUtils.random(0, 10000);
             Gdx.app.debug(TAG,"eau detectee");
+        }
+        else if (mp.containsKey("type") && mp.get("type").toString().compareTo("grass") == 0) {
+            staticBodyDef.type = BodyDef.BodyType.StaticBody;
+            fixture.isSensor=true;
+            name="Grass "+MathUtils.random(0, 10000);
+            Gdx.app.debug(TAG,"herbe detectee");
         }
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("info") == 0) {
             staticBodyDef.type = BodyDef.BodyType.StaticBody;
@@ -123,13 +142,6 @@ public class LightMap {
         }
 
         Body boxBody2 = world.createBody(staticBodyDef);
-        PolygonShape box2 = new PolygonShape();
-        box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
-        FixtureDef fixture=new FixtureDef();
-        fixture.restitution = 0.1f;
-        fixture.friction=100f;
-        fixture.density = 100f;
-        fixture.shape = box2;
 
         boxBody2.setLinearDamping(2f);
         boxBody2.setAngularDamping(10f);
