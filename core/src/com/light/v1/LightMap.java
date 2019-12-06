@@ -28,18 +28,25 @@ public class LightMap {
     }
 
     public boolean buildMap(World world, RayHandler rayHandler) {
-        return buildLayer(world, rayHandler, _mapMgr.getCollisionLayer()) && buildLayer(world, rayHandler, _mapMgr.getInteractionLayer());
+        return buildObjectsLayers(world, rayHandler);
+    }
+
+    private boolean buildObjectsLayers(World world, RayHandler rayHandler) {
+        return buildLayer(world, rayHandler, _mapMgr.getCollisionLayer()) && buildLayer(world, rayHandler, _mapMgr.getFloorLayer(), true)  && buildLayer(world, rayHandler, _mapMgr.getInteractionLayer());
     }
 
     private boolean buildLayer(World world, RayHandler rayHandler, MapLayer layer) {
+        return buildLayer(world, rayHandler, layer,false);
+    }
+
+    private boolean buildLayer(World world, RayHandler rayHandler, MapLayer layer, boolean isSensor) {
         if (layer == null) {
-            Gdx.app.debug(TAG, "FALSE! ");
             return false;
         }
 
         for (MapObject object : layer.getObjects()) {
             if (object instanceof RectangleMapObject) {
-                createRectangle(world, rayHandler, ((RectangleMapObject) object));
+                createRectangle(world, rayHandler, ((RectangleMapObject) object), isSensor);
             } else {
                 MapProperties mp = object.getProperties();
                 String type="Polygon";
@@ -49,14 +56,14 @@ public class LightMap {
                     type=mp.get("type").toString();
                 }
 
-                createPolygon(world, rayHandler, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()), type);
+                createPolygon(world, rayHandler, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()), type, isSensor);
             }
         }
 
         return true;
     }
 
-    private void createPolygon(World world, RayHandler rayHandler, Polygon polygon, float x, float y, String type) {
+    private void createPolygon(World world, RayHandler rayHandler, Polygon polygon, float x, float y, String type, boolean isSensor) {
 
         float[] tmp = polygon.getVertices();
         Vector2[] vertices = new Vector2[tmp.length / 2];
@@ -73,14 +80,8 @@ public class LightMap {
 
         FixtureDef fixtureDef=new FixtureDef();
         fixtureDef.shape=shape;
-
-        if (type.compareTo("water") == 0) {
-            Gdx.app.debug(TAG, "create polygon for " + type);
-            fixtureDef.isSensor=true;
-        }
-        else {
-            fixtureDef.density=1f;
-        }
+        fixtureDef.isSensor=isSensor;
+        fixtureDef.density=1f;
 
         boxBody0.createFixture(fixtureDef);
         shape.dispose();
@@ -88,8 +89,7 @@ public class LightMap {
         boxBody0.setUserData(type);
     }
 
-    private void createRectangle(World world, RayHandler rayHandler, RectangleMapObject object) {
-
+    private void createRectangle(World world, RayHandler rayHandler, RectangleMapObject object, boolean isSensor) {
         Rectangle rectangle=object.getRectangle();
         MapProperties mp=object.getProperties();
         BodyDef staticBodyDef = new BodyDef();
@@ -105,8 +105,7 @@ public class LightMap {
         fixture.friction=100f;
         fixture.density = 100f;
         fixture.shape = box2;
-
-
+        fixture.isSensor=isSensor;
 
         if (mp.containsKey("type") && mp.get("type").toString().compareTo("ennemy") == 0) {
             staticBodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -124,13 +123,11 @@ public class LightMap {
             staticBodyDef.type = BodyDef.BodyType.StaticBody;
             fixture.isSensor=true;
             name="Water "+MathUtils.random(0, 10000);
-            Gdx.app.debug(TAG,"eau detectee");
         }
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("grass") == 0) {
             staticBodyDef.type = BodyDef.BodyType.StaticBody;
             fixture.isSensor=true;
             name="Grass "+MathUtils.random(0, 10000);
-            Gdx.app.debug(TAG,"herbe detectee");
         }
         else if (mp.containsKey("type") && mp.get("type").toString().compareTo("info") == 0) {
             staticBodyDef.type = BodyDef.BodyType.StaticBody;

@@ -18,10 +18,12 @@ public class MyMap {
     private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
 
     private final static String COLLISION_OBJECT_LAYER = "collision_object";
+    private final static String FLOOR_OBJECT_LAYER = "floor_object";
     private final static String INTERACTION_OBJECT_LAYER="interaction_object";
 
     private final static String BACKGROUND_TILE_LAYER="background_tile";
     private final static String COLLISION_TILE_LAYER="collision_tile";
+    private final static String ENNEMY_TILE_LAYER="ennemy_tile";
     private final static String FRONT_LAYER = "front_tile";
 
     private HashMap<String, Integer> mapsIDs=new HashMap<String, Integer>();
@@ -126,6 +128,10 @@ public class MyMap {
 
     public MapLayer getCollisionLayer() {
         return getLayer(COLLISION_OBJECT_LAYER);
+    }
+
+    public MapLayer getFloorLayer() {
+        return getLayer(FLOOR_OBJECT_LAYER);
     }
 
     public MapLayer getInteractionLayer() {

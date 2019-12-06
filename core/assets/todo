@@ -1,5 +1,17 @@
-map --> ajouter un layer pour le type de sol afin de les récupérer plus facilement lors de la lecture de la map
---> dans le layer 'sols' --> isSensor = true
+en cours:
+début d'implémentation des éléments de la map pour les contacts
+fichiers en cours de modification
+- lightMap -> déporter le code de création des rectangles et polygones dans worldElement
+    * createRectangle + refactoring
+    * createPolygon
+    --> setuserData(worldElement)
+    --> wolrdElement: ajouter une méthode 'getType' pour avoir le type (grass, water...)
+    --> définir des propriétés de base (ralentissement dans l'eau) avec la possibilité de les avoir dans la map si on veut les modifier
+        il faut voir la liste des propriétés  pour pouvoir les mettre dans la TMXMap
+- contactManager -> prendre en compte la classe des éléments pour une meilleure gestion des contacts
+
+** mettre en place les masques pour réduire les interactions et avoir la lumière qui passe au travers des zones de sol
+
 
 voir:
 https://stackoverflow.com/questions/16721382/collision-in-libgdx-box2d-failing-for-some-bodies

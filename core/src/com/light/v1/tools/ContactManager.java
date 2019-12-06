@@ -3,6 +3,7 @@ package com.light.v1.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.light.v1.ECS.LightPlayerEntity;
 import com.light.v1.element.Sign;
 
 public class ContactManager implements ContactListener {
@@ -13,7 +14,6 @@ public class ContactManager implements ContactListener {
         // @todo à voir comment mieux gérer les types --> ameliorer le tests des contacts (player/water...)
         Object data=contact.getFixtureA().getBody().getUserData();
         String message=" // " + contact.getFixtureA().getBody().getUserData().toString() + " --> " + contact.getFixtureB().getBody().getUserData().toString();
-
 
         if (data.getClass() == Sign.class) {
             message="Panneau trouvé! "+((Sign) data).getMessage() + message;
@@ -35,4 +35,11 @@ public class ContactManager implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }
+
+
+    private void manageContact(Object userDataA, Object userDataB) {
+
+    }
+
+
 }
