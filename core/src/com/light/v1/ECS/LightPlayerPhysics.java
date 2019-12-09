@@ -88,7 +88,7 @@ public class LightPlayerPhysics extends LightPhysics {
 
     @Override
     public void render(Batch batch) {
-
+        // render
     }
 
     private void addItem(World world, RayHandler rayHandler) {
@@ -241,10 +241,8 @@ public class LightPlayerPhysics extends LightPhysics {
         ECSEventInput.Keys direction = json.fromJson(ECSEventInput.Keys.class, string[0]);
         ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
 
-        if (direction == ECSEventInput.Keys.SPACE) {
-            if (state == ECSEventInput.States.DOWN) {
-                new WorldTorch(player.rayHandler, player.camera.position);
-            }
+        if (direction == ECSEventInput.Keys.SPACE &&  state == ECSEventInput.States.DOWN) {
+            new WorldTorch(player.rayHandler, player.camera.position);
         }
     }
 

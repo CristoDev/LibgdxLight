@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.light.v1.tools.MyMap;
 
 public class LightEntity {
-    private static final String TAG = "LightEntity";
+    //private static final String TAG = "LightEntity";
 
     protected RayHandler rayHandler;
     protected OrthographicCamera camera;
@@ -46,11 +46,11 @@ public class LightEntity {
     }
 
     public void update(Batch batch) {
-
+        // update
     }
 
     public void render(Batch batch) {
-
+        // render
     }
 
     public void createSprite(String filename) {

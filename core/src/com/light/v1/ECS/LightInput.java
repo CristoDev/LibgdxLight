@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class LightInput implements Component {
-    static Vector2 mousePosition=new Vector2(0, 0);
-    static Map<ECSEventInput.Keys, ECSEventInput.States> keyDirections = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
+    public static Vector2 mousePosition=new Vector2(0, 0);
+    public static Map<ECSEventInput.Keys, ECSEventInput.States> keyDirections = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
 
     static {
         keyDirections.put(ECSEventInput.Keys.LEFT, ECSEventInput.States.IDLE);
@@ -17,7 +17,7 @@ public abstract class LightInput implements Component {
         keyDirections.put(ECSEventInput.Keys.DOWN, ECSEventInput.States.IDLE);
     };
 
-    static Map<ECSEventInput.Keys, ECSEventInput.States> keyActions = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
+    public static Map<ECSEventInput.Keys, ECSEventInput.States> keyActions = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
 
     static {
         keyActions.put(ECSEventInput.Keys.SPACE, ECSEventInput.States.IDLE);
@@ -25,7 +25,7 @@ public abstract class LightInput implements Component {
         keyActions.put(ECSEventInput.Keys.PAUSE, ECSEventInput.States.IDLE);
     }
 
-    static Map<ECSEventInput.Buttons, ECSEventInput.States> mouseButtons = new HashMap<ECSEventInput.Buttons, ECSEventInput.States>();
+    public static Map<ECSEventInput.Buttons, ECSEventInput.States> mouseButtons = new HashMap<ECSEventInput.Buttons, ECSEventInput.States>();
 
     static {
         mouseButtons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.IDLE);
@@ -48,7 +48,9 @@ public abstract class LightInput implements Component {
                 break;
             case Input.Keys.SPACE:
                 keyActions.put(ECSEventInput.Keys.SPACE, state);
-
+                break;
+            default:
+                // nothind to do
         }
     }
 
@@ -96,7 +98,6 @@ public abstract class LightInput implements Component {
         }
 
     }
-
 
     protected void sendMessage(LightPlayerEntity lightPlayerEntity, ECSEvent.EVENT event, String message) {
         SystemManager.getInstance().sendMessage(lightPlayerEntity, event, message);

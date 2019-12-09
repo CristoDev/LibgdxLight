@@ -23,7 +23,7 @@ public class LightPlayerGraphics extends LightGraphics {
 
     @Override
     public void update(Batch batch) {
-
+        // update
     }
 
     public void render(Batch batch) {
@@ -39,6 +39,7 @@ public class LightPlayerGraphics extends LightGraphics {
 
     @Override
     public void receiveMessage(ECSEvent.EVENT event, String message) {
+        // receive message
     }
 
 }

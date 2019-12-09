@@ -5,9 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import javafx.scene.effect.Light;
-
-import java.util.Map;
 
 public class LightPlayerInput extends LightInput implements InputProcessor {
     private static final String TAG = "LightPlayerInput";
@@ -27,7 +24,7 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public void render(Batch batch) {
-
+        // render
     }
 
     @Override
@@ -37,6 +34,7 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public void receiveMessage(ECSEvent.EVENT event, String message) {
+        // receive message
     }
 
     @Override

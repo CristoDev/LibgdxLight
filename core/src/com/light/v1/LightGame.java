@@ -14,8 +14,6 @@ import com.light.v1.ECS.*;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.MyMap;
 
-import java.util.ArrayList;
-
 public class LightGame implements ApplicationListener {
     private static final String TAG = "Box2DLightsSample";
 
@@ -114,10 +112,12 @@ public class LightGame implements ApplicationListener {
 
     @Override
     public void pause() {
+        // pause
     }
 
     @Override
     public void resume() {
+        // resume
     }
 
     public void createPlayer() {

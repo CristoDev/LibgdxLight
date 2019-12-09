@@ -62,12 +62,13 @@ public class Box2DDemoMain implements ApplicationListener {
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
+                // presolve
             }
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
+                // postsolve
             }
-
         });
     }
 
@@ -133,16 +134,16 @@ public class Box2DDemoMain implements ApplicationListener {
 
     @Override
     public void pause() {
-
+        // pause
     }
 
     @Override
     public void resume() {
-
+        // resume
     }
 
     @Override
     public void dispose() {
-
+        // dispose
     }
 }

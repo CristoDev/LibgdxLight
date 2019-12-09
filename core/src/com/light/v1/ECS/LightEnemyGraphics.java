@@ -13,6 +13,7 @@ public class LightEnemyGraphics extends LightGraphics {
 
     @Override
     public void update(Batch batch) {
+        // update
     }
 
     @Override
@@ -29,5 +30,6 @@ public class LightEnemyGraphics extends LightGraphics {
 
     @Override
     public void receiveMessage(ECSEvent.EVENT event, String message) {
+        // receive message
     }
 }

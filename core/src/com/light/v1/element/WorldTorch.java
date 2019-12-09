@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 
 public class WorldTorch implements WorldElement {
-    private static final String TAG = "WorldElementLight";
+    //private static final String TAG = "WorldElementLight";
     protected Light element;
 
     public WorldTorch(RayHandler rayHandler, Vector3 point) {
@@ -20,5 +20,6 @@ public class WorldTorch implements WorldElement {
 
     @Override
     public void update() {
+        // update
     }
 }

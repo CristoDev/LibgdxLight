@@ -1,17 +1,14 @@
 package com.light.v1.element;
 
-import box2dLight.ConeLight;
 import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class WorldLightTest implements WorldElement {
-    private static final String TAG = "WorldLightTest";
-    protected Light element, loop;
+    //private static final String TAG = "WorldLightTest";
+    protected Light element;
 
     public WorldLightTest(RayHandler rayHandler) {
         element = new PointLight(rayHandler, 32);

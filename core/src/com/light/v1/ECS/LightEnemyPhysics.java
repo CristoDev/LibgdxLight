@@ -30,14 +30,15 @@ public class LightEnemyPhysics extends LightPhysics {
         initPositions();
         updateVelocity();
     }
+
     @Override
     public void dispose() {
-
+        Gdx.app.debug(TAG, "dispose");
     }
 
     @Override
     public void receiveMessage(ECSEvent.EVENT event, String message) {
-
+        // receive message
     }
 
     @Override
@@ -54,7 +55,7 @@ public class LightEnemyPhysics extends LightPhysics {
 
     @Override
     public void render(Batch batch) {
-
+        // render
     }
 
     public void addItem(World world, Rectangle rectangle) {
