@@ -57,7 +57,7 @@ public class SystemManager {
         addEntityComponents(entity, components);
     }
 
-    public void sendMessage(LightEntity entity, ECSEvent.EVENT event, String message) {
+    public void sendMessage(LightEntity entity, ECSEvent.Event event, String message) {
         ArrayList<Component> components=getEntityComponents(entity);
 
         for (Component component : components) {

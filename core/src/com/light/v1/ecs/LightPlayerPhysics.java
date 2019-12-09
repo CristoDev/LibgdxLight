@@ -54,14 +54,14 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     @Override
-    public void receiveMessage(ECSEvent.EVENT event, String message) {
-        if (event == ECSEvent.EVENT.KEY_DIRECTION) {
+    public void receiveMessage(ECSEvent.Event event, String message) {
+        if (event == ECSEvent.Event.KEY_DIRECTION) {
             keyDirectionsPressed(message);
         }
-        else if (event == ECSEvent.EVENT.KEY_ACTION) {
+        else if (event == ECSEvent.Event.KEY_ACTION) {
             keyActionsPressed(message);
         }
-        else if (event == ECSEvent.EVENT.MOUSE_ACTION) {
+        else if (event == ECSEvent.Event.MOUSE_ACTION) {
             mouseButtonsPressed(message);
         }
     }
@@ -97,7 +97,7 @@ public class LightPlayerPhysics extends LightPhysics {
         PolygonShape boxItem = new PolygonShape();
         boxItem.setAsBox(player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2, player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2);
         BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(LightGame.VIEWPORT.viewportWidth / 2f, LightGame.VIEWPORT.viewportHeight / 2);
+        boxBodyDef.position.set(LightGame.Viewport.viewportWidth / 2f, LightGame.Viewport.viewportHeight / 2);
         boxBodyDef.type= BodyDef.BodyType.DynamicBody;
 
         bodyItem = world.createBody(boxBodyDef);

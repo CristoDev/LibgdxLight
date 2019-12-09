@@ -38,7 +38,7 @@ public class LightPlayerGraphics extends LightGraphics {
     }
 
     @Override
-    public void receiveMessage(ECSEvent.EVENT event, String message) {
+    public void receiveMessage(ECSEvent.Event event, String message) {
         // receive message
     }
 

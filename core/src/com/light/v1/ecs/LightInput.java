@@ -54,7 +54,7 @@ public abstract class LightInput implements Component {
         }
     }
 
-    protected void updateKeys(LightEntity lightEntity, Map<ECSEventInput.Keys, ECSEventInput.States> entries, ECSEvent.EVENT event) {
+    protected void updateKeys(LightEntity lightEntity, Map<ECSEventInput.Keys, ECSEventInput.States> entries, ECSEvent.Event event) {
         LightPlayerEntity lightPlayerEntity=(LightPlayerEntity)lightEntity;
 
         for (Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry : entries.entrySet()) {
@@ -73,11 +73,11 @@ public abstract class LightInput implements Component {
     }
 
     protected void updateKeyDirections(LightEntity lightEntity) {
-        updateKeys(lightEntity, keyDirections, ECSEvent.EVENT.KEY_DIRECTION);
+        updateKeys(lightEntity, keyDirections, ECSEvent.Event.KEY_DIRECTION);
     }
 
     protected void updateKeyActions(LightEntity lightEntity) {
-        updateKeys(lightEntity, keyActions, ECSEvent.EVENT.KEY_ACTION);
+        updateKeys(lightEntity, keyActions, ECSEvent.Event.KEY_ACTION);
     }
 
     protected void updateButtons(LightEntity lightEntity) {
@@ -85,7 +85,7 @@ public abstract class LightInput implements Component {
 
         for (Map.Entry<ECSEventInput.Buttons, ECSEventInput.States> entry : mouseButtons.entrySet()) {
             if (entry.getValue() != ECSEventInput.States.IDLE) {
-                sendMessage(lightPlayerEntity, ECSEvent.EVENT.MOUSE_ACTION, buildMessageMouseButtons(entry));
+                sendMessage(lightPlayerEntity, ECSEvent.Event.MOUSE_ACTION, buildMessageMouseButtons(entry));
             }
 
             if (entry.getValue() == ECSEventInput.States.DOWN) {
@@ -99,7 +99,7 @@ public abstract class LightInput implements Component {
 
     }
 
-    protected void sendMessage(LightPlayerEntity lightPlayerEntity, ECSEvent.EVENT event, String message) {
+    protected void sendMessage(LightPlayerEntity lightPlayerEntity, ECSEvent.Event event, String message) {
         SystemManager.getInstance().sendMessage(lightPlayerEntity, event, message);
     }
 

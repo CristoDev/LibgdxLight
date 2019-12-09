@@ -28,7 +28,7 @@ public class LightGame implements ApplicationListener {
     private LightMap lightMap;
     private LightPlayerEntity lightPlayerEntity;
 
-    public static class VIEWPORT { // classe public au lieu de private en attendant le refactoring complet
+    public static class Viewport { // classe public au lieu de private en attendant le refactoring complet
         public static float viewportWidth;
         public static float viewportHeight;
         public static float virtualWidth;
@@ -42,8 +42,8 @@ public class LightGame implements ApplicationListener {
     public void create() {
         setupViewport(20, 20);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-        camera.position.set(VIEWPORT.viewportWidth / 2f, VIEWPORT.viewportHeight / 2, 0);
+        camera.setToOrtho(false, Viewport.viewportWidth, Viewport.viewportHeight);
+        camera.position.set(Viewport.viewportWidth / 2f, Viewport.viewportHeight / 2, 0);
         camera.update();
 
         batch = new SpriteBatch();
@@ -134,20 +134,20 @@ public class LightGame implements ApplicationListener {
     }
 
     public void setupViewport(int width, int height) {
-        VIEWPORT.virtualWidth = width;
-        VIEWPORT.virtualHeight = height;
-        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
-        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
-        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
-        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
+        Viewport.virtualWidth = width;
+        Viewport.virtualHeight = height;
+        Viewport.viewportWidth = Viewport.virtualWidth;
+        Viewport.viewportHeight = Viewport.virtualHeight;
+        Viewport.physicalWidth = Gdx.graphics.getWidth();
+        Viewport.physicalHeight = Gdx.graphics.getHeight();
+        Viewport.aspectRatio = (Viewport.virtualWidth / Viewport.virtualHeight);
 
-        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
-            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
-            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
+        if (Viewport.physicalWidth / Viewport.physicalHeight >= Viewport.aspectRatio) {
+            Viewport.viewportWidth = Viewport.viewportHeight * (Viewport.physicalWidth / Viewport.physicalHeight);
+            Viewport.viewportHeight = Viewport.virtualHeight;
         } else {
-            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
-            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
+            Viewport.viewportWidth = Viewport.virtualWidth;
+            Viewport.viewportHeight = Viewport.viewportWidth * (Viewport.physicalHeight / Viewport.physicalWidth);
         }
     }
 

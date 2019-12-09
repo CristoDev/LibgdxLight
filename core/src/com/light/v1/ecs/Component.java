@@ -8,7 +8,7 @@ public interface Component {
     SystemManager systemManager=SystemManager.getInstance();
 
     void dispose();
-    void receiveMessage(ECSEvent.EVENT event, String message);
+    void receiveMessage(ECSEvent.Event event, String message);
     void update(Batch batch);
     void render(Batch batch);
 }

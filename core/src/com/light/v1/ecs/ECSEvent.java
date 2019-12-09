@@ -3,7 +3,7 @@ package com.light.v1.ecs;
 public interface ECSEvent {
     String MESSAGE_TOKEN = ":::::";
 
-    enum EVENT {
+    enum Event {
         CURRENT_POSITION,
         INIT_START_POSITION,
         CURRENT_DIRECTION,
@@ -22,14 +22,14 @@ public interface ECSEvent {
         KEY_DIRECTION
     }
 
-    enum DIRECTION {
+    enum Direction {
         UP,
         DOWN,
         LEFT,
         RIGHT
     };
 
-    enum COMPAS {
+    enum Compas {
         NORTH,
         SOUTH,
         EAST,
