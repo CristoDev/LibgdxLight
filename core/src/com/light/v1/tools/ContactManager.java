@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.light.v1.element.Sign;
 
 public class ContactManager implements ContactListener {
-    private static final String TAG = "ContactManager";
+    //private static final String TAG = "ContactManager";
 
     @Override
     public void beginContact(Contact contact) {
@@ -29,16 +29,15 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
+        // presolve
     }
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
+        // postsolve
     }
-
 
     private void manageContact(Object userDataA, Object userDataB) {
-
+        // manage contact
     }
-
-
 }

@@ -16,7 +16,9 @@ import com.light.v1.tools.MyMap;
 public class LightPlayerPhysics extends LightPhysics {
     private static final String TAG = "LightPlayerPhysics";
 
-    private Body bodyItem = null, bodySword=null, bodyCollision=null;
+    private Body bodyItem = null;
+    private Body bodySword=null;
+    private Body bodyCollision=null;
     private Light lightItem=null;
     private float candleAlpha=0.8f;
     private double itemDiag;

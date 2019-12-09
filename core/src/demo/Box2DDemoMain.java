@@ -20,7 +20,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Box2DDemoMain implements ApplicationListener {
-
     private static final float SCALING = 0.1f;
 
     private Box2DDebugRenderer debugRenderer;

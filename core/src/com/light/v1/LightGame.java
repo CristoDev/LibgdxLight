@@ -15,7 +15,7 @@ import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.MyMap;
 
 public class LightGame implements ApplicationListener {
-    private static final String TAG = "Box2DLightsSample";
+    //private static final String TAG = "Box2DLightsSample";
 
     private SpriteBatch batch;
     private OrthographicCamera camera;

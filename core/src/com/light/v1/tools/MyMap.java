@@ -10,10 +10,9 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 import java.util.HashMap;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
-
 public class MyMap {
-    private String mapName="test.tmx", _currentMapName="";
+    private String mapName="test.tmx";
+    private String _currentMapName="";
     private TiledMap _currentMap=null;
     private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
 
@@ -23,14 +22,13 @@ public class MyMap {
 
     private final static String BACKGROUND_TILE_LAYER="background_tile";
     private final static String COLLISION_TILE_LAYER="collision_tile";
-    private final static String ENNEMY_TILE_LAYER="ennemy_tile";
+    //private final static String ENNEMY_TILE_LAYER="ennemy_tile";
     private final static String FRONT_LAYER = "front_tile";
 
     private HashMap<String, Integer> mapsIDs=new HashMap<String, Integer>();
 
     private String[] back={BACKGROUND_TILE_LAYER, COLLISION_TILE_LAYER};
     private String[] front={FRONT_LAYER};
-
 
     private static final String TAG = MyMap.class.getSimpleName();
     private static InternalFileHandleResolver _filePathResolver = new InternalFileHandleResolver();

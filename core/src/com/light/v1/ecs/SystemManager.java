@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SystemManager {
-    private static final String TAG = "SystemManager";
+    //private static final String TAG = "SystemManager";
     private ArrayList<LightEntity> entities=new ArrayList<LightEntity>();
     private HashMap<String, ArrayList<Component>> ecsData=new HashMap<String, ArrayList<Component>>();
     private static SystemManager systemManager=new SystemManager();

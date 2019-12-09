@@ -8,8 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.element.WorldLightTest;
 
 public class LightPlayerEntity extends LightEntity {
-    private static final String TAG = "LightPlayerEntity";
-
+    //private static final String TAG = "LightPlayerEntity";
     private WorldLightTest elementLight;
 
     public LightPlayerEntity(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {

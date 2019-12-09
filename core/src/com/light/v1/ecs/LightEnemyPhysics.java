@@ -18,7 +18,7 @@ public class LightEnemyPhysics extends LightPhysics {
     private float velocity=0.4f;
     private Vector2 currentVelocity;
     private Vector2 deltaPosition;
-    private Vector2 deltaNorme;
+    //private Vector2 deltaNorme;
 
     public LightEnemyPhysics(LightEnemyEntity entity) {
         this.entity=entity;
@@ -117,7 +117,7 @@ public class LightEnemyPhysics extends LightPhysics {
         Vector2 pStart=positions[currentIndex];
         goalPosition=positions[(currentIndex+1)%positions.length];
         deltaPosition=goalPosition.cpy().sub(pStart);
-        deltaNorme=deltaPosition.cpy().nor();
+        Vector2 deltaNorme=deltaPosition.cpy().nor();
         currentVelocity=new Vector2(deltaNorme.x * velocity, deltaNorme.y * velocity);
     }
 }

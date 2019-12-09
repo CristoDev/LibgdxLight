@@ -32,7 +32,7 @@ public abstract class LightInput implements Component {
         mouseButtons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.IDLE);
     };
 
-    void keyPressed(int keycode, ECSEventInput.States state) {
+    protected void keyPressed(int keycode, ECSEventInput.States state) {
         switch (keycode) {
             case Input.Keys.LEFT:
                 keyDirections.put(ECSEventInput.Keys.LEFT, state);
