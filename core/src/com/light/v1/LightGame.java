@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.physics.box2d.*;
-import com.light.v1.ECS.*;
+import com.light.v1.ecs.*;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.MyMap;
 

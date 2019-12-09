@@ -1,14 +1,24 @@
-package com.light.v1.ECS;
+package com.light.v1.ecs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-public class LightEnemyGraphics extends LightGraphics {
-    private static final String TAG = "LightEnemyGraphics";
+public class LightPlayerGraphics extends LightGraphics {
+    private static final String TAG = "LightPlayerGraphics";
 
-    public LightEnemyGraphics(LightEnemyEntity entity) {
+    /*
+    utilisation de la classe
+    - affichage du sprite en fonction de la direction et de la position
+    - affichage des animations --> utilisation d'un assetManager
+     */
+
+    public LightPlayerGraphics(LightPlayerEntity entity) {
         this.entity=entity;
-        entity.createSprite("enemy.png");
+        init();
+    }
+
+    public void init() {
+        entity.createSprite("item.png");
     }
 
     @Override
@@ -16,7 +26,6 @@ public class LightEnemyGraphics extends LightGraphics {
         // update
     }
 
-    @Override
     public void render(Batch batch) {
         batch.begin();
         entity.getSprite().draw(batch);
@@ -32,4 +41,5 @@ public class LightEnemyGraphics extends LightGraphics {
     public void receiveMessage(ECSEvent.EVENT event, String message) {
         // receive message
     }
+
 }

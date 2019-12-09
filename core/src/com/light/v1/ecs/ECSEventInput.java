@@ -1,4 +1,4 @@
-package com.light.v1.ECS;
+package com.light.v1.ecs;
 
 public class ECSEventInput implements ECSEvent {
     public enum Keys {

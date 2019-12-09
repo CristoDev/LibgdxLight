@@ -1,4 +1,4 @@
-package com.light.v1.ECS;
+package com.light.v1.ecs;
 
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;

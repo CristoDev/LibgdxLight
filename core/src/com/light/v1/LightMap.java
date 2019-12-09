@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.light.v1.ECS.*;
+import com.light.v1.ecs.*;
 import com.light.v1.element.Sign;
 import com.light.v1.tools.MyMap;
 
@@ -24,6 +24,10 @@ public class LightMap {
     private static SystemManager systemManager=SystemManager.getInstance();
 
     public LightMap() {
+        init();
+    }
+
+    private void init() {
         _mapMgr = new MyMap();
     }
 
