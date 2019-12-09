@@ -12,8 +12,8 @@ import java.util.HashMap;
 
 public class MyMap {
     private String mapName="test.tmx";
-    private String _currentMapName="";
-    private TiledMap _currentMap=null;
+    private String currentMapName ="";
+    private TiledMap currentMap =null;
     private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
 
     private final static String COLLISION_OBJECT_LAYER = "collision_object";
@@ -81,26 +81,27 @@ public class MyMap {
 
     public void loadMap(String mapName){
         String mapFullPath = mapName;
+        currentMapName ="";
 
         if( mapFullPath == null || mapFullPath.isEmpty() ) {
             Gdx.app.debug(TAG, "Map is invalid");
             return;
         }
 
-        if( _currentMap != null ){
-            _currentMap.dispose();
+        if( currentMap != null ){
+            currentMap.dispose();
         }
 
         loadMapAsset(mapFullPath);
         if( isAssetLoaded(mapFullPath) ) {
-            _currentMap = getMapAsset(mapFullPath);
-            _currentMapName = mapName;
+            currentMap = getMapAsset(mapFullPath);
+            currentMapName = mapName;
         }else{
             Gdx.app.debug(TAG, "Map not loaded");
             return;
         }
 
-        MapLayers maps=_currentMap.getLayers();
+        MapLayers maps= currentMap.getLayers();
 
         for (int i=0; i<maps.size(); i++) {
             mapLayers.put(maps.get(i).getName(), maps.get(i));
@@ -113,11 +114,11 @@ public class MyMap {
     }
 
     public TiledMap getCurrentMap(){
-        if( _currentMap == null ) {
+        if( currentMap == null ) {
             loadMap(mapName);
         }
 
-        return _currentMap;
+        return currentMap;
     }
 
     private MapLayer getLayer(String name) {
@@ -153,5 +154,9 @@ public class MyMap {
 
     public int[] getFrontLayers() {
         return getLayers(front);
+    }
+
+    public String getCurrentMapName() {
+        return currentMapName;
     }
 }

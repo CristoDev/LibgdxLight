@@ -8,7 +8,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.ecs.*;
 import com.light.v1.tools.ContactManager;
@@ -28,7 +29,7 @@ public class LightGame implements ApplicationListener {
     private LightMap lightMap;
     private LightPlayerEntity lightPlayerEntity;
 
-    public static class Viewport { // classe public au lieu de private en attendant le refactoring complet
+    public static class ViewportUtils { // classe public au lieu de private en attendant le refactoring complet
         public static float viewportWidth;
         public static float viewportHeight;
         public static float virtualWidth;
@@ -42,8 +43,8 @@ public class LightGame implements ApplicationListener {
     public void create() {
         setupViewport(20, 20);
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Viewport.viewportWidth, Viewport.viewportHeight);
-        camera.position.set(Viewport.viewportWidth / 2f, Viewport.viewportHeight / 2, 0);
+        camera.setToOrtho(false, ViewportUtils.viewportWidth, ViewportUtils.viewportHeight);
+        camera.position.set(ViewportUtils.viewportWidth / 2f, ViewportUtils.viewportHeight / 2, 0);
         camera.update();
 
         batch = new SpriteBatch();
@@ -134,20 +135,20 @@ public class LightGame implements ApplicationListener {
     }
 
     public void setupViewport(int width, int height) {
-        Viewport.virtualWidth = width;
-        Viewport.virtualHeight = height;
-        Viewport.viewportWidth = Viewport.virtualWidth;
-        Viewport.viewportHeight = Viewport.virtualHeight;
-        Viewport.physicalWidth = Gdx.graphics.getWidth();
-        Viewport.physicalHeight = Gdx.graphics.getHeight();
-        Viewport.aspectRatio = (Viewport.virtualWidth / Viewport.virtualHeight);
+        ViewportUtils.virtualWidth = width;
+        ViewportUtils.virtualHeight = height;
+        ViewportUtils.viewportWidth = ViewportUtils.virtualWidth;
+        ViewportUtils.viewportHeight = ViewportUtils.virtualHeight;
+        ViewportUtils.physicalWidth = Gdx.graphics.getWidth();
+        ViewportUtils.physicalHeight = Gdx.graphics.getHeight();
+        ViewportUtils.aspectRatio = (ViewportUtils.virtualWidth / ViewportUtils.virtualHeight);
 
-        if (Viewport.physicalWidth / Viewport.physicalHeight >= Viewport.aspectRatio) {
-            Viewport.viewportWidth = Viewport.viewportHeight * (Viewport.physicalWidth / Viewport.physicalHeight);
-            Viewport.viewportHeight = Viewport.virtualHeight;
+        if (ViewportUtils.physicalWidth / ViewportUtils.physicalHeight >= ViewportUtils.aspectRatio) {
+            ViewportUtils.viewportWidth = ViewportUtils.viewportHeight * (ViewportUtils.physicalWidth / ViewportUtils.physicalHeight);
+            ViewportUtils.viewportHeight = ViewportUtils.virtualHeight;
         } else {
-            Viewport.viewportWidth = Viewport.virtualWidth;
-            Viewport.viewportHeight = Viewport.viewportWidth * (Viewport.physicalHeight / Viewport.physicalWidth);
+            ViewportUtils.viewportWidth = ViewportUtils.virtualWidth;
+            ViewportUtils.viewportHeight = ViewportUtils.viewportWidth * (ViewportUtils.physicalHeight / ViewportUtils.physicalWidth);
         }
     }
 

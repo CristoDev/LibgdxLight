@@ -37,7 +37,9 @@ public class ContactManager implements ContactListener {
         // postsolve
     }
 
+    /*
     private void manageContact(Object userDataA, Object userDataB) {
         // manage contact
     }
+     */
 }

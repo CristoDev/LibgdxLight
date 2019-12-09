@@ -97,7 +97,7 @@ public class LightPlayerPhysics extends LightPhysics {
         PolygonShape boxItem = new PolygonShape();
         boxItem.setAsBox(player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2, player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2);
         BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(LightGame.Viewport.viewportWidth / 2f, LightGame.Viewport.viewportHeight / 2);
+        boxBodyDef.position.set(LightGame.ViewportUtils.viewportWidth / 2f, LightGame.ViewportUtils.viewportHeight / 2);
         boxBodyDef.type= BodyDef.BodyType.DynamicBody;
 
         bodyItem = world.createBody(boxBodyDef);

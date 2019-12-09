@@ -60,14 +60,14 @@ public class LightMap {
                     type=mp.get("type").toString();
                 }
 
-                createPolygon(world, rayHandler, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()), type, isSensor);
+                createPolygon(world, ((PolygonMapObject) object).getPolygon(), Float.parseFloat(mp.get("x").toString()), Float.parseFloat(mp.get("y").toString()), type, isSensor);
             }
         }
 
         return true;
     }
 
-    private void createPolygon(World world, RayHandler rayHandler, Polygon polygon, float x, float y, String type, boolean isSensor) {
+    private void createPolygon(World world, Polygon polygon, float x, float y, String type, boolean isSensor) {
 
         float[] tmp = polygon.getVertices();
         Vector2[] vertices = new Vector2[tmp.length / 2];
