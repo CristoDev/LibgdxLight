@@ -6,12 +6,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.light.v1.tools.MyMap;
 
 public class LightEntity {
-    //private static final String TAG = "LightEntity";
+    private static final String TAG = "LightEntity";
 
     protected RayHandler rayHandler;
     protected OrthographicCamera camera;
@@ -22,6 +23,7 @@ public class LightEntity {
     protected Vector2 position=new Vector2(0, 0);
     protected Sprite sprite;
     private float itemWidth=16;
+    private String type="LightEntity";
 
     LightEntity(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {
         rayHandler=_rayHandler;
@@ -36,6 +38,17 @@ public class LightEntity {
         sprite.setPosition(position.x, position.y);
     }
 
+    public void setType(MapProperties mapProperties) {
+        if (mapProperties.containsKey("type")) {
+
+            type=mapProperties.get("type").toString();
+            Gdx.app.debug(TAG, "objet de type " + type);
+        }
+    }
+
+    public String getType() {
+        return type;
+    }
 
     public Vector2 getPosition() {
         return position;

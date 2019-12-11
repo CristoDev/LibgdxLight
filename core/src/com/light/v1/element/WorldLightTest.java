@@ -13,7 +13,7 @@ public class WorldLightTest implements WorldElement {
     public WorldLightTest(RayHandler rayHandler) {
         element = new PointLight(rayHandler, 32);
         element.setActive(false);
-        element.setColor(Color.PURPLE);
+        element.setColor(Color.YELLOW);
         element.setDistance(5f);
 
         /*

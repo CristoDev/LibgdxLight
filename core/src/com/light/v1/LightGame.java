@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.ecs.*;
 import com.light.v1.tools.ContactManager;
+import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
 
 public class LightGame implements ApplicationListener {
@@ -53,18 +54,18 @@ public class LightGame implements ApplicationListener {
         world.setContactListener(new ContactManager());
 
         rayHandler = new RayHandler(world);
-        rayHandler.setAmbientLight(0.2f, 0.2f, 0.2f, 0.6f);//0.6f
+        rayHandler.setAmbientLight(0.1f, 0.1f, 0.1f, 0.7f);//ne modifier que alpha
 
         batch.setProjectionMatrix(camera.combined);
 
         debugRenderer = new Box2DDebugRenderer();
 
-        lightMap=new LightMap();
+        lightMap=new LightMap(camera);
         mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightMap.buildMap(world, rayHandler);
 
-        createPlayer();
-        createPlayerOptional();
+        lightPlayerEntity=LightFactory.getInstance().createLightPlayer(camera);
+        lightPlayerEntity.createLights();
     }
 
     @Override
@@ -119,19 +120,6 @@ public class LightGame implements ApplicationListener {
     @Override
     public void resume() {
         // resume
-    }
-
-    public void createPlayer() {
-        lightPlayerEntity =new LightPlayerEntity(rayHandler, camera, world);
-
-        systemManager.addEntity(lightPlayerEntity);
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput(lightPlayerEntity));
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerPhysics(lightPlayerEntity, world, rayHandler));
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerGraphics(lightPlayerEntity));
-    }
-
-    private void createPlayerOptional() {
-        lightPlayerEntity.createLights();
     }
 
     public void setupViewport(int width, int height) {
