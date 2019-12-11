@@ -11,8 +11,8 @@ public class LightPlayerEntity extends LightEntity {
     //private static final String TAG = "LightPlayerEntity";
     private WorldLightTest elementLight;
 
-    public LightPlayerEntity(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {
-        super(_rayHandler, _camera, _world);
+    public LightPlayerEntity(World world, RayHandler rayHandler, OrthographicCamera camera) {
+        super(world, rayHandler, camera);
     }
 
     public void createLights() {

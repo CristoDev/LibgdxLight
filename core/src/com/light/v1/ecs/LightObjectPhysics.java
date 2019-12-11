@@ -43,6 +43,8 @@ public class LightObjectPhysics extends LightPhysics {
         fixture.shape = box2;
         fixture.isSensor=isSensor;
 
+        this.entity.setType(mapProperties);
+
         if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("warp") == 0) {
             staticBodyDef.type = BodyDef.BodyType.KinematicBody;
             name="Warp "+MathUtils.random(0, 10000);
@@ -79,7 +81,7 @@ public class LightObjectPhysics extends LightPhysics {
             boxBody2.setUserData(sign);
         }
         else {
-            boxBody2.setUserData(name);
+            boxBody2.setUserData(entity);
         }
 
     }

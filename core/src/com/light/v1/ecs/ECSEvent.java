@@ -19,7 +19,9 @@ public interface ECSEvent {
         CURRENT_ACTION,
         MOUSE_ACTION,
         KEY_ACTION,
-        KEY_DIRECTION
+        KEY_DIRECTION,
+        SPEED_MODIFIER,
+        SPEED_MODIFIER_REVERSE
     }
 
     enum Direction {
@@ -27,12 +29,12 @@ public interface ECSEvent {
         DOWN,
         LEFT,
         RIGHT
-    };
+    }
 
     enum Compas {
         NORTH,
         SOUTH,
         EAST,
         WEST
-    };
+    }
 }

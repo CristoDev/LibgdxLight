@@ -1,13 +1,12 @@
 en cours:
 début d'implémentation des éléments de la map pour les contacts
-
-- définir des propriétés de base (ralentissement dans l'eau) avec la possibilité de les avoir dans la map si on veut les modifier
-    il faut voir la liste des propriétés  pour pouvoir les mettre dans la TMXMap
-
-- revoir createLightObject qui teste le type avant la création d'un objet ou d'un ennemi
-        --> utiliser le layer "enemy" pour prendre en compte la création des ennemis correctement
-
 - contactManager -> prendre en compte la classe des éléments pour une meilleure gestion des contacts
+    --> gestion de l'eau (ralentissement)
+    -- avec l'herbe et sans "endContact", il arrive que la vitesse reste à 0.5
+    -- sans l'herbe et avec "endContact", quand on change de rectangle d'eau, la vitesse repasse à 100%
+    ----> utiliser un compteur en fonction du nombre de zone qui ralentissent
+
+
 
 ** mettre en place les masques pour réduire les interactions et avoir la lumière qui passe au travers des zones de sol
 

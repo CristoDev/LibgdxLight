@@ -64,6 +64,12 @@ public class LightPlayerPhysics extends LightPhysics {
         else if (event == ECSEvent.Event.MOUSE_ACTION) {
             mouseButtonsPressed(message);
         }
+        else if (event == ECSEvent.Event.SPEED_MODIFIER) {
+            setTranslateCoef(message);
+        }
+        else if (event == ECSEvent.Event.SPEED_MODIFIER_REVERSE) {
+            //player.setCoefVelocity(1);
+        }
     }
 
     @Override
@@ -174,6 +180,14 @@ public class LightPlayerPhysics extends LightPhysics {
 
     private void setTranslate(Vector2 translate) {
         this.translate = translate;
+    }
+
+    public void setTranslateCoef(String message) {
+        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
+        float coef=Float.parseFloat(string[0]);
+        Gdx.app.debug(TAG, "changement de vitesse "+string[0]);
+
+        player.setCoefVelocity(coef);
     }
 
     // @todo à déplacer dans une autre classe (action?)

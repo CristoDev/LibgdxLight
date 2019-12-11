@@ -18,6 +18,7 @@ public class MyMap {
 
     private final static String COLLISION_OBJECT_LAYER = "collision_object";
     private final static String FLOOR_OBJECT_LAYER = "floor_object";
+    private final static String ENNEMY_OBJECT_LAYER = "ennemy_object";
     private final static String INTERACTION_OBJECT_LAYER="interaction_object";
 
     private final static String BACKGROUND_TILE_LAYER="background_tile";
@@ -60,7 +61,6 @@ public class MyMap {
 
             // tant qu'on charge la map, on bloque la suite du jeu
             _assetManager.finishLoadingAsset(mapFilenamePath);
-            //Gdx.app.debug(TAG, "Map loaded " + mapFilenamePath);
         } else {
             Gdx.app.debug(TAG, "map doesn't exists! " + mapFilenamePath);
         }
@@ -80,10 +80,9 @@ public class MyMap {
     }
 
     public void loadMap(String mapName){
-        String mapFullPath = mapName;
         currentMapName ="";
 
-        if( mapFullPath == null || mapFullPath.isEmpty() ) {
+        if( mapName == null || mapName.isEmpty() ) {
             Gdx.app.debug(TAG, "Map is invalid");
             return;
         }
@@ -92,9 +91,9 @@ public class MyMap {
             currentMap.dispose();
         }
 
-        loadMapAsset(mapFullPath);
-        if( isAssetLoaded(mapFullPath) ) {
-            currentMap = getMapAsset(mapFullPath);
+        loadMapAsset(mapName);
+        if( isAssetLoaded(mapName) ) {
+            currentMap = getMapAsset(mapName);
             currentMapName = mapName;
         }else{
             Gdx.app.debug(TAG, "Map not loaded");
@@ -135,6 +134,10 @@ public class MyMap {
 
     public MapLayer getInteractionLayer() {
         return getLayer(INTERACTION_OBJECT_LAYER);
+    }
+
+    public MapLayer getEnnemyLayer() {
+        return getLayer(ENNEMY_OBJECT_LAYER);
     }
 
     private int[] getLayers(String[] layers) {

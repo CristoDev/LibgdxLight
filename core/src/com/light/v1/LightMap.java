@@ -11,7 +11,7 @@ import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
 
 public class LightMap {
-    private static final String TAG = "LightMap";
+    //private static final String TAG = "LightMap";
     private static MyMap _mapMgr = null;
     private OrthographicCamera camera;
     private static LightFactory lightFactory=LightFactory.getInstance();
@@ -22,20 +22,28 @@ public class LightMap {
         _mapMgr = new MyMap();
     }
 
-    public boolean buildMap(World world, RayHandler rayHandler) {
+    public void buildMap(World world, RayHandler rayHandler) {
         lightFactory.init(world, rayHandler);
-        return buildObjectsLayers(world, rayHandler);
+
+        buildLayer(_mapMgr.getCollisionLayer(), false);
+        buildEnnemyLayer(_mapMgr.getEnnemyLayer());
+        buildLayer(_mapMgr.getFloorLayer(), true);
+        buildLayer(_mapMgr.getInteractionLayer(), false);
     }
 
-    private boolean buildObjectsLayers(World world, RayHandler rayHandler) {
-        return buildLayer(world, rayHandler, _mapMgr.getCollisionLayer()) && buildLayer(world, rayHandler, _mapMgr.getFloorLayer(), true)  && buildLayer(world, rayHandler, _mapMgr.getInteractionLayer());
+    private void buildEnnemyLayer(MapLayer layer) {
+        if (layer == null) {
+            return ;
+        }
+
+        for (MapObject object : layer.getObjects()) {
+            if (object instanceof RectangleMapObject) {
+                lightFactory.createLightEnemy(camera, ((RectangleMapObject) object).getRectangle(), object.getProperties());
+            }
+        }
     }
 
-    private boolean buildLayer(World world, RayHandler rayHandler, MapLayer layer) {
-        return buildLayer(world, rayHandler, layer,false);
-    }
-
-    private boolean buildLayer(World world, RayHandler rayHandler, MapLayer layer, boolean isSensor) {
+    private boolean buildLayer(MapLayer layer, boolean isSensor) {
         if (layer == null) {
             return false;
         }

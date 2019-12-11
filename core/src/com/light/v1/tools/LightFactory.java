@@ -26,8 +26,8 @@ public class LightFactory {
         return lightFactory;
     }
 
-    public LightEnemyEntity createLightEnemy(OrthographicCamera camera, Rectangle rectangle) {
-        LightEnemyEntity entity =new LightEnemyEntity(rayHandler, camera, world);
+    public LightEnemyEntity createLightEnemy(OrthographicCamera camera, Rectangle rectangle, MapProperties mapProperties) {
+        LightEnemyEntity entity =new LightEnemyEntity(world, rayHandler, camera, mapProperties);
 
         SystemManager.getInstance().addEntity(entity);
         SystemManager.getInstance().addEntityComponent(entity, new LightEnemyPhysics(entity, world, rectangle));
@@ -37,7 +37,7 @@ public class LightFactory {
     }
 
     public LightPlayerEntity createLightPlayer(OrthographicCamera camera) {
-        LightPlayerEntity entity =new LightPlayerEntity(rayHandler, camera, world);
+        LightPlayerEntity entity =new LightPlayerEntity(world, rayHandler, camera);
 
         SystemManager.getInstance().addEntity(entity);
         SystemManager.getInstance().addEntityComponent(entity, new LightPlayerInput(entity));
@@ -48,24 +48,16 @@ public class LightFactory {
     }
 
     public LightObjectEntity createLightObject(OrthographicCamera camera, Rectangle rectangle, MapProperties mapProperties, boolean isSensor) {
-        LightObjectEntity entity=null;
+        LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, mapProperties);
 
-        // @TODO utiliser le layer "enemy_layer" pour éviter ce test
-        if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("ennemy") == 0) {
-            createLightEnemy(camera, rectangle);
-        }
-        else {
-            entity= new LightObjectEntity(rayHandler, camera, world);
-
-            SystemManager.getInstance().addEntity(entity);
-            SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, rectangle, mapProperties, isSensor));
-        }
+        SystemManager.getInstance().addEntity(entity);
+        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, rectangle, mapProperties, isSensor));
 
         return entity;
     }
 
     public LightObjectEntity createLightObject(OrthographicCamera camera, Polygon polygon, MapProperties mapProperties, boolean isSensor) {
-        LightObjectEntity entity = new LightObjectEntity(rayHandler, camera, world);
+        LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, mapProperties);
 
         SystemManager.getInstance().addEntity(entity);
         SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, polygon, mapProperties, isSensor));

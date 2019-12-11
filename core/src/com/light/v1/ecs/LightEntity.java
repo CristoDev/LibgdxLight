@@ -18,17 +18,26 @@ public class LightEntity {
     protected OrthographicCamera camera;
     protected World world;
 
-    protected float velocity=3f;
+    protected float velocity0=3f;
+    protected float velocity=velocity0;
 
     protected Vector2 position=new Vector2(0, 0);
     protected Sprite sprite;
     private float itemWidth=16;
     private String type="LightEntity";
+    protected MapProperties mapProperties;
 
-    LightEntity(RayHandler _rayHandler, OrthographicCamera _camera, World _world) {
-        rayHandler=_rayHandler;
-        camera=_camera;
-        world=_world;
+    public LightEntity(World world, RayHandler rayHandler, OrthographicCamera camera) {
+        this.rayHandler=rayHandler;
+        this.camera=camera;
+        this.world=world;
+    }
+
+    public LightEntity(World world, RayHandler rayHandler, OrthographicCamera camera, MapProperties mapProperties) {
+        this.rayHandler=rayHandler;
+        this.camera=camera;
+        this.world=world;
+        this.mapProperties=mapProperties;
     }
 
     public void setPosition(Vector2 _position) {
@@ -40,14 +49,21 @@ public class LightEntity {
 
     public void setType(MapProperties mapProperties) {
         if (mapProperties.containsKey("type")) {
-
             type=mapProperties.get("type").toString();
-            Gdx.app.debug(TAG, "objet de type " + type);
         }
     }
 
     public String getType() {
         return type;
+    }
+
+    public Object getProperty(String key) {
+        Object property=null;
+        if (mapProperties.containsKey(key)) {
+            property=mapProperties.get(key);
+        }
+
+        return property;
     }
 
     public Vector2 getPosition() {
@@ -56,6 +72,10 @@ public class LightEntity {
 
     public float getVelocity() {
         return velocity;
+    }
+
+    public void setCoefVelocity(float coef) {
+        velocity=coef*velocity0;
     }
 
     public void update(Batch batch) {
