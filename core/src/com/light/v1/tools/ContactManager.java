@@ -48,6 +48,7 @@ public class ContactManager implements ContactListener {
     private void manageBeginContact(Object userDataA, Object userDataB) {
         if (userDataA.getClass() == LightObjectEntity.class) {
             Object property=((LightObjectEntity)userDataA).getProperty("speed");
+            // ajouter le type comme propriété : grass/water --> traitement en fonction du type
 
             if (property != null) {
                 SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.SPEED_MODIFIER, property.toString());
@@ -55,6 +56,7 @@ public class ContactManager implements ContactListener {
         }
     }
 
+    // temporaire à améliorer
     private void manageEndContact(Object userDataA, Object userDataB) {
         if (userDataA.getClass() == LightObjectEntity.class) {
             Gdx.app.debug("MNG", "ok");

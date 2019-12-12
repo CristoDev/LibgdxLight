@@ -24,6 +24,7 @@ public class LightPlayerPhysics extends LightPhysics {
     private double itemDiag;
     private float maxFPS=60f;
     private Vector2 translate = new Vector2(0, 0);
+    private float deltaSpeed=0;
     private double angle=Math.PI/2;
     private float swordWidth=10;
 
@@ -68,6 +69,7 @@ public class LightPlayerPhysics extends LightPhysics {
             setTranslateCoef(message);
         }
         else if (event == ECSEvent.Event.SPEED_MODIFIER_REVERSE) {
+            reverseTranslateCoef(message);
             //player.setCoefVelocity(1);
         }
     }
@@ -185,9 +187,19 @@ public class LightPlayerPhysics extends LightPhysics {
     public void setTranslateCoef(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         float coef=Float.parseFloat(string[0]);
-        Gdx.app.debug(TAG, "changement de vitesse "+string[0]);
+        deltaSpeed += coef;
 
-        player.setCoefVelocity(coef);
+        Gdx.app.debug(TAG, "changement de vitesse "+deltaSpeed);
+
+        player.setCoefVelocity(deltaSpeed);
+    }
+
+    public void reverseTranslateCoef(String message) {
+        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
+        float coef=Float.parseFloat(string[0]);
+        deltaSpeed -= coef;
+        Gdx.app.debug(TAG, "changement de vitesse "+deltaSpeed);
+        player.setCoefVelocity(deltaSpeed);
     }
 
     // @todo à déplacer dans une autre classe (action?)
