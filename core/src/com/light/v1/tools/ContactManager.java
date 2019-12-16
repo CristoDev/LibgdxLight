@@ -31,7 +31,7 @@ public class ContactManager implements ContactListener {
     @Override
     public void endContact(Contact contact) {
         String message=" // " + contact.getFixtureA().getBody().getUserData().toString() + " --> " + contact.getFixtureB().getBody().getUserData().toString();
-        Gdx.app.debug("endContact",  (TimeUtils.millis()%100000) + message);
+        //Gdx.app.debug("endContact",  (TimeUtils.millis()%100000) + message);
         manageEndContact(contact.getFixtureA().getBody().getUserData(), contact.getFixtureB().getBody().getUserData());
     }
 
@@ -59,7 +59,6 @@ public class ContactManager implements ContactListener {
     // temporaire à améliorer
     private void manageEndContact(Object userDataA, Object userDataB) {
         if (userDataA.getClass() == LightObjectEntity.class) {
-            Gdx.app.debug("MNG", "ok");
             Object property = ((LightObjectEntity) userDataA).getProperty("speed");
 
             if (property != null) {

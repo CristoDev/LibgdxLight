@@ -27,6 +27,7 @@ public class LightPlayerPhysics extends LightPhysics {
     private float deltaSpeed=0;
     private double angle=Math.PI/2;
     private float swordWidth=10;
+    private int countContacts=0;
 
     /*
     utilisation de la classe
@@ -56,6 +57,14 @@ public class LightPlayerPhysics extends LightPhysics {
 
     @Override
     public void receiveMessage(ECSEvent.Event event, String message) {
+        /*
+        gestion des collisions avec le sol
+        marche un peu mieux mais encore un souci sur le changement de terrain avec chevauchement
+
+        -> il faudrait prendre en compte la dernière zone entrée uniquement pour la vitesse
+            voir garder la liste des zones parcourues (ID et supprimer l'ID quand on en sort)
+         */
+
         if (event == ECSEvent.Event.KEY_DIRECTION) {
             keyDirectionsPressed(message);
         }
@@ -66,9 +75,11 @@ public class LightPlayerPhysics extends LightPhysics {
             mouseButtonsPressed(message);
         }
         else if (event == ECSEvent.Event.SPEED_MODIFIER) {
+            MathUtils.clamp(countContacts++, 0, 99);
             setTranslateCoef(message);
         }
         else if (event == ECSEvent.Event.SPEED_MODIFIER_REVERSE) {
+            MathUtils.clamp(countContacts--, 0, 99);
             reverseTranslateCoef(message);
             //player.setCoefVelocity(1);
         }
@@ -187,9 +198,13 @@ public class LightPlayerPhysics extends LightPhysics {
     public void setTranslateCoef(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         float coef=Float.parseFloat(string[0]);
-        deltaSpeed += coef;
+        deltaSpeed = coef;
 
-        Gdx.app.debug(TAG, "changement de vitesse "+deltaSpeed);
+        Gdx.app.debug("set", countContacts+" VS changement de vitesse "+deltaSpeed);
+
+        if (countContacts == 0) {
+            deltaSpeed=1;
+        }
 
         player.setCoefVelocity(deltaSpeed);
     }
@@ -197,8 +212,13 @@ public class LightPlayerPhysics extends LightPhysics {
     public void reverseTranslateCoef(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         float coef=Float.parseFloat(string[0]);
-        deltaSpeed -= coef;
-        Gdx.app.debug(TAG, "changement de vitesse "+deltaSpeed);
+        deltaSpeed = coef;
+
+        if (countContacts == 0) {
+            deltaSpeed=1;
+        }
+
+        Gdx.app.debug("reverse", countContacts+" VS changement de vitesse "+deltaSpeed);
         player.setCoefVelocity(deltaSpeed);
     }
 
