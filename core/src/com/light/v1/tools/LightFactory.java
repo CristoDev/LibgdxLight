@@ -47,20 +47,20 @@ public class LightFactory {
         return entity;
     }
 
-    public LightObjectEntity createLightObject(OrthographicCamera camera, Rectangle rectangle, MapProperties mapProperties, boolean isSensor) {
+    public LightObjectEntity createLightObject(OrthographicCamera camera, Rectangle rectangle, MapProperties mapProperties, boolean isSensor, short category, short mask) {
         LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, mapProperties);
 
         SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, rectangle, mapProperties, isSensor));
+        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, rectangle, mapProperties, isSensor, category, mask));
 
         return entity;
     }
 
-    public LightObjectEntity createLightObject(OrthographicCamera camera, Polygon polygon, MapProperties mapProperties, boolean isSensor) {
+    public LightObjectEntity createLightObject(OrthographicCamera camera, Polygon polygon, MapProperties mapProperties, boolean isSensor, short category, short mask) {
         LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, mapProperties);
 
         SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, polygon, mapProperties, isSensor));
+        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, polygon, mapProperties, isSensor, category, mask));
 
         return entity;
     }

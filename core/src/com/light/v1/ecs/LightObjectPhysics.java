@@ -1,7 +1,6 @@
 package com.light.v1.ecs;
 
 import box2dLight.RayHandler;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,21 +9,24 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.element.Sign;
-import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
 
 public class LightObjectPhysics extends LightPhysics {
     private static final String TAG = "LightObjectPhysics";
 
-    public LightObjectPhysics(LightObjectEntity entity, World world, RayHandler rayHandler, Rectangle rectangle, MapProperties mapProperties, boolean isSensor) {
+    public LightObjectPhysics(LightObjectEntity entity, World world, RayHandler rayHandler, Rectangle rectangle, MapProperties mapProperties, boolean isSensor, short category, short mask) {
         this.entity=entity;
         this.entity.setType(mapProperties);
+        fixtureCategory=category;
+        fixtureMask=mask;
         createRectangle(world, rayHandler, rectangle, mapProperties, isSensor);
     }
 
-    public LightObjectPhysics(LightObjectEntity entity, World world, Polygon polygon, MapProperties mapProperties, boolean isSensor) {
+    public LightObjectPhysics(LightObjectEntity entity, World world, Polygon polygon, MapProperties mapProperties, boolean isSensor, short category, short mask) {
         this.entity=entity;
         this.entity.setType(mapProperties);
+        fixtureCategory=category;
+        fixtureMask=mask;
         createPolygon(world, polygon, mapProperties, isSensor);
     }
 
@@ -37,11 +39,14 @@ public class LightObjectPhysics extends LightPhysics {
         box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
 
         FixtureDef fixture=new FixtureDef();
+        fixture.filter.categoryBits=fixtureCategory;
+        fixture.filter.maskBits=fixtureMask;
         fixture.restitution = 0.1f;
         fixture.friction=100f;
         fixture.density = 100f;
         fixture.shape = box2;
         fixture.isSensor=isSensor;
+        staticBodyDef.type = BodyDef.BodyType.StaticBody;
 
         this.entity.setType(mapProperties);
 
@@ -49,30 +54,9 @@ public class LightObjectPhysics extends LightPhysics {
             staticBodyDef.type = BodyDef.BodyType.KinematicBody;
             name="Warp "+MathUtils.random(0, 10000);
         }
-        else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("water") == 0) {
-            Gdx.app.debug(TAG, "create rectangle for " +mapProperties.get("type").toString());
-            staticBodyDef.type = BodyDef.BodyType.StaticBody;
-            fixture.isSensor=true;
-            name="Water "+MathUtils.random(0, 10000);
-        }
-        else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("grass") == 0) {
-            staticBodyDef.type = BodyDef.BodyType.StaticBody;
-            fixture.isSensor=true;
-            name="Grass "+MathUtils.random(0, 10000);
-        }
-        else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("swamp") == 0) {
-            Gdx.app.debug(TAG, "create rectangle for " +mapProperties.get("type").toString());
-            staticBodyDef.type = BodyDef.BodyType.StaticBody;
-            fixture.isSensor=true;
-            name="Swamp "+MathUtils.random(0, 10000);
-        }
         else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("info") == 0) {
-            staticBodyDef.type = BodyDef.BodyType.StaticBody;
             name="Info "+MathUtils.random(0, 10000);
             sign=new Sign(name, mapProperties.get("message").toString());
-        }
-        else {
-            staticBodyDef.type = BodyDef.BodyType.StaticBody;
         }
 
         Body boxBody2 = world.createBody(staticBodyDef);
@@ -107,6 +91,8 @@ public class LightObjectPhysics extends LightPhysics {
         shape.createLoop(vertices);
 
         FixtureDef fixtureDef=new FixtureDef();
+        fixtureDef.filter.categoryBits=fixtureCategory;
+        fixtureDef.filter.maskBits=fixtureMask;
         fixtureDef.shape=shape;
         fixtureDef.isSensor=isSensor;
         fixtureDef.density=1f;

@@ -14,7 +14,6 @@ import com.light.v1.element.WorldTorch;
 import com.light.v1.tools.MyMap;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class LightPlayerPhysics extends LightPhysics {
@@ -51,7 +50,6 @@ public class LightPlayerPhysics extends LightPhysics {
         itemDiag=Math.sqrt(Math.pow(player.getItemWidth()/2d, 2)*2);
         addItem(world, rayHandler);
         createSword(world);
-
     }
 
     @Override
@@ -114,6 +112,9 @@ public class LightPlayerPhysics extends LightPhysics {
 
         bodyItem = world.createBody(boxBodyDef);
         FixtureDef boxFixtureDef = new FixtureDef();
+        boxFixtureDef.filter.categoryBits=ECSFilter.PLAYER;
+        boxFixtureDef.filter.maskBits = ECSFilter.MASK_PLAYER;
+
         boxFixtureDef.shape = boxItem;
         boxFixtureDef.restitution = 0f;
         boxFixtureDef.density = 0f;
@@ -122,6 +123,7 @@ public class LightPlayerPhysics extends LightPhysics {
         boxItem.dispose();
 
         lightItem = new ConeLight(rayHandler, 12, Color.GRAY, 5, 15, 5, 270, 30);
+        lightItem.setContactFilter(ECSFilter.LIGHT, (short) 0, ECSFilter.MASK_LIGHT);
         lightItem.setSoft(false);
         lightItem.attachToBody(bodyItem);
     }

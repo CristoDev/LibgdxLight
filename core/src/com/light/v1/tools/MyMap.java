@@ -16,20 +16,22 @@ public class MyMap {
     private TiledMap currentMap =null;
     private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
 
-    private final static String COLLISION_OBJECT_LAYER = "collision_object";
+    private final static String WALL_OBJECT_LAYER = "wall_object";
+    private final static String OBSTACLE_OBJECT_LAYER = "obstacle_object";
     private final static String FLOOR_OBJECT_LAYER = "floor_object";
-    private final static String ENNEMY_OBJECT_LAYER = "ennemy_object";
+    private final static String ENEMY_OBJECT_LAYER = "enemy_object";
     private final static String INTERACTION_OBJECT_LAYER="interaction_object";
 
     private final static String BACKGROUND_TILE_LAYER="background_tile";
+    private final static String WALL_TILE_LAYER="wall_tile";
     private final static String COLLISION_TILE_LAYER="collision_tile";
-    //private final static String ENNEMY_TILE_LAYER="ennemy_tile";
-    private final static String FRONT_LAYER = "front_tile";
+    private final static String ENEMY_TILE_LAYER="enemy_tile";
+    private final static String FRONT_TILE_LAYER = "front_tile";
 
     private HashMap<String, Integer> mapsIDs=new HashMap<String, Integer>();
 
-    private String[] back={BACKGROUND_TILE_LAYER, COLLISION_TILE_LAYER};
-    private String[] front={FRONT_LAYER};
+    private String[] back={BACKGROUND_TILE_LAYER, WALL_TILE_LAYER};
+    private String[] front={FRONT_TILE_LAYER};
 
     private static final String TAG = MyMap.class.getSimpleName();
     private static InternalFileHandleResolver _filePathResolver = new InternalFileHandleResolver();
@@ -121,11 +123,16 @@ public class MyMap {
     }
 
     private MapLayer getLayer(String name) {
+        Gdx.app.debug("loading", "map name " + name);
         return mapLayers.get(name);
     }
 
-    public MapLayer getCollisionLayer() {
-        return getLayer(COLLISION_OBJECT_LAYER);
+    public MapLayer getWallLayer() {
+        return getLayer(WALL_OBJECT_LAYER);
+    }
+
+    public MapLayer getObstacleLayer() {
+        return getLayer(OBSTACLE_OBJECT_LAYER);
     }
 
     public MapLayer getFloorLayer() {
@@ -136,8 +143,8 @@ public class MyMap {
         return getLayer(INTERACTION_OBJECT_LAYER);
     }
 
-    public MapLayer getEnnemyLayer() {
-        return getLayer(ENNEMY_OBJECT_LAYER);
+    public MapLayer getEnemyLayer() {
+        return getLayer(ENEMY_OBJECT_LAYER);
     }
 
     private int[] getLayers(String[] layers) {

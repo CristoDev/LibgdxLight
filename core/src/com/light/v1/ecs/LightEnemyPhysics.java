@@ -70,6 +70,8 @@ public class LightEnemyPhysics extends LightPhysics {
         box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
 
         FixtureDef fixture=new FixtureDef();
+        fixture.filter.categoryBits = ECSFilter.ENEMY;
+        fixture.filter.maskBits = ECSFilter.MASK_ENEMY;
         fixture.restitution = 0.1f;
         fixture.friction=100f;
         fixture.density = 100f;
