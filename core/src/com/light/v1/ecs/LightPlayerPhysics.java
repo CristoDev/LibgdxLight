@@ -195,6 +195,7 @@ public class LightPlayerPhysics extends LightPhysics {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         deltaSpeed = Float.parseFloat(string[0]);
         player.setCoefVelocity(deltaSpeed);
+        Gdx.app.debug(TAG, "BEGIN nb contact: " + contactList.size());
     }
 
     public void reverseTranslateCoef(String message) {
@@ -213,7 +214,8 @@ public class LightPlayerPhysics extends LightPhysics {
             deltaSpeed=Float.parseFloat(string[0]);;
         }
 
-        Gdx.app.debug("reverse", contactList.size()+" VS changement de vitesse "+deltaSpeed);
+        //Gdx.app.debug("reverse", contactList.size()+" VS changement de vitesse "+deltaSpeed);
+        Gdx.app.debug(TAG, "END nb contact: " + contactList.size());
         player.setCoefVelocity(deltaSpeed);
     }
 

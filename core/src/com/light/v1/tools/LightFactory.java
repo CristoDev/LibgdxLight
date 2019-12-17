@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.light.v1.ecs.*;
@@ -55,31 +53,21 @@ public class LightFactory {
         return entity;
     }
 
-    public LightObjectEntity createLightObject(OrthographicCamera camera, Rectangle rectangle, MapProperties mapProperties, boolean isSensor, short category, short mask) {
-        LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, mapProperties);
+    public LightObjectEntity createLightObject(OrthographicCamera camera, MapObject object, boolean isSensor, short category, short mask) {
+        LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, object.getProperties());
 
         SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, rectangle, mapProperties, isSensor, category, mask));
+        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, object, isSensor, category, mask));
 
         return entity;
     }
-
-    public LightObjectEntity createLightObject(OrthographicCamera camera, Polygon polygon, MapProperties mapProperties, boolean isSensor, short category, short mask) {
-        LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, mapProperties);
-
-        SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, polygon, mapProperties, isSensor, category, mask));
-
-        return entity;
-    }
-
 
     public void buildMap() {
         buildLayer(mapManager.getWallLayer(), false, ECSFilter.WALL, ECSFilter.MASK_WALL);
         buildLayer(mapManager.getObstacleLayer(), false, ECSFilter.OBSTACLE, ECSFilter.MASK_OBSTACLE);
         buildEnnemyLayer(mapManager.getEnemyLayer());
         buildLayer(mapManager.getFloorLayer(), true, ECSFilter.FLOOR, ECSFilter.MASK_FLOOR);
-        buildLayer(mapManager.getInteractionLayer(), false, ECSFilter.OBSTACLE, ECSFilter.MASK_OBSTACLE);
+        buildLayer(mapManager.getInteractionLayer(), true, ECSFilter.INTERACTION, ECSFilter.MASK_INTERACTION);
     }
 
     private void buildEnnemyLayer(MapLayer layer) {
@@ -100,11 +88,7 @@ public class LightFactory {
         }
 
         for (MapObject object : layer.getObjects()) {
-            if (object instanceof RectangleMapObject) {
-                lightFactory.createLightObject(camera, ((RectangleMapObject) object).getRectangle(), object.getProperties(), isSensor, category, mask);
-            } else {
-                lightFactory.createLightObject(camera, ((PolygonMapObject) object).getPolygon(), object.getProperties(), isSensor, category, mask);
-            }
+            lightFactory.createLightObject(camera, object, isSensor, category, mask);
         }
 
         return true;
