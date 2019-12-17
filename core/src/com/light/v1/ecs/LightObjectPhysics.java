@@ -60,6 +60,12 @@ public class LightObjectPhysics extends LightPhysics {
             fixture.isSensor=true;
             name="Grass "+MathUtils.random(0, 10000);
         }
+        else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("swamp") == 0) {
+            Gdx.app.debug(TAG, "create rectangle for " +mapProperties.get("type").toString());
+            staticBodyDef.type = BodyDef.BodyType.StaticBody;
+            fixture.isSensor=true;
+            name="Swamp "+MathUtils.random(0, 10000);
+        }
         else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("info") == 0) {
             staticBodyDef.type = BodyDef.BodyType.StaticBody;
             name="Info "+MathUtils.random(0, 10000);

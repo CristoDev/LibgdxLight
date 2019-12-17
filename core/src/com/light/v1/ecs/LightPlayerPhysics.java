@@ -13,6 +13,10 @@ import com.light.v1.LightGame;
 import com.light.v1.element.WorldTorch;
 import com.light.v1.tools.MyMap;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class LightPlayerPhysics extends LightPhysics {
     private static final String TAG = "LightPlayerPhysics";
 
@@ -27,7 +31,7 @@ public class LightPlayerPhysics extends LightPhysics {
     private float deltaSpeed=0;
     private double angle=Math.PI/2;
     private float swordWidth=10;
-    private int countContacts=0;
+    private List<String> contactList=new ArrayList<>();
 
     /*
     utilisation de la classe
@@ -57,14 +61,6 @@ public class LightPlayerPhysics extends LightPhysics {
 
     @Override
     public void receiveMessage(ECSEvent.Event event, String message) {
-        /*
-        gestion des collisions avec le sol
-        marche un peu mieux mais encore un souci sur le changement de terrain avec chevauchement
-
-        -> il faudrait prendre en compte la dernière zone entrée uniquement pour la vitesse
-            voir garder la liste des zones parcourues (ID et supprimer l'ID quand on en sort)
-         */
-
         if (event == ECSEvent.Event.KEY_DIRECTION) {
             keyDirectionsPressed(message);
         }
@@ -75,13 +71,10 @@ public class LightPlayerPhysics extends LightPhysics {
             mouseButtonsPressed(message);
         }
         else if (event == ECSEvent.Event.SPEED_MODIFIER) {
-            MathUtils.clamp(countContacts++, 0, 99);
             setTranslateCoef(message);
         }
         else if (event == ECSEvent.Event.SPEED_MODIFIER_REVERSE) {
-            MathUtils.clamp(countContacts--, 0, 99);
             reverseTranslateCoef(message);
-            //player.setCoefVelocity(1);
         }
     }
 
@@ -196,29 +189,29 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     public void setTranslateCoef(String message) {
+        contactList.add(message);
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
-        float coef=Float.parseFloat(string[0]);
-        deltaSpeed = coef;
-
-        Gdx.app.debug("set", countContacts+" VS changement de vitesse "+deltaSpeed);
-
-        if (countContacts == 0) {
-            deltaSpeed=1;
-        }
-
+        deltaSpeed = Float.parseFloat(string[0]);
         player.setCoefVelocity(deltaSpeed);
     }
 
     public void reverseTranslateCoef(String message) {
-        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
-        float coef=Float.parseFloat(string[0]);
-        deltaSpeed = coef;
-
-        if (countContacts == 0) {
-            deltaSpeed=1;
+        for (int i=0; i<contactList.size(); ++i) {
+            if (contactList.get(i).compareTo(message) == 0) {
+                contactList.remove(i);
+                break;
+            }
         }
 
-        Gdx.app.debug("reverse", countContacts+" VS changement de vitesse "+deltaSpeed);
+        if (contactList.size() == 0) {
+            deltaSpeed=1;
+        }
+        else {
+            String[] string = contactList.get(contactList.size()-1).split(ECSEvent.MESSAGE_TOKEN);
+            deltaSpeed=Float.parseFloat(string[0]);;
+        }
+
+        Gdx.app.debug("reverse", contactList.size()+" VS changement de vitesse "+deltaSpeed);
         player.setCoefVelocity(deltaSpeed);
     }
 

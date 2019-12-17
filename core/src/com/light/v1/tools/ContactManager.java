@@ -49,9 +49,8 @@ public class ContactManager implements ContactListener {
         if (userDataA.getClass() == LightObjectEntity.class) {
             Object property=((LightObjectEntity)userDataA).getProperty("speed");
             // ajouter le type comme propriété : grass/water --> traitement en fonction du type
-
             if (property != null) {
-                SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.SPEED_MODIFIER, property.toString());
+                SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.SPEED_MODIFIER, property.toString() + ECSEvent.MESSAGE_TOKEN + userDataA.toString());
             }
         }
     }
@@ -62,7 +61,7 @@ public class ContactManager implements ContactListener {
             Object property = ((LightObjectEntity) userDataA).getProperty("speed");
 
             if (property != null) {
-                SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.SPEED_MODIFIER_REVERSE, property.toString());
+                SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.SPEED_MODIFIER_REVERSE, property.toString() + ECSEvent.MESSAGE_TOKEN + userDataA.toString());
             }
         }
     }
