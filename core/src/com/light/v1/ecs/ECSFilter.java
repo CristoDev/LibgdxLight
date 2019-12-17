@@ -21,5 +21,8 @@ public interface ECSFilter {
     short MASK_ENEMY = FLOOR | WALL | PLAYER | OBSTACLE;
     short MASK_LIGHT = WALL | OBSTACLE;
     short MASK_OBSTACLE = ENEMY | PLAYER | LIGHT;
+    short MASK_FLOOR = -1;
+    short MASK_WALL = -1;
     short MASK_ALL = -1;
+    short MASK_VOID = 0;
 }

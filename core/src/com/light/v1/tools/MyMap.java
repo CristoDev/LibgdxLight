@@ -123,7 +123,6 @@ public class MyMap {
     }
 
     private MapLayer getLayer(String name) {
-        Gdx.app.debug("loading", "map name " + name);
         return mapLayers.get(name);
     }
 
@@ -164,9 +163,5 @@ public class MyMap {
 
     public int[] getFrontLayers() {
         return getLayers(front);
-    }
-
-    public String getCurrentMapName() {
-        return currentMapName;
     }
 }

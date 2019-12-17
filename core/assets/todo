@@ -20,7 +20,5 @@ https://github.com/CristoDev/LibgdxLight/issues
 --> factory entity
 --> asset manager
 
-* mise en place des masques
-* build map en cours de modification --> masques!
 * utilisation du clic gauche -> envoyer une action suivant le type d'objet rencontré
     - ne pas prendre en compte l'arme dans un premier temps

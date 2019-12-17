@@ -26,8 +26,7 @@ public class LightGame implements ApplicationListener {
     private Box2DDebugRenderer debugRenderer;
     private RayHandler rayHandler;
     private static SystemManager systemManager=SystemManager.getInstance();
-
-    private LightMap lightMap;
+    private LightFactory lightFactory=LightFactory.getInstance();
     private LightPlayerEntity lightPlayerEntity;
 
     public static class ViewportUtils { // classe public au lieu de private en attendant le refactoring complet
@@ -60,9 +59,13 @@ public class LightGame implements ApplicationListener {
 
         debugRenderer = new Box2DDebugRenderer();
 
-        lightMap=new LightMap(camera);
-        mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
-        lightMap.buildMap(world, rayHandler);
+        lightFactory.init(world, rayHandler, camera);
+        mapRenderer = new OrthogonalTiledMapRenderer(lightFactory.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
+        lightFactory.buildMap();
+        //lightMap=new LightMap(camera);
+        //mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
+        //lightMap.buildMap(world, rayHandler);
+
 
         lightPlayerEntity=LightFactory.getInstance().createLightPlayer(camera);
         lightPlayerEntity.createLights();
@@ -96,7 +99,7 @@ public class LightGame implements ApplicationListener {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mapRenderer.setView(camera);
-        mapRenderer.render(lightMap.getBackLayers());
+        mapRenderer.render(lightFactory.getBackLayers());
 
         batch.setProjectionMatrix(camera.combined);
         systemManager.render(batch);
@@ -105,7 +108,7 @@ public class LightGame implements ApplicationListener {
         camera.update();
         batch.end();
 
-        mapRenderer.render(lightMap.getFrontLayers());
+        mapRenderer.render(lightFactory.getFrontLayers());
 
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
