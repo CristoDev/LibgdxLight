@@ -124,3 +124,4 @@ Thumbs.db
 !/ios-moe/xcode/*.xcodeproj/project.pbxproj
 /ios-moe/xcode/native/
 /vpproject/
+/core/out/production/classes/META-INF/LibgdxLight.core.main.kotlin_module
