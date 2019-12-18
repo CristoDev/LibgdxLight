@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.ecs.*;
+import com.light.v1.element.WorldManager;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
@@ -28,6 +29,7 @@ public class LightGame implements ApplicationListener {
     private static SystemManager systemManager=SystemManager.getInstance();
     private LightFactory lightFactory=LightFactory.getInstance();
     private LightPlayerEntity lightPlayerEntity;
+    private static WorldManager worldManager=WorldManager.getInstance();
 
     public static class ViewportUtils { // classe public au lieu de private en attendant le refactoring complet
         public static float viewportWidth;
@@ -62,13 +64,15 @@ public class LightGame implements ApplicationListener {
         lightFactory.init(world, rayHandler, camera);
         mapRenderer = new OrthogonalTiledMapRenderer(lightFactory.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightFactory.buildMap();
-        //lightMap=new LightMap(camera);
-        //mapRenderer = new OrthogonalTiledMapRenderer(lightMap.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
-        //lightMap.buildMap(world, rayHandler);
-
 
         lightPlayerEntity=LightFactory.getInstance().createLightPlayer(camera);
         lightPlayerEntity.createLights();
+
+        //Vector3 point=new Vector3(37, 279, 0);
+        Vector3 point=new Vector3(11, 27, 0);
+        Gdx.app.debug("V3a", point.x+"/"+point.y);
+        camera.unproject(point);
+        Gdx.app.debug("V3b", point.x+"/"+point.y);
     }
 
     @Override
