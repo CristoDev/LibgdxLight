@@ -77,7 +77,7 @@ public class LightFactory {
 
         for (MapObject object : layer.getObjects()) {
             if (object instanceof RectangleMapObject) {
-                lightFactory.createLightEnemy(camera, ((RectangleMapObject) object).getRectangle(), object.getProperties());
+                createLightEnemy(camera, ((RectangleMapObject) object).getRectangle(), object.getProperties());
             }
         }
     }
@@ -88,7 +88,7 @@ public class LightFactory {
         }
 
         for (MapObject object : layer.getObjects()) {
-            lightFactory.createLightObject(camera, object, isSensor, category, mask);
+            createLightObject(camera, object, isSensor, category, mask);
         }
 
         return true;

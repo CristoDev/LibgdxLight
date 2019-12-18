@@ -39,7 +39,7 @@ public abstract class LightPhysics implements Component {
         fixtureDef.density = 100f;
         fixtureDef.isSensor=isSensor;
 
-        if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("warp") == 0) {
+        if (mapProperties.containsKey("type") && mapProperties.get("type").toString().startsWith("warp")) {
             bodyDef.type = BodyDef.BodyType.KinematicBody;
         }
         else if (mapProperties.containsKey("type") && mapProperties.get("type").toString().compareTo("info") == 0) {
@@ -53,7 +53,7 @@ public abstract class LightPhysics implements Component {
             fixtureDef.shape=createRectangle(object);
         }
         else if (object instanceof CircleMapObject) {
-            fixtureDef.shape=createCircle(world, object);
+            fixtureDef.shape=createCircle(object);
         }
         else if (object instanceof EllipseMapObject) {
             fixtureDef.shape=createEllipse(object);
@@ -84,7 +84,7 @@ public abstract class LightPhysics implements Component {
         return shape;
     }
 
-    private Shape createCircle(World world, MapObject object) {
+    private Shape createCircle(MapObject object) {
         Circle element=((CircleMapObject) object).getCircle();
         CircleShape shape=new CircleShape();
         shape.setRadius(element.radius * MyMap.UNIT_SCALE /2);
@@ -107,56 +107,22 @@ public abstract class LightPhysics implements Component {
     }
 
     private Shape createPolygon(MapObject object) {
-        Polygon element=((PolygonMapObject) object).getPolygon();
+        Polygon element = ((PolygonMapObject) object).getPolygon();
         float[] tmp = element.getVertices();
+
         Vector2[] vertices = new Vector2[tmp.length / 2];
 
         for (int i = 0; i < tmp.length; i += 2) {
             vertices[i / 2] = new Vector2(tmp[i] * MyMap.UNIT_SCALE, (tmp[i + 1] * MyMap.UNIT_SCALE));
-            //Gdx.app.debug("CONV", tmp[i]+" -> " + tmp[i] * MyMap.UNIT_SCALE + " // "+tmp[i+1]+" -> "+tmp[i+1] * MyMap.UNIT_SCALE);
         }
-
-        //https://www.reddit.com/r/libgdx/comments/2b2a71/tiled_polygon_to_box2d_polygonshape/
-        //https://www.reddit.com/r/libgdx/comments/2b2a71/tiled_polygon_to_box2d_polygonshape/cj1qxtw/
-
-
-        Gdx.app.debug("TAG", "polygone " + tmp.length);
 
         ChainShape shape = new ChainShape();
         shape.createLoop(vertices);
-
-        if (tmp.length < 16) {
-
-            float[] test=element.getVertices();
-            //element.setScale(MyMap.UNIT_SCALE, MyMap.UNIT_SCALE);
-            float[] testScale=element.getTransformedVertices();
-
-            for (int i = 0; i < test.length; i += 2) {
-                Gdx.app.debug("CV2", test[i]+" -> " + test[i] * MyMap.UNIT_SCALE + " <- " +testScale[i]+" // "+test[i+1]+" -> "+test[i+1] * MyMap.UNIT_SCALE+ " <- " +testScale[i+1]);
-            }
-
-
-
-            PolygonShape x = new PolygonShape();
-            x.set(element.getTransformedVertices());
-            Gdx.app.debug("TTT", "in test "+x.getVertexCount());
-            Vector2 pointX=new Vector2();
-            Vector2 pointS=new Vector2();
-
-            for (int i=0; i<x.getVertexCount(); ++i) {
-                x.getVertex(i, pointX);
-                shape.getVertex(i, pointS);
-
-                Gdx.app.debug("X", pointX.x +" VS "+pointS.x);
-
-            }
-
-
-        }
 
         bodyPosition=new Vector2(Float.parseFloat(object.getProperties().get("x").toString()) * MyMap.UNIT_SCALE,
                 Float.parseFloat(object.getProperties().get("y").toString()) * MyMap.UNIT_SCALE);
 
         return shape;
     }
+
 }

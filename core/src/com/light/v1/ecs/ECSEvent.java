@@ -17,6 +17,7 @@ public interface ECSEvent {
         ENTITY_SELECTED,
         ENTITY_DESELECTED,
         CURRENT_ACTION,
+        CHANGE_POSITION,
         MOUSE_ACTION,
         KEY_ACTION,
         KEY_DIRECTION,

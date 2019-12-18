@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.light.v1.tools.MyMap;
 
 public class LightEntity {
-    private static final String TAG = "LightEntity";
+    //private static final String TAG = "LightEntity";
 
     protected RayHandler rayHandler;
     protected OrthographicCamera camera;
@@ -24,7 +24,7 @@ public class LightEntity {
     protected Vector2 position=new Vector2(0, 0);
     protected Sprite sprite;
     private float itemWidth=16;
-    private String type="LightEntity";
+    private String type=null;
     protected MapProperties mapProperties;
 
     public LightEntity(World world, RayHandler rayHandler, OrthographicCamera camera) {
@@ -44,7 +44,10 @@ public class LightEntity {
         position.x=_position.x - itemWidth * MyMap.UNIT_SCALE / 2;
         position.y=_position.y - itemWidth * MyMap.UNIT_SCALE / 2;
 
-        sprite.setPosition(position.x, position.y);
+        if (sprite != null) {
+            //Gdx.app.debug("POS", "position " + position.x+"/"+position.y);
+            sprite.setPosition(position.x, position.y);
+        }
     }
 
     public void setType(MapProperties mapProperties) {
@@ -55,6 +58,19 @@ public class LightEntity {
 
     public String getType() {
         return type;
+    }
+
+    public void setMapProperties(MapProperties map) {
+        mapProperties=map;
+        setType(map);
+    }
+
+    public MapProperties getMapProperties() {
+        return mapProperties;
+    }
+
+    public int getPropertyId() {
+        return Integer.parseInt(getProperty("id").toString());
     }
 
     public Object getProperty(String key) {

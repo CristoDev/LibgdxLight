@@ -24,8 +24,8 @@ public class MyMap {
 
     private final static String BACKGROUND_TILE_LAYER="background_tile";
     private final static String WALL_TILE_LAYER="wall_tile";
-    private final static String COLLISION_TILE_LAYER="collision_tile";
-    private final static String ENEMY_TILE_LAYER="enemy_tile";
+    //private final static String COLLISION_TILE_LAYER="collision_tile";
+    //private final static String ENEMY_TILE_LAYER="enemy_tile";
     private final static String FRONT_TILE_LAYER = "front_tile";
 
     private HashMap<String, Integer> mapsIDs=new HashMap<String, Integer>();

@@ -31,6 +31,9 @@ public class LightPlayerPhysics extends LightPhysics {
     private double angle=Math.PI/2;
     private float swordWidth=10;
     private List<String> contactList=new ArrayList<>();
+    private boolean blockControls=false;
+    private long blockStartTime;
+    private Vector2 blockNextPosition;
 
     /*
     utilisation de la classe
@@ -96,6 +99,13 @@ public class LightPlayerPhysics extends LightPhysics {
         lightItem.setColor(127f, 127f, 127f, candleAlpha);
 
         player.setPosition(bodyItem.getPosition());
+
+        for(Fixture currentFixture : bodyItem.getFixtureList()) {
+            if (currentFixture.testPoint(2.5f, 12.5f)) {
+                Gdx.app.debug("!!!", "point");
+                bodyItem.setTransform(11.5f, 2.5f, 0);
+            }
+        }
     }
 
     @Override
@@ -195,7 +205,6 @@ public class LightPlayerPhysics extends LightPhysics {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
         deltaSpeed = Float.parseFloat(string[0]);
         player.setCoefVelocity(deltaSpeed);
-        Gdx.app.debug(TAG, "BEGIN nb contact: " + contactList.size());
     }
 
     public void reverseTranslateCoef(String message) {
@@ -211,12 +220,15 @@ public class LightPlayerPhysics extends LightPhysics {
         }
         else {
             String[] string = contactList.get(contactList.size()-1).split(ECSEvent.MESSAGE_TOKEN);
-            deltaSpeed=Float.parseFloat(string[0]);;
+            deltaSpeed=Float.parseFloat(string[0]);
         }
 
-        //Gdx.app.debug("reverse", contactList.size()+" VS changement de vitesse "+deltaSpeed);
-        Gdx.app.debug(TAG, "END nb contact: " + contactList.size());
         player.setCoefVelocity(deltaSpeed);
+    }
+
+    private void changePosition(String message) {
+        //bodyItem.setTransform(Float.parseFloat(string[0]), Float.parseFloat(string[1]), 0);
+
     }
 
     // @todo à déplacer dans une autre classe (action?)
