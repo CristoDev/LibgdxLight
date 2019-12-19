@@ -27,6 +27,10 @@ public abstract class LightPhysics implements Component {
         createShape(world, rayHandler, object);
     }
 
+    protected String[] getMessage(String message) {
+        return message.split(ECSEvent.MESSAGE_TOKEN);
+    }
+
     private void initObject(MapProperties mapProperties, boolean isSensor) {
         bodyDef = new BodyDef();
         bodyDef.type= BodyDef.BodyType.StaticBody;

@@ -13,8 +13,8 @@ public class DesktopLauncher {
 
 		config.title="BludBourne v0.8";
 		config.useGL30=false;
-		config.width=1027;
-		config.height=768;
+		config.width=1000;
+		config.height=800;
 
 		Application app=new LwjglApplication(new LightGame(), config);
 

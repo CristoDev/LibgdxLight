@@ -5,7 +5,9 @@ public interface ECSEvent {
 
     enum Event {
         CURRENT_POSITION,
-        INIT_START_POSITION,
+        INIT_POSITION,
+        SET_POSITION,
+        INIT_COMPONENT,
         CURRENT_DIRECTION,
         CURRENT_STATE,
         COLLISION_WITH_MAP,

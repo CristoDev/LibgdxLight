@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.element.WorldLightTest;
+import com.light.v1.tools.AnimationEntity;
+import com.light.v1.tools.AnimationManager;
 
 public class LightPlayerEntity extends LightEntity {
     //private static final String TAG = "LightPlayerEntity";
@@ -13,7 +15,25 @@ public class LightPlayerEntity extends LightEntity {
 
     public LightPlayerEntity(World world, RayHandler rayHandler, OrthographicCamera camera) {
         super(world, rayHandler, camera);
+        createAnimation();
     }
+
+    public void createAnimation() {
+        /*
+        animationEntity=new AnimationEntity();
+
+        animationEntity.createHuman();
+        animationEntity.init();
+        animationEntity.setPosition(200, 50);
+        animationEntity.addEquipment("torso/chain/mail_male.png");
+        animationEntity.addEquipment("hands/gloves/male/metal_gloves_male.png");
+        animationEntity.addEquipment("weapons/right hand/male/dagger_male.png");
+        animationEntity.setAnimationDirection(AnimationManager.AnimationDirection.RIGHT);
+        animationEntity.loadAllAnimations();
+
+         */
+    }
+
 
     public void createLights() {
         elementLight=new WorldLightTest(rayHandler);

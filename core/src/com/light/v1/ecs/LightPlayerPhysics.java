@@ -34,6 +34,8 @@ public class LightPlayerPhysics extends LightPhysics {
     private boolean blockControls=false;
     private long blockStartTime;
     private Vector2 blockNextPosition;
+    protected float velocity0=3f;
+    protected float velocity=velocity0;
 
     /*
     utilisation de la classe
@@ -46,12 +48,18 @@ public class LightPlayerPhysics extends LightPhysics {
 
     public LightPlayerPhysics(LightPlayerEntity entity, World world, RayHandler rayHandler) {
         player=entity;
-        init(world, rayHandler);
+        //init(world, rayHandler);
     }
 
-    public void init(World world, RayHandler rayHandler) {
-        itemDiag=Math.sqrt(Math.pow(player.getItemWidth()/2d, 2)*2);
-        addItem(world, rayHandler);
+    public void init(String message) {
+        Gdx.app.debug("tag", "init physics");
+        String[] string = getMessage(message);
+        init(player.getWorld(), player.getRayHandler(), Float.parseFloat(string[0]));
+    }
+
+    public void init(World world, RayHandler rayHandler, float itemWidth) {
+        itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
+        addItem(world, rayHandler, itemWidth);
         createSword(world);
     }
 
@@ -77,6 +85,11 @@ public class LightPlayerPhysics extends LightPhysics {
         else if (event == ECSEvent.Event.SPEED_MODIFIER_REVERSE) {
             reverseTranslateCoef(message);
         }
+        else if (event == ECSEvent.Event.INIT_COMPONENT) {
+            Gdx.app.debug("MSG", "message recu, lancement init");
+            init(message);
+        }
+
     }
 
     @Override
@@ -98,7 +111,9 @@ public class LightPlayerPhysics extends LightPhysics {
         candleAlpha= MathUtils.clamp(candleAlpha+MathUtils.random(-0.05f, 0.05f), 0.7f, 1f);
         lightItem.setColor(127f, 127f, 127f, candleAlpha);
 
-        player.setPosition(bodyItem.getPosition());
+        // à changer par Graphics::setPosition()
+        //player.setPosition(bodyItem.getPosition());
+        SystemManager.getInstance().sendMessage(player, ECSEvent.Event.SET_POSITION, bodyItem.getPosition().x+ECSEvent.MESSAGE_TOKEN+bodyItem.getPosition().y);
 
         for(Fixture currentFixture : bodyItem.getFixtureList()) {
             if (currentFixture.testPoint(2.5f, 12.5f)) {
@@ -113,9 +128,9 @@ public class LightPlayerPhysics extends LightPhysics {
         // render
     }
 
-    private void addItem(World world, RayHandler rayHandler) {
+    private void addItem(World world, RayHandler rayHandler, float itemWidth) {
         PolygonShape boxItem = new PolygonShape();
-        boxItem.setAsBox(player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2, player.getItemWidth()*0.8f * MyMap.UNIT_SCALE / 2);
+        boxItem.setAsBox(itemWidth*0.8f * MyMap.UNIT_SCALE / 2, itemWidth*0.8f * MyMap.UNIT_SCALE / 2);
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.position.set(LightGame.ViewportUtils.viewportWidth / 2f, LightGame.ViewportUtils.viewportHeight / 2);
         boxBodyDef.type= BodyDef.BodyType.DynamicBody;
@@ -202,9 +217,9 @@ public class LightPlayerPhysics extends LightPhysics {
 
     public void setTranslateCoef(String message) {
         contactList.add(message);
-        String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
+        String[] string = getMessage(message);
         deltaSpeed = Float.parseFloat(string[0]);
-        player.setCoefVelocity(deltaSpeed);
+        setCoefVelocity(deltaSpeed);
     }
 
     public void reverseTranslateCoef(String message) {
@@ -223,7 +238,7 @@ public class LightPlayerPhysics extends LightPhysics {
             deltaSpeed=Float.parseFloat(string[0]);
         }
 
-        player.setCoefVelocity(deltaSpeed);
+        setCoefVelocity(deltaSpeed);
     }
 
     private void changePosition(String message) {
@@ -245,7 +260,8 @@ public class LightPlayerPhysics extends LightPhysics {
         bodySword.setAngularVelocity(0.01f);
         bodySword.setActive(true);
 
-        player.setPosition(bodyItem.getPosition());
+        //player.setPosition(bodyItem.getPosition());
+        SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.SET_POSITION, bodyItem.getPosition().x+ECSEvent.MESSAGE_TOKEN+bodyItem.getPosition().y);
     }
 
     private void setActiveSword(boolean active) {
@@ -254,7 +270,7 @@ public class LightPlayerPhysics extends LightPhysics {
 
     private void keyDirectionsPressed(String message) {
         String[] string = message.split(ECSEvent.MESSAGE_TOKEN);
-        float velocity=player.getVelocity();
+        float velocity=getVelocity();
         double angle=getAngle();
 
         ECSEventInput.Keys direction = json.fromJson(ECSEventInput.Keys.class, string[0]);
@@ -325,4 +341,13 @@ public class LightPlayerPhysics extends LightPhysics {
             }
         }
     }
+
+    public float getVelocity() {
+        return velocity;
+    }
+
+    public void setCoefVelocity(float coef) {
+        velocity=coef*velocity0;
+    }
+
 }

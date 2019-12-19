@@ -17,7 +17,8 @@ public class LightObjectPhysics extends LightPhysics {
         fixtureMask=mask;
         createObject(world, rayHandler, object, isSensor);
 
-        this.entity.setPosition(bodyPosition);
+        //this.entity.setPosition(bodyPosition);
+        SystemManager.getInstance().sendMessage(this.entity, ECSEvent.Event.SET_POSITION, bodyPosition.x+ECSEvent.MESSAGE_TOKEN+bodyPosition.y);
         WorldManager.getInstance().add(this.entity);
     }
 

@@ -90,7 +90,7 @@ public class LightGame implements ApplicationListener {
     }
 
     private void update() {
-        camera.position.set(lightPlayerEntity.getPosition().x, lightPlayerEntity.getPosition().y, 0);
+        //camera.position.set(lightPlayerEntity.getPosition().x, lightPlayerEntity.getPosition().y, 0);
         world.step(Gdx.graphics.getDeltaTime(), 8, 3);
         systemManager.update(batch);
     }

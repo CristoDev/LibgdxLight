@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.*;
 
 public class AnimationManager {
-    protected static final String TAG=AnimationManager.class.getSimpleName();
+    protected static final String TAG="AnimationManager";
     protected static final AssetManager _assetManager = new AssetManager();
     protected static final String ROOTPATH="Universal-LPC-spritesheet/";
     protected String _defaultSpritePath = "body/male/red_orc.png";

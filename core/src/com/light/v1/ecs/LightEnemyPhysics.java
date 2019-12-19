@@ -49,8 +49,10 @@ public class LightEnemyPhysics extends LightPhysics {
         }
 
         bodyItem.setLinearVelocity(currentVelocity);
-        entity.setPosition(bodyItem.getPosition());
-        entity.getSprite().setRotation(bodyItem.getAngle()*180f/(float)Math.PI);
+        SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.SET_POSITION, bodyItem.getPosition().x+ECSEvent.MESSAGE_TOKEN+bodyItem.getPosition().y);
+        //entity.setPosition(bodyItem.getPosition());
+
+        //entity.getSprite().setRotation(bodyItem.getAngle()*180f/(float)Math.PI);
     }
 
     @Override

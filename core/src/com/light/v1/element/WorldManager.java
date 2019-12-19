@@ -42,16 +42,4 @@ public class WorldManager {
         Gdx.app.debug("WORLD", "recherche de " + id);
         return warpDestination.get(id);
     }
-
-    public LightEntity getWarp(Object id) {
-        return getWarp(Integer.parseInt(id.toString()));
-    }
-
-    public Vector2 getWarpPosition(int id) {
-        LightEntity entity=getWarp(id);
-
-        return entity.getPosition();
-    }
-
-
 }
