@@ -9,12 +9,12 @@ import com.light.v1.element.WorldManager;
 public class LightObjectPhysics extends LightPhysics {
     //private static final String TAG = "LightObjectPhysics";
 
-    public LightObjectPhysics(LightObjectEntity entity, World world, MapObject object, boolean isSensor, short category, short mask) {
+    public LightObjectPhysics(LightObjectEntity entity, MapObject object, boolean isSensor, short category, short mask) {
         this.entity=entity;
         this.entity.setMapProperties(object.getProperties());
         fixtureCategory=category;
         fixtureMask=mask;
-        createObject(world, object, isSensor);
+        createObject(object, isSensor);
 
         //this.entity.setPosition(bodyPosition);
         SystemManager.getInstance().sendMessage(this.entity, ECSEvent.Event.SET_POSITION, bodyPosition.x+ECSEvent.MESSAGE_TOKEN+bodyPosition.y);

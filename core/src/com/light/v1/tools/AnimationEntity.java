@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class AnimationEntity {
-    protected String _defaultSpritePath = "body/male/red_orc.png";
+    protected String defaultSpritePath = "body/male/red_orc.png";
     protected static String TAG="Character";
 
     protected Vector2 position=new Vector2(0, 0);
     protected AnimationManager animationManager=new AnimationManager();
 
     public void init() {
-        Gdx.app.debug(TAG, "default sprite path "+_defaultSpritePath);
-        animationManager.setDefaultSpritePath(_defaultSpritePath);
-        animationManager.loadTextureAsset(_defaultSpritePath);
+        Gdx.app.debug(TAG, "default sprite path "+ defaultSpritePath);
+        animationManager.setDefaultSpritePath(defaultSpritePath);
+        animationManager.loadTextureAsset(defaultSpritePath);
         //animationManager.loadDefaultSprite();
     }
 
@@ -35,15 +35,15 @@ public class AnimationEntity {
     }
 
     public void createOrc() {
-        set_defaultSpritePath("body/male/red_orc.png");
+        setDefaultSpritePath("body/male/red_orc.png");
     }
 
     public void createHuman() {
-        set_defaultSpritePath("body/male/dark.png");
+        setDefaultSpritePath("body/male/dark.png");
     }
 
-    public void set_defaultSpritePath(String _defaultSpritePath) {
-        this._defaultSpritePath = _defaultSpritePath;
+    public void setDefaultSpritePath(String _defaultSpritePath) {
+        this.defaultSpritePath = _defaultSpritePath;
     }
 
     public Vector2 getPosition() {

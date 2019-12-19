@@ -41,7 +41,7 @@ public class ContactManager implements ContactListener {
             if (property != null) {
                 SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.SPEED_MODIFIER_REVERSE, property.toString() + ECSEvent.MESSAGE_TOKEN + userDataA.toString());
             }
-            warpProperty(userDataA, userDataB);
+            //warpProperty(userDataA, userDataB);
         }
     }
 
@@ -53,9 +53,9 @@ public class ContactManager implements ContactListener {
         }
     }
 
+    /*
     private void warpProperty(Object userDataA, Object userDataB) {
         Object property=((LightObjectEntity)userDataA).getProperty("type");
-        Object property2=((LightObjectEntity)userDataB).getProperty("type");
         if (property != null) {
             if (property.toString().compareTo("warp_source") == 0) {
                 //LightEntity destination=WorldManager.getInstance().getWarp(((LightObjectEntity)userDataA).getProperty("to"));
@@ -65,4 +65,5 @@ public class ContactManager implements ContactListener {
             }
         }
     }
+     */
 }

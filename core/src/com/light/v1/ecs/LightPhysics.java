@@ -1,6 +1,5 @@
 package com.light.v1.ecs;
 
-import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
@@ -22,9 +21,9 @@ public abstract class LightPhysics implements Component {
     protected FixtureDef fixtureDef;
     protected Vector2 bodyPosition=new Vector2(0, 0);
 
-    protected void createObject(World world, MapObject object, boolean isSensor) {
+    protected void createObject(MapObject object, boolean isSensor) {
         initObject(object.getProperties(), isSensor);
-        createShape(world, object);
+        createShape(object);
     }
 
     protected String[] getMessage(String message) {
@@ -52,7 +51,7 @@ public abstract class LightPhysics implements Component {
         }
     }
 
-    private void createShape(World world, MapObject object) {
+    private void createShape(MapObject object) {
         if (object instanceof RectangleMapObject) {
             fixtureDef.shape=createRectangle(object);
         }
@@ -70,7 +69,7 @@ public abstract class LightPhysics implements Component {
             return ;
         }
 
-        Body body=world.createBody(bodyDef);
+        Body body=entity.getWorld().createBody(bodyDef);
         body.createFixture(fixtureDef);
         body.setTransform(bodyPosition, 0);
         body.setUserData(entity);

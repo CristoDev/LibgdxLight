@@ -1,9 +1,21 @@
 à faire:
+
 - github
 https://github.com/CristoDev/LibgdxLight/issues
+
+
+-gestion des points spécifiques sur la carte:
+    - téléporteur (départ - arrivée)
+    - entrée grotte
+    - entrée maison
+    --> utiliser un layer qui ne sera pas directement intégré sur la map
+        --> gestion de points (ou zones) uniquement avec une action indiquée dans le fichier TMX
+
+
 - asset manager
     -> equipement
-            -> inventaire
+        -> inventaire
+
 
 - mettre en place un observer?
     exemple: téléportation:
@@ -13,14 +25,6 @@ https://github.com/CristoDev/LibgdxLight/issues
                 - lancer une animation (arrivée)
                 - jouer un son
 
-- supprimer tous les appels "createObject" avec world et rayhandler -> 2 valeurs dans entity
-- corriger le code pour avoir partout entity (il existe player)
 
-voir:
-https://stackoverflow.com/questions/16721382/collision-in-libgdx-box2d-failing-for-some-bodies
-problème de collision avec les polygons dans l'eau alors que c'est ok avec les rectangles
---> polygon.set
-
-
-* utilisation du clic gauche -> envoyer une action suivant le type d'objet rencontré
+- utilisation du clic gauche -> envoyer une action suivant le type d'objet rencontré
     - ne pas prendre en compte l'arme dans un premier temps

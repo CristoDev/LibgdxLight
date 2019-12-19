@@ -24,9 +24,9 @@ public class LightEnemyPhysics extends LightPhysics {
         this.entity=entity;
     }
 
-    public LightEnemyPhysics(LightEnemyEntity entity, World world, Rectangle rectangle) {
+    public LightEnemyPhysics(LightEnemyEntity entity, Rectangle rectangle) {
         this.entity=entity;
-        addItem(world, rectangle);
+        addItem(rectangle);
         initPositions();
         updateVelocity();
     }
@@ -60,7 +60,7 @@ public class LightEnemyPhysics extends LightPhysics {
         // render
     }
 
-    public void addItem(World world, Rectangle rectangle) {
+    public void addItem(Rectangle rectangle) {
         PolygonShape boxItem = new PolygonShape();
         boxItem.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
 
@@ -79,7 +79,7 @@ public class LightEnemyPhysics extends LightPhysics {
         fixture.density = 100f;
         fixture.shape = box2;
 
-        bodyItem=world.createBody(boxBodyDef);
+        bodyItem=entity.getWorld().createBody(boxBodyDef);
         bodyItem.setLinearDamping(2f);
         bodyItem.setAngularDamping(10f);
         bodyItem.createFixture(fixture);

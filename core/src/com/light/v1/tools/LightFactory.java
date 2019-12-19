@@ -36,7 +36,7 @@ public class LightFactory {
         LightEnemyEntity entity =new LightEnemyEntity(world, rayHandler, camera, mapProperties);
 
         SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightEnemyPhysics(entity, world, rectangle));
+        SystemManager.getInstance().addEntityComponent(entity, new LightEnemyPhysics(entity, rectangle));
         SystemManager.getInstance().addEntityComponent(entity, new LightEnemyGraphics(entity));
 
         return entity;
@@ -47,7 +47,7 @@ public class LightFactory {
 
         SystemManager.getInstance().addEntity(entity);
         SystemManager.getInstance().addEntityComponent(entity, new LightPlayerInput(entity));
-        SystemManager.getInstance().addEntityComponent(entity, new LightPlayerPhysics(entity, world, rayHandler));
+        SystemManager.getInstance().addEntityComponent(entity, new LightPlayerPhysics(entity));
         SystemManager.getInstance().addEntityComponent(entity, new LightPlayerGraphics(entity));
 
         return entity;
@@ -57,7 +57,7 @@ public class LightFactory {
         LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, object.getProperties());
 
         SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, object, isSensor, category, mask));
+        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, object, isSensor, category, mask));
 
         return entity;
     }

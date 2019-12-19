@@ -44,23 +44,24 @@ public class LightPlayerPhysics extends LightPhysics {
     - envoyer un message en fonction des actions (si besoin --> coup d'épée dans la bonne direction?)
      */
 
-    private LightPlayerEntity player;
+    private LightPlayerEntity entity;
 
-    public LightPlayerPhysics(LightPlayerEntity entity, World world, RayHandler rayHandler) {
-        player=entity;
-        //init(world, rayHandler);
+    public LightPlayerPhysics(LightPlayerEntity entity) {
+        //player=entity;
+        this.entity=entity;
     }
 
     public void init(String message) {
         Gdx.app.debug("tag", "init physics");
         String[] string = getMessage(message);
-        init(player.getWorld(), player.getRayHandler(), Float.parseFloat(string[0]));
+        //init(player.getWorld(), player.getRayHandler(), );
+        itemDiag=Math.sqrt(Math.pow(Float.parseFloat(string[0])/2d, 2)*2);
+        addItem(Float.parseFloat(string[0]));
+        createSword();
+
     }
 
     public void init(World world, RayHandler rayHandler, float itemWidth) {
-        itemDiag=Math.sqrt(Math.pow(itemWidth/2d, 2)*2);
-        addItem(world, rayHandler, itemWidth);
-        createSword(world);
     }
 
     @Override
@@ -113,7 +114,7 @@ public class LightPlayerPhysics extends LightPhysics {
 
         // à changer par Graphics::setPosition()
         //player.setPosition(bodyItem.getPosition());
-        SystemManager.getInstance().sendMessage(player, ECSEvent.Event.SET_POSITION, bodyItem.getPosition().x+ECSEvent.MESSAGE_TOKEN+bodyItem.getPosition().y);
+        SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.SET_POSITION, bodyItem.getPosition().x+ECSEvent.MESSAGE_TOKEN+bodyItem.getPosition().y);
 
         for(Fixture currentFixture : bodyItem.getFixtureList()) {
             if (currentFixture.testPoint(2.5f, 12.5f)) {
@@ -128,14 +129,14 @@ public class LightPlayerPhysics extends LightPhysics {
         // render
     }
 
-    private void addItem(World world, RayHandler rayHandler, float itemWidth) {
+    private void addItem(float itemWidth) {
         PolygonShape boxItem = new PolygonShape();
         boxItem.setAsBox(itemWidth*0.8f * MyMap.UNIT_SCALE / 2, itemWidth*0.8f * MyMap.UNIT_SCALE / 2);
         BodyDef boxBodyDef = new BodyDef();
         boxBodyDef.position.set(LightGame.ViewportUtils.viewportWidth / 2f, LightGame.ViewportUtils.viewportHeight / 2);
         boxBodyDef.type= BodyDef.BodyType.DynamicBody;
 
-        bodyItem = world.createBody(boxBodyDef);
+        bodyItem = entity.getWorld().createBody(boxBodyDef);
         FixtureDef boxFixtureDef = new FixtureDef();
         boxFixtureDef.filter.categoryBits=ECSFilter.PLAYER;
         boxFixtureDef.filter.maskBits = ECSFilter.MASK_PLAYER;
@@ -144,17 +145,17 @@ public class LightPlayerPhysics extends LightPhysics {
         boxFixtureDef.restitution = 0f;
         boxFixtureDef.density = 0f;
         bodyItem.createFixture(boxFixtureDef);
-        bodyItem.setUserData(player);
+        bodyItem.setUserData(entity);
         boxItem.dispose();
 
-        lightItem = new ConeLight(rayHandler, 12, Color.GRAY, 5, 15, 5, 270, 30);
+        lightItem = new ConeLight(entity.getRayHandler(), 12, Color.GRAY, 5, 15, 5, 270, 30);
         lightItem.setContactFilter(ECSFilter.LIGHT, (short) 0, ECSFilter.MASK_LIGHT);
         lightItem.setSoft(false);
         lightItem.attachToBody(bodyItem);
     }
 
     // @todo modifier le code pour uniquement faire une action en fonction de l'équipement ou de l'objet devant (pnj/panneau/monstre)
-    public void createSword(World world) {
+    public void createSword() {
         float length=((float)itemDiag+swordWidth)*MyMap.UNIT_SCALE;
 
         Vector2[] swordAttack=new Vector2[]{
@@ -169,7 +170,7 @@ public class LightPlayerPhysics extends LightPhysics {
 
         BodyDef swordBodyDef = new BodyDef();
         swordBodyDef.type= BodyDef.BodyType.DynamicBody; // en attendant mieux -> utilisation des masques
-        bodySword = world.createBody(swordBodyDef);
+        bodySword = entity.getWorld().createBody(swordBodyDef);
         bodySword.setActive(false);
 
         PolygonShape swordShape=new PolygonShape();
@@ -187,7 +188,7 @@ public class LightPlayerPhysics extends LightPhysics {
 
         BodyDef collisionBodyDef=new BodyDef();
         collisionBodyDef.type= BodyDef.BodyType.DynamicBody;
-        bodyCollision=world.createBody(collisionBodyDef);
+        bodyCollision=entity.getWorld().createBody(collisionBodyDef);
         bodyCollision.setActive(false);
         PolygonShape collisionShape=new PolygonShape();
         collisionShape.setAsBox(0.4f, 0.2f);
@@ -310,7 +311,7 @@ public class LightPlayerPhysics extends LightPhysics {
         ECSEventInput.States state=json.fromJson(ECSEventInput.States.class, string[1]);
 
         if (direction == ECSEventInput.Keys.SPACE &&  state == ECSEventInput.States.DOWN) {
-            new WorldTorch(player.rayHandler, player.camera.position);
+            new WorldTorch(entity.rayHandler, entity.camera.position);
         }
     }
 
@@ -329,10 +330,10 @@ public class LightPlayerPhysics extends LightPhysics {
         }
         else if (button == ECSEventInput.Buttons.RIGHT) {
             if (state == ECSEventInput.States.DOWN || state == ECSEventInput.States.PRESSED) {
-                player.elementLightActivate(Float.parseFloat(string[2]), Float.parseFloat(string[3]));
+                entity.elementLightActivate(Float.parseFloat(string[2]), Float.parseFloat(string[3]));
             }
             else if (state == ECSEventInput.States.UP) {
-                player.elementLightSetActive(false);
+                entity.elementLightSetActive(false);
             }
         }
     }
