@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class MyMap {
     private String mapName="test.tmx";
-    private String currentMapName ="";
+    //private String currentMapName ="";
     private TiledMap currentMap =null;
     private HashMap<String, MapLayer> mapLayers=new HashMap<String, MapLayer>();
 
@@ -82,7 +82,7 @@ public class MyMap {
     }
 
     public void loadMap(String mapName){
-        currentMapName ="";
+        String currentMapName ="";
 
         if( mapName == null || mapName.isEmpty() ) {
             Gdx.app.debug(TAG, "Map is invalid");

@@ -1,10 +1,7 @@
 package com.light.v1.tools;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.ecs.*;
-import com.light.v1.element.WorldManager;
 
 public class ContactManager implements ContactListener {
     //private static final String TAG = "ContactManager";
@@ -57,17 +54,15 @@ public class ContactManager implements ContactListener {
     }
 
     private void warpProperty(Object userDataA, Object userDataB) {
-        /*
         Object property=((LightObjectEntity)userDataA).getProperty("type");
+        Object property2=((LightObjectEntity)userDataB).getProperty("type");
         if (property != null) {
             if (property.toString().compareTo("warp_source") == 0) {
-                LightEntity destination=WorldManager.getInstance().getWarp(((LightObjectEntity)userDataA).getProperty("to"));
-                Vector2 position=destination.getPosition();
-                Gdx.app.debug("WORLD", "changement de position vers " + position.x+"/"+position.y);
-                SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.CHANGE_POSITION, position.x + ECSEvent.MESSAGE_TOKEN + position.y);
+                //LightEntity destination=WorldManager.getInstance().getWarp(((LightObjectEntity)userDataA).getProperty("to"));
+                //Vector2 position=destination.getPosition();
+                //Gdx.app.debug("WORLD", "changement de position vers " + position.x+"/"+position.y);
+                //SystemManager.getInstance().sendMessage(((LightPlayerEntity) userDataB), ECSEvent.Event.CHANGE_POSITION, position.x + ECSEvent.MESSAGE_TOKEN + position.y);
             }
         }
-
-         */
     }
 }

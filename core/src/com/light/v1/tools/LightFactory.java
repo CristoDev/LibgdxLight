@@ -57,7 +57,7 @@ public class LightFactory {
         LightObjectEntity entity= new LightObjectEntity(world, rayHandler, camera, object.getProperties());
 
         SystemManager.getInstance().addEntity(entity);
-        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, rayHandler, object, isSensor, category, mask));
+        SystemManager.getInstance().addEntityComponent(entity, new LightObjectPhysics(entity, world, object, isSensor, category, mask));
 
         return entity;
     }

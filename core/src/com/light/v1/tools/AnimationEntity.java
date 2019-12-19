@@ -13,7 +13,7 @@ public class AnimationEntity {
 
     public void init() {
         Gdx.app.debug(TAG, "default sprite path "+_defaultSpritePath);
-        animationManager.set_defaultSpritePath(_defaultSpritePath);
+        animationManager.setDefaultSpritePath(_defaultSpritePath);
         animationManager.loadTextureAsset(_defaultSpritePath);
         //animationManager.loadDefaultSprite();
     }

@@ -39,7 +39,10 @@ public class AnimationManager {
     protected Animation _currentAnimation;
     protected AnimationState _currentAnimationState;
     protected AnimationDirection _currentAnimationDirection;
-    protected int left=9, up=8, down=10, right=11;
+    protected int left=9;
+    protected int up=8;
+    protected int down=10;
+    protected int right=11;
     protected float _frameTime = 0f;
 
     // petu etre utiliser une classe avec une variable reprenant l'enum?
@@ -51,7 +54,9 @@ public class AnimationManager {
         SHOOT(16,19,13),
         HURT(20,20,6);
 
-        private int rowStart, rowEnd, framesCount;
+        private int rowStart;
+        private int rowEnd;
+        private int framesCount;
 
         AnimationState(int start, int end, int count) {
             rowStart=start;
@@ -271,7 +276,7 @@ public class AnimationManager {
         return (TextureRegion)_currentAnimation.getKeyFrame(_frameTime);
     }
 
-    public void set_defaultSpritePath(String _defaultSpritePath) {
+    public void setDefaultSpritePath(String _defaultSpritePath) {
         this._defaultSpritePath = _defaultSpritePath;
     }
 

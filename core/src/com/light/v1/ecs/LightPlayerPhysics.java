@@ -31,9 +31,9 @@ public class LightPlayerPhysics extends LightPhysics {
     private double angle=Math.PI/2;
     private float swordWidth=10;
     private List<String> contactList=new ArrayList<>();
-    private boolean blockControls=false;
-    private long blockStartTime;
-    private Vector2 blockNextPosition;
+    //private boolean blockControls=false;
+    //private long blockStartTime;
+    //private Vector2 blockNextPosition;
     protected float velocity0=3f;
     protected float velocity=velocity0;
 
@@ -239,11 +239,6 @@ public class LightPlayerPhysics extends LightPhysics {
         }
 
         setCoefVelocity(deltaSpeed);
-    }
-
-    private void changePosition(String message) {
-        //bodyItem.setTransform(Float.parseFloat(string[0]), Float.parseFloat(string[1]), 0);
-
     }
 
     // @todo à déplacer dans une autre classe (action?)

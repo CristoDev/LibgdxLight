@@ -13,6 +13,8 @@ https://github.com/CristoDev/LibgdxLight/issues
                 - lancer une animation (arrivée)
                 - jouer un son
 
+- supprimer tous les appels "createObject" avec world et rayhandler -> 2 valeurs dans entity
+- corriger le code pour avoir partout entity (il existe player)
 
 voir:
 https://stackoverflow.com/questions/16721382/collision-in-libgdx-box2d-failing-for-some-bodies

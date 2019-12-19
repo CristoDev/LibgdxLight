@@ -95,16 +95,12 @@ public class SpriteSheet {
         echo("Nombre de fichiers 'common': "+ common.size());
     }
 
-
     public void init() {
         echo("Lancement du scan de "+PATH);
         scanDirectory(PATH, 0);
         echo("Scan terminé ________________________________");
         echo("Résultats:");
         resume();
-        getData(common);;
-
+        getData(common);
     }
-
-
 }

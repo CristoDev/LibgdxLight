@@ -22,9 +22,9 @@ public abstract class LightPhysics implements Component {
     protected FixtureDef fixtureDef;
     protected Vector2 bodyPosition=new Vector2(0, 0);
 
-    protected void createObject(World world, RayHandler rayHandler, MapObject object, boolean isSensor) {
+    protected void createObject(World world, MapObject object, boolean isSensor) {
         initObject(object.getProperties(), isSensor);
-        createShape(world, rayHandler, object);
+        createShape(world, object);
     }
 
     protected String[] getMessage(String message) {
@@ -52,7 +52,7 @@ public abstract class LightPhysics implements Component {
         }
     }
 
-    private void createShape(World world, RayHandler rayHandler, MapObject object) {
+    private void createShape(World world, MapObject object) {
         if (object instanceof RectangleMapObject) {
             fixtureDef.shape=createRectangle(object);
         }

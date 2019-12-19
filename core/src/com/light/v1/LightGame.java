@@ -28,8 +28,7 @@ public class LightGame implements ApplicationListener {
     private RayHandler rayHandler;
     private static SystemManager systemManager=SystemManager.getInstance();
     private LightFactory lightFactory=LightFactory.getInstance();
-    private LightPlayerEntity lightPlayerEntity;
-    private static WorldManager worldManager=WorldManager.getInstance();
+    //private static WorldManager worldManager=WorldManager.getInstance();
 
     public static class ViewportUtils { // classe public au lieu de private en attendant le refactoring complet
         public static float viewportWidth;
@@ -65,6 +64,7 @@ public class LightGame implements ApplicationListener {
         mapRenderer = new OrthogonalTiledMapRenderer(lightFactory.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightFactory.buildMap();
 
+        LightPlayerEntity lightPlayerEntity;
         lightPlayerEntity=LightFactory.getInstance().createLightPlayer(camera);
         lightPlayerEntity.createLights();
 

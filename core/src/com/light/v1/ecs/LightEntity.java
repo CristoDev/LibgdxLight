@@ -1,16 +1,10 @@
 package com.light.v1.ecs;
 
 import box2dLight.RayHandler;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapProperties;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.light.v1.tools.AnimationEntity;
-import com.light.v1.tools.MyMap;
 
 public class LightEntity {
     //private static final String TAG = "LightEntity";
@@ -21,7 +15,6 @@ public class LightEntity {
 
     //protected float velocity0=3f;
     //protected float velocity=velocity0;
-
     //protected Vector2 position=new Vector2(0, 0);
     //protected Sprite sprite;
     //private float itemWidth=16;

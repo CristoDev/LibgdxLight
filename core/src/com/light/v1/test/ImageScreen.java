@@ -2,10 +2,7 @@ package com.light.v1.test;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.light.v1.tools.AnimationEntity;
@@ -13,10 +10,10 @@ import com.light.v1.tools.AnimationManager;
 
 public class ImageScreen {
     protected SpriteBatch batch = null;
-    int x = 0, y = 0, dx = 1, dy = 2, nb = 30;
+    int nb = 30;
 
-    Array<Vector2> positions = new Array<Vector2>();
-    Array<Vector2> deltas = new Array<Vector2>();
+    Array<Vector2> positions = new Array<>();
+    Array<Vector2> deltas = new Array<>();
 
     AnimationEntity p = null;
     AnimationEntity o = null;
@@ -27,7 +24,8 @@ public class ImageScreen {
 
     private void updatePosition() {
         for (int i = 0; i < nb; i++) {
-            float dx = deltas.get(i).x, dy = deltas.get(i).y;
+            float dx = deltas.get(i).x;
+            float dy = deltas.get(i).y;
 
             if (positions.get(i).x >= 200) {
                 dx = -1;
