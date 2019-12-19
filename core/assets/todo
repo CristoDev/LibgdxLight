@@ -2,6 +2,16 @@
 - github
 https://github.com/CristoDev/LibgdxLight/issues
 - asset manager
+    -> equipement
+            -> inventaire
+
+- mettre en place un observer?
+    exemple: téléportation:
+                - lancer une animation (départ)
+                - jouer un son
+                - déplacer le personnage
+                - lancer une animation (arrivée)
+                - jouer un son
 
 
 voir:

@@ -22,7 +22,9 @@ public interface ECSEvent {
         KEY_ACTION,
         KEY_DIRECTION,
         SPEED_MODIFIER,
-        SPEED_MODIFIER_REVERSE
+        SPEED_MODIFIER_REVERSE,
+        PLAY_SOUND,
+        ANIMATION
     }
 
     enum Direction {
