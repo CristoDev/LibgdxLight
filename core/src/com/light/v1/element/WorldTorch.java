@@ -19,7 +19,7 @@ public class WorldTorch implements WorldElement {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
         // update
     }
 }

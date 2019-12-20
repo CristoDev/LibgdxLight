@@ -1,6 +1,7 @@
 package com.light.v1.ecs;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,12 +66,21 @@ public class SystemManager {
         }
     }
 
+    /*
     public void update(Batch batch) {
         for (LightEntity entity : entities) {
             update(entity, batch);
         }
     }
+     */
 
+    public void update(float delta) {
+        for (LightEntity entity : entities) {
+            update(entity, delta);
+        }
+    }
+
+/*
     public void update(LightEntity entity, Batch batch) {
         ArrayList<Component> components=getEntityComponents(entity);
 
@@ -81,13 +91,26 @@ public class SystemManager {
         entity.update(batch);
     }
 
-    public void render(Batch batch) {
+ */
+
+    public void update(LightEntity entity, float delta) {
+        ArrayList<Component> components=getEntityComponents(entity);
+
+        for (Component component : components) {
+            component.update(delta);
+        }
+
+        entity.update(delta);
+    }
+
+
+    public void render(SpriteBatch batch) {
         for (LightEntity entity : entities) {
             render(entity, batch);
         }
     }
 
-    public void render(LightEntity entity, Batch batch) {
+    public void render(LightEntity entity, SpriteBatch batch) {
         ArrayList<Component> components=getEntityComponents(entity);
 
         for (Component component : components) {

@@ -58,6 +58,10 @@ public class AnimationEntity {
         setPosition(new Vector2(x, y));
     }
 
+    public void setPosition(float x, float y) {
+        setPosition(new Vector2(x, y));
+    }
+
     public void addEquipment(String filename) {
         animationManager.addElement(filename);
     }
@@ -66,8 +70,11 @@ public class AnimationEntity {
         animationManager.setAnimationState(state);
     }
 
+    public void setAnimationState(String state) {
+        animationManager.setAnimationState(state);
+    }
+
     public void setAnimationDirection(AnimationManager.AnimationDirection direction) {
         animationManager.setAnimationDirection(direction);
-
     }
 }

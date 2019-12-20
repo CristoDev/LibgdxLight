@@ -26,7 +26,7 @@ public class WorldLightTest implements WorldElement {
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
         //float elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000f;
         //loop.setPosition(5 + 3 * MathUtils.cos(elapsedTime), 8 + 2 * MathUtils.sin(elapsedTime));
     }

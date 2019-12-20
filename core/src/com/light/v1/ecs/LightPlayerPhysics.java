@@ -6,6 +6,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -94,7 +95,7 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     @Override
-    public void update(Batch batch) {
+    public void update(float delta) {
         int fps = Gdx.graphics.getFramesPerSecond();
 
         if (fps > 0 && fps < maxFPS) {
@@ -106,7 +107,8 @@ public class LightPlayerPhysics extends LightPhysics {
         }
 
         bodyItem.setTransform(bodyItem.getPosition().x, bodyItem.getPosition().y, (float)angle);
-        lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y);
+        lightItem.setDirection((int)(bodyItem.getAngle()*180/Math.PI));
+        lightItem.setPosition(bodyItem.getPosition().x, bodyItem.getPosition().y+1.1f);
 
         // petit effet de bougie sur le cone de lumière
         candleAlpha= MathUtils.clamp(candleAlpha+MathUtils.random(-0.05f, 0.05f), 0.7f, 1f);
@@ -125,7 +127,7 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     @Override
-    public void render(Batch batch) {
+    public void render(SpriteBatch batch) {
         // render
     }
 
@@ -148,10 +150,11 @@ public class LightPlayerPhysics extends LightPhysics {
         bodyItem.setUserData(entity);
         boxItem.dispose();
 
-        lightItem = new ConeLight(entity.getRayHandler(), 12, Color.GRAY, 5, 15, 5, 270, 30);
+        lightItem = new ConeLight(entity.getRayHandler(), 12, Color.GRAY, 5, 0, 0, 270, 30);
         lightItem.setContactFilter(ECSFilter.LIGHT, (short) 0, ECSFilter.MASK_LIGHT);
         lightItem.setSoft(false);
-        lightItem.attachToBody(bodyItem);
+        //lightItem.attachToBody(bodyItem);
+
     }
 
     // @todo modifier le code pour uniquement faire une action en fonction de l'équipement ou de l'objet devant (pnj/panneau/monstre)

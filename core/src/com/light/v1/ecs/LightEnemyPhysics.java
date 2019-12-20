@@ -2,6 +2,7 @@ package com.light.v1.ecs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -42,7 +43,7 @@ public class LightEnemyPhysics extends LightPhysics {
     }
 
     @Override
-    public void update(Batch batch) {
+    public void update(float delta) {
         if (isChangingPosition()) {
             currentIndex=(currentIndex+1)%positions.length;
             updateVelocity();
@@ -56,7 +57,7 @@ public class LightEnemyPhysics extends LightPhysics {
     }
 
     @Override
-    public void render(Batch batch) {
+    public void render(SpriteBatch batch) {
         // render
     }
 

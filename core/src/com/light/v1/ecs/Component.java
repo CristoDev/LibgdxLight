@@ -1,6 +1,7 @@
 package com.light.v1.ecs;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Json;
 
 public interface Component {
@@ -9,6 +10,7 @@ public interface Component {
 
     void dispose();
     void receiveMessage(ECSEvent.Event event, String message);
-    void update(Batch batch);
-    void render(Batch batch);
+    //void update(Batch batch);
+    void update(float delta);
+    void render(SpriteBatch batch);
 }

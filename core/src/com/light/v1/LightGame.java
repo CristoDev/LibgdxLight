@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.ecs.*;
 import com.light.v1.element.WorldManager;
+import com.light.v1.tools.AnimationManager;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
@@ -68,11 +69,18 @@ public class LightGame implements ApplicationListener {
         lightPlayerEntity=LightFactory.getInstance().createLightPlayer(camera);
         lightPlayerEntity.createLights();
 
+        test();
+    }
+
+    private  void test() {
         //Vector3 point=new Vector3(37, 279, 0);
         Vector3 point=new Vector3(11, 27, 0);
         Gdx.app.debug("V3a", point.x+"/"+point.y);
         camera.unproject(point);
         Gdx.app.debug("V3b", point.x+"/"+point.y);
+
+        Gdx.app.debug("test", "==>"+AnimationManager.AnimationState.WALK.toString());
+
     }
 
     @Override
@@ -89,15 +97,15 @@ public class LightGame implements ApplicationListener {
         world.dispose();
     }
 
-    private void update() {
+    private void update(float delta) {
         //camera.position.set(lightPlayerEntity.getPosition().x, lightPlayerEntity.getPosition().y, 0);
-        world.step(Gdx.graphics.getDeltaTime(), 8, 3);
-        systemManager.update(batch);
+        world.step(delta, 8, 3);
+        systemManager.update(delta);
     }
 
     @Override
     public void render() {
-        update();
+        update(Gdx.graphics.getDeltaTime());
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

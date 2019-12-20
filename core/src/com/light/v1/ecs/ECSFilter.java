@@ -19,7 +19,7 @@ public interface ECSFilter {
     // masques
     short MASK_PLAYER = OBSTACLE | FLOOR | WALL | OBSTACLE | ENEMY | INTERACTION;
     short MASK_ENEMY = FLOOR | WALL | PLAYER | OBSTACLE;
-    short MASK_LIGHT = WALL | OBSTACLE;
+    short MASK_LIGHT = 0; //WALL | OBSTACLE;
     short MASK_OBSTACLE = ENEMY | PLAYER | LIGHT;
     short MASK_INTERACTION = PLAYER | NPC;
     short MASK_FLOOR = -1;

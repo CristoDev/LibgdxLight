@@ -19,34 +19,36 @@ import java.util.*;
 
 public class AnimationManager {
     protected static final String TAG="AnimationManager";
-    protected static final AssetManager _assetManager = new AssetManager();
+    protected static final AssetManager assetManager = new AssetManager();
     protected static final String ROOTPATH="Universal-LPC-spritesheet/";
-    protected String _defaultSpritePath = "body/male/red_orc.png";
-    protected static InternalFileHandleResolver _filePathResolver =  new InternalFileHandleResolver();
+    protected String defaultSpritePath = "body/male/red_orc.png";
+    protected static InternalFileHandleResolver filePathResolver =  new InternalFileHandleResolver();
 
     protected Pixmap character=null;
     protected List<String> elements=new ArrayList<String>();
     protected float frameDuration=0.1f;
-    protected TextureRegion _currentFrame = null;
+    protected TextureRegion currentFrame = null;
     protected int FRAME_WIDTH = 64;
     protected int FRAME_HEIGHT = 64;
-    protected int FRAME_WIDTH_SCALE = 2;
-    protected int FRAME_HEIGHT_SCALE = 2;
+    protected float FRAME_WIDTH_SCALE = 1/32f;
+    protected float FRAME_HEIGHT_SCALE = 1/32f;
 
-    protected Hashtable<AnimationState, Animation<TextureRegion>> _animations;
-    protected HashMap<AnimationState, HashMap<String, Animation<TextureRegion>>> _animationsFull;
+    protected Hashtable<AnimationState, Animation<TextureRegion>> animations;
+    protected HashMap<AnimationState, HashMap<String, Animation<TextureRegion>>> animationsFull;
 
-    protected Animation _currentAnimation;
-    protected AnimationState _currentAnimationState;
-    protected AnimationDirection _currentAnimationDirection;
+    protected Animation currentAnimation;
+    protected AnimationState currentAnimationState;
+    protected AnimationDirection currentAnimationDirection;
     protected int left=9;
     protected int up=8;
     protected int down=10;
     protected int right=11;
     protected float _frameTime = 0f;
+    private boolean debug=false;
+    protected boolean idle=true;
 
     // petu etre utiliser une classe avec une variable reprenant l'enum?
-    public static enum AnimationState {
+    public enum AnimationState {
         SPELLCAST(0, 3, 7),
         THRUST(4, 7, 8),
         WALK(8, 11, 9),
@@ -95,15 +97,15 @@ public class AnimationManager {
     }
 
     public AnimationManager() {
-        _animations= new Hashtable<>();
-        _animationsFull=new HashMap<>();
-        _currentAnimationState=AnimationState.WALK;
-        _currentAnimationDirection=AnimationDirection.LEFT;
+        animations = new Hashtable<>();
+        animationsFull =new HashMap<>();
+        currentAnimationState =AnimationState.WALK;
+        currentAnimationDirection =AnimationDirection.LEFT;
     }
 
     private Texture buildTexture() {
         if (elements.size() > 0) {
-            character = new Pixmap(Gdx.files.internal(ROOTPATH + _defaultSpritePath));
+            character = new Pixmap(Gdx.files.internal(ROOTPATH + defaultSpritePath));
 
             for (String element : elements) {
                 character.drawPixmap(new Pixmap(Gdx.files.internal(element)), 0, 0);
@@ -112,7 +114,7 @@ public class AnimationManager {
             return new Texture(character);
         }
         else {
-            return getTextureAsset(_defaultSpritePath);
+            return getTextureAsset(defaultSpritePath);
         }
     }
 
@@ -136,7 +138,7 @@ public class AnimationManager {
             }
 
             animation.put(direction.name(), new Animation(frameDuration, frames, Animation.PlayMode.LOOP));
-            _animationsFull.put(animationState, animation);
+            animationsFull.put(animationState, animation);
 
             if (animationState.getRowStart() == animationState.getRowEnd()) {
                 break ;
@@ -145,31 +147,27 @@ public class AnimationManager {
     }
 
     protected void loadAllAnimations(){
-        // sortie de la boucle FOR le temps de chargement est largement reduit :)
         Texture texture = buildTexture();
+
         for (AnimationState state : AnimationState.values()) {
             loadAnimation(texture, state);
         }
 
-        HashMap<String, Animation<TextureRegion>> animation=_animationsFull.get(_currentAnimationState);
-        _currentAnimation=animation.get(_currentAnimationDirection.name());
-        _currentFrame = (TextureRegion)_currentAnimation.getKeyFrame(_frameTime);
+        HashMap<String, Animation<TextureRegion>> animation= animationsFull.get(currentAnimationState);
+        currentAnimation =animation.get(currentAnimationDirection.name());
+        currentFrame = (TextureRegion) currentAnimation.getKeyFrame(_frameTime);
     }
 
-
-
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
-
-
 
     protected void loadAnimationFromDefaultFile(TextureAtlas textureAtlas, AnimationState animationState) {
         for (AnimationDirection direction : AnimationDirection.values()) {
             Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(animationState.name()+"_"+direction.name());
             HashMap<String, Animation<TextureRegion>> animation=new HashMap<>();
             animation.put(direction.name(), new Animation(frameDuration, regions, Animation.PlayMode.LOOP));
-            _animationsFull.put(animationState, animation);
+            animationsFull.put(animationState, animation);
 
             if (animationState.getRowStart() == animationState.getRowEnd()) {
                 break ;
@@ -200,11 +198,9 @@ public class AnimationManager {
             loadAnimationFromDefaultFile(textureAtlas, state);
         }
 
-        HashMap<String, Animation<TextureRegion>> animation=_animationsFull.get(_currentAnimationState);
-        _currentAnimation=animation.get(_currentAnimationDirection.name());
-        _currentFrame = (TextureRegion)_currentAnimation.getKeyFrame(_frameTime);
-
-
+        HashMap<String, Animation<TextureRegion>> animation= animationsFull.get(currentAnimationState);
+        currentAnimation =animation.get(currentAnimationDirection.name());
+        currentFrame = (TextureRegion) currentAnimation.getKeyFrame(_frameTime);
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -212,25 +208,48 @@ public class AnimationManager {
     //////////////////////////////////////////////////////////////////////////////
 
     public AnimationState getCurrentAnimationState() {
-        return _currentAnimationState;
+        return currentAnimationState;
     }
 
     public void setAnimationState(AnimationState _currentAnimationState) {
-        this._currentAnimationState = _currentAnimationState;
+        this.currentAnimationState = _currentAnimationState;
+    }
+
+    public void setAnimationState(String state) {
+        if (state.compareTo("IDLE") == 0) {
+            setAnimationIdle();
+            return ;
+        }
+
+        for (AnimationState animation : AnimationState.values()) {
+            if (state.compareTo(animation.toString()) == 0) {
+                Gdx.app.debug("ANIMATION", "changement d'état trouvé! "+state);
+                setAnimationState(animation);
+                return;
+            }
+        }
+    }
+
+    public void setAnimationIdle() {
+        idle=true;
+        setAnimationState(AnimationState.WALK);
+    }
+
+    public void unsetAnimationIdle() {
+        idle=false;
     }
 
     public AnimationDirection getCurrentAnimationDirection() {
-        return _currentAnimationDirection;
+        return currentAnimationDirection;
     }
 
     public void setAnimationDirection(AnimationDirection _currentAnimationDirection) {
-        this._currentAnimationDirection = _currentAnimationDirection;
+        this.currentAnimationDirection = _currentAnimationDirection;
     }
 
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////
-
 
     public void loadTextureAsset(String textureFilenamePath){
         if( textureFilenamePath == null || textureFilenamePath.isEmpty() ){
@@ -239,14 +258,14 @@ public class AnimationManager {
 
         String textureFilenameRootPath=ROOTPATH+textureFilenamePath;
 
-        if( _assetManager.isLoaded(textureFilenameRootPath) ){
+        if( assetManager.isLoaded(textureFilenameRootPath) ){
             return;
         }
 
-        if( _filePathResolver.resolve(textureFilenameRootPath).exists() ){
-            _assetManager.setLoader(Texture.class, new TextureLoader(_filePathResolver));
-            _assetManager.load(textureFilenameRootPath, Texture.class);
-            _assetManager.finishLoadingAsset(textureFilenameRootPath);
+        if( filePathResolver.resolve(textureFilenameRootPath).exists() ){
+            assetManager.setLoader(Texture.class, new TextureLoader(filePathResolver));
+            assetManager.load(textureFilenameRootPath, Texture.class);
+            assetManager.finishLoadingAsset(textureFilenameRootPath);
         }
         else{
             Gdx.app.debug(TAG, "loadTextureAsset::Texture doesn't exist!: " + textureFilenameRootPath );
@@ -257,8 +276,8 @@ public class AnimationManager {
         Texture texture=null;
         String textureFilenameRootPath=ROOTPATH+textureFilenamePath;
 
-        if (_assetManager.isLoaded(textureFilenameRootPath)) {
-            texture= _assetManager.get(textureFilenameRootPath, Texture.class);
+        if (assetManager.isLoaded(textureFilenameRootPath)) {
+            texture= assetManager.get(textureFilenameRootPath, Texture.class);
         }
         else {
             Gdx.app.debug(TAG, "getTextureAsset::Texture is not loaded "+ textureFilenameRootPath);
@@ -269,18 +288,22 @@ public class AnimationManager {
 
     public void update(float delta) {
         _frameTime = (_frameTime + delta)%5; //Want to avoid overflow
-        _currentFrame=getCurrentFrame(_frameTime);
+        currentFrame = getCurrentFrame(_frameTime);
     }
 
     public TextureRegion getCurrentFrame(float _frameTime) {
-        return (TextureRegion)_currentAnimation.getKeyFrame(_frameTime);
+        return (TextureRegion) currentAnimation.getKeyFrame(_frameTime);
     }
 
     public void setDefaultSpritePath(String _defaultSpritePath) {
-        this._defaultSpritePath = _defaultSpritePath;
+        this.defaultSpritePath = _defaultSpritePath;
     }
 
     public void render (SpriteBatch batch, Vector2 position) {
-        batch.draw(_currentFrame, position.x, position.y, FRAME_WIDTH*FRAME_WIDTH_SCALE, FRAME_HEIGHT*FRAME_HEIGHT_SCALE);
+        if (debug) {
+            Texture bgTest = new Texture(Gdx.files.internal("background_test_64.png"));
+            batch.draw(bgTest, position.x, position.y, FRAME_WIDTH * FRAME_WIDTH_SCALE, FRAME_HEIGHT * FRAME_HEIGHT_SCALE);
+        }
+        batch.draw(currentFrame, position.x, position.y, FRAME_WIDTH*FRAME_WIDTH_SCALE, FRAME_HEIGHT*FRAME_HEIGHT_SCALE);
     }
 }

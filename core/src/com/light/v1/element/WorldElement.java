@@ -6,6 +6,6 @@ public interface WorldElement {
     long startTime= TimeUtils.millis();
     String name="WorldElement";
 
-    void update();
+    void update(float delta);
 
 }

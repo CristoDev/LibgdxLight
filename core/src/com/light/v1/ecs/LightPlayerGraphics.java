@@ -1,7 +1,8 @@
 package com.light.v1.ecs;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.light.v1.tools.AnimationManager;
 import com.light.v1.tools.MyMap;
 
 public class LightPlayerGraphics extends LightGraphics {
@@ -19,21 +20,19 @@ public class LightPlayerGraphics extends LightGraphics {
     }
 
     public void init() {
-        createSprite("item.png");
+        createPlayer();
         SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.INIT_COMPONENT, Float.toString(itemWidth));
     }
 
-
-
     @Override
-    public void update(Batch batch) {
-        // update
-        entity.getCamera().position.set(sprite.getX(), sprite.getY(), 0);
+    public void update(float delta) {
+        animationEntity.update(delta);
+        entity.getCamera().position.set(animationEntity.getPosition().x, animationEntity.getPosition().y, 0);
     }
 
-    public void render(Batch batch) {
+    public void render(SpriteBatch batch) {
         batch.begin();
-        sprite.draw(batch);
+        animationEntity.render(batch);
         batch.end();
     }
 
@@ -44,9 +43,12 @@ public class LightPlayerGraphics extends LightGraphics {
 
     @Override
     public void receiveMessage(ECSEvent.Event event, String message) {
+        String[] string=message.split(ECSEvent.MESSAGE_TOKEN);
         if (event == ECSEvent.Event.SET_POSITION) {
-            String[] string=message.split(ECSEvent.MESSAGE_TOKEN);
-            sprite.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE / 2, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
+            animationEntity.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
+        }
+        else if (event == ECSEvent.Event.SET_STATE) {
+            //animationEntity.setAnimationState();
         }
     }
 

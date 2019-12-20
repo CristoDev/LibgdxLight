@@ -1,5 +1,6 @@
 package com.light.v1.ecs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,6 +10,7 @@ import java.util.Map;
 public abstract class LightInput implements Component {
     public static Vector2 mousePosition=new Vector2(0, 0);
     public static Map<ECSEventInput.Keys, ECSEventInput.States> keyDirections = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
+    private boolean idle=true;
 
     static {
         keyDirections.put(ECSEventInput.Keys.LEFT, ECSEventInput.States.IDLE);
@@ -33,6 +35,7 @@ public abstract class LightInput implements Component {
     };
 
     protected void keyPressed(int keycode, ECSEventInput.States state) {
+        Gdx.app.debug("TAG", "key pressed");
         switch (keycode) {
             case Input.Keys.LEFT:
                 keyDirections.put(ECSEventInput.Keys.LEFT, state);
@@ -50,19 +53,22 @@ public abstract class LightInput implements Component {
                 keyActions.put(ECSEventInput.Keys.SPACE, state);
                 break;
             default:
-                // nothind to do
+                // nothing to do
         }
     }
 
     protected void updateKeys(LightEntity lightEntity, Map<ECSEventInput.Keys, ECSEventInput.States> entries, ECSEvent.Event event) {
         LightPlayerEntity lightPlayerEntity=(LightPlayerEntity)lightEntity;
+        idle=true;
 
         for (Map.Entry<ECSEventInput.Keys, ECSEventInput.States> entry : entries.entrySet()) {
             if (entry.getValue() != ECSEventInput.States.IDLE) {
+                idle=false;
                 sendMessage(lightPlayerEntity, event, buildMessageKey(entry));
             }
 
             if (entry.getValue() == ECSEventInput.States.DOWN) {
+                idle=false;
                 entries.put(entry.getKey(), ECSEventInput.States.PRESSED);
             }
 
@@ -74,6 +80,16 @@ public abstract class LightInput implements Component {
 
     protected void updateKeyDirections(LightEntity lightEntity) {
         updateKeys(lightEntity, keyDirections, ECSEvent.Event.KEY_DIRECTION);
+
+        /*
+        if (idle) {
+            sendmessage...
+        }
+        else {
+
+        }
+
+         */
     }
 
     protected void updateKeyActions(LightEntity lightEntity) {

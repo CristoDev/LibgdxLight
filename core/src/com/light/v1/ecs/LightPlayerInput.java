@@ -3,7 +3,7 @@ package com.light.v1.ecs;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class LightPlayerInput extends LightInput implements InputProcessor {
@@ -16,14 +16,14 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
     }
 
     @Override
-    public void update(Batch batch) {
+    public void update(float delta) {
         updateKeyDirections(player);
         updateKeyActions(player);
         updateButtons(player);
     }
 
     @Override
-    public void render(Batch batch) {
+    public void render(SpriteBatch batch) {
         // render
     }
 

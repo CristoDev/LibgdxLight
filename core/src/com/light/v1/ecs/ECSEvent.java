@@ -9,7 +9,7 @@ public interface ECSEvent {
         SET_POSITION,
         INIT_COMPONENT,
         CURRENT_DIRECTION,
-        CURRENT_STATE,
+        SET_STATE,
         COLLISION_WITH_MAP,
         COLLISION_WITH_ENTITY,
         LOAD_ANIMATIONS,
@@ -41,5 +41,16 @@ public interface ECSEvent {
         SOUTH,
         EAST,
         WEST
+    }
+
+    // sauf le dernier (IDLE), les autres doivent exister dans AnimationManager.AnimationState
+    enum EntityState {
+        SPELLCAST,
+        THRUST,
+        WALK,
+        SLASH,
+        SHOOT,
+        HURT,
+        IDLE
     }
 }

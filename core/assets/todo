@@ -1,3 +1,8 @@
+en cours
+- gestion des animations
+    -> mettre en place les envois de messages vers animationManager/lightGraphics
+        -> avoir la direction, l'état et éventuellement si le personnage est en mouvement ou pas
+
 à faire:
 
 - github
@@ -11,11 +16,11 @@ https://github.com/CristoDev/LibgdxLight/issues
     --> utiliser un layer qui ne sera pas directement intégré sur la map
         --> gestion de points (ou zones) uniquement avec une action indiquée dans le fichier TMX
 
-
 - asset manager
     -> equipement
         -> inventaire
-
+    -> lightPlayerGraphics et/ou lightGraphics
+        -> prendre en compte la direction (angle ou autre)
 
 - mettre en place un observer?
     exemple: téléportation:

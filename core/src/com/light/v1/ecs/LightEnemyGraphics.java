@@ -2,6 +2,7 @@ package com.light.v1.ecs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.light.v1.tools.MyMap;
 
 public class LightEnemyGraphics extends LightGraphics {
@@ -13,12 +14,12 @@ public class LightEnemyGraphics extends LightGraphics {
     }
 
     @Override
-    public void update(Batch batch) {
+    public void update(float delta) {
         // update
     }
 
     @Override
-    public void render(Batch batch) {
+    public void render(SpriteBatch batch) {
         batch.begin();
         sprite.draw(batch);
         batch.end();
@@ -34,7 +35,7 @@ public class LightEnemyGraphics extends LightGraphics {
         if (event == ECSEvent.Event.SET_POSITION) {
             String[] string=message.split(ECSEvent.MESSAGE_TOKEN);
             sprite.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE / 2, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
+            //Gdx.app.debug("POS", message);
         }
-
     }
 }
