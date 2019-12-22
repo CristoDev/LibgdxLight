@@ -35,7 +35,7 @@ public abstract class LightInput implements Component {
     };
 
     protected void keyPressed(int keycode, ECSEventInput.States state) {
-        Gdx.app.debug("TAG", "key pressed");
+        //Gdx.app.debug("TAG", "key pressed");
         switch (keycode) {
             case Input.Keys.LEFT:
                 keyDirections.put(ECSEventInput.Keys.LEFT, state);

@@ -74,11 +74,12 @@ public class LightGame implements ApplicationListener {
 
     private  void test() {
         //Vector3 point=new Vector3(37, 279, 0);
+        /*
         Vector3 point=new Vector3(11, 27, 0);
         Gdx.app.debug("V3a", point.x+"/"+point.y);
         camera.unproject(point);
         Gdx.app.debug("V3b", point.x+"/"+point.y);
-
+         */
         Gdx.app.debug("test", "==>"+AnimationManager.AnimationState.WALK.toString());
 
     }

@@ -53,7 +53,7 @@ public class LightPlayerPhysics extends LightPhysics {
     }
 
     public void init(String message) {
-        Gdx.app.debug("tag", "init physics");
+        //Gdx.app.debug("tag", "init physics");
         String[] string = getMessage(message);
         //init(player.getWorld(), player.getRayHandler(), );
         itemDiag=Math.sqrt(Math.pow(Float.parseFloat(string[0])/2d, 2)*2);
@@ -88,7 +88,7 @@ public class LightPlayerPhysics extends LightPhysics {
             reverseTranslateCoef(message);
         }
         else if (event == ECSEvent.Event.INIT_COMPONENT) {
-            Gdx.app.debug("MSG", "message recu, lancement init");
+            //Gdx.app.debug("MSG", "message recu, lancement init");
             init(message);
         }
 
