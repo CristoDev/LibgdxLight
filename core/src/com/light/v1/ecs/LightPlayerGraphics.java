@@ -2,7 +2,6 @@ package com.light.v1.ecs;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.light.v1.tools.AnimationManager;
 import com.light.v1.tools.MyMap;
 
 public class LightPlayerGraphics extends LightGraphics {
@@ -48,7 +47,10 @@ public class LightPlayerGraphics extends LightGraphics {
             animationEntity.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
         }
         else if (event == ECSEvent.Event.SET_STATE) {
-            //animationEntity.setAnimationState();
+            animationEntity.setAnimationState(message);
+        }
+        else if (event == ECSEvent.Event.SET_DIRECTION) {
+            animationEntity.setAnimationDirection(message);
         }
     }
 

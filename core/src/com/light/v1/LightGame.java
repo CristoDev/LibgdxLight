@@ -12,8 +12,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.ecs.*;
-import com.light.v1.element.WorldManager;
-import com.light.v1.tools.AnimationManager;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
@@ -80,7 +78,7 @@ public class LightGame implements ApplicationListener {
         camera.unproject(point);
         Gdx.app.debug("V3b", point.x+"/"+point.y);
          */
-        Gdx.app.debug("test", "==>"+AnimationManager.AnimationState.WALK.toString());
+        Gdx.app.debug("test", "==>"+ ECSEvent.AnimationState.WALK.toString());
 
     }
 

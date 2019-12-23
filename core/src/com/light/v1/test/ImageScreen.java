@@ -5,24 +5,24 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.light.v1.ecs.ECSEvent;
 import com.light.v1.tools.AnimationEntity;
-import com.light.v1.tools.AnimationManager;
 
 public class ImageScreen {
     protected SpriteBatch batch = null;
-    int nb = 30;
 
-    Array<Vector2> positions = new Array<>();
-    Array<Vector2> deltas = new Array<>();
+    protected Array<Vector2> positions = new Array<>();
+    protected Array<Vector2> deltas = new Array<>();
 
-    AnimationEntity p = null;
-    AnimationEntity o = null;
+    private AnimationEntity p = null;
+    private AnimationEntity o = null;
 
     public ImageScreen() {
         create();
     }
 
     private void updatePosition() {
+        int nb=30;
         for (int i = 0; i < nb; i++) {
             float dx = deltas.get(i).x;
             float dy = deltas.get(i).y;
@@ -91,7 +91,7 @@ public class ImageScreen {
             p.addEquipment("torso/chain/mail_male.png");
             p.addEquipment("hands/gloves/male/metal_gloves_male.png");
             p.addEquipment("weapons/right hand/male/dagger_male.png");
-            p.setAnimationDirection(AnimationManager.AnimationDirection.RIGHT);
+            p.setAnimationDirection(ECSEvent.AnimationDirection.RIGHT);
             p.loadAllAnimations();
         }
 
@@ -100,8 +100,8 @@ public class ImageScreen {
             o.init();
             o.setPosition(50, 50);
             o.addEquipment("weapons/right hand/male/spear_male.png");
-            o.setAnimationDirection(AnimationManager.AnimationDirection.UP);
-            o.setAnimationState(AnimationManager.AnimationState.HURT);
+            o.setAnimationDirection(ECSEvent.AnimationDirection.UP);
+            o.setAnimationState(ECSEvent.AnimationState.HURT);
             o.loadAllAnimations();
         }
 

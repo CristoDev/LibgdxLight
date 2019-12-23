@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.light.v1.ecs.ECSEvent;
 
 import java.util.*;
 
@@ -33,12 +34,12 @@ public class AnimationManager {
     protected float FRAME_WIDTH_SCALE = 1/32f;
     protected float FRAME_HEIGHT_SCALE = 1/32f;
 
-    protected Hashtable<AnimationState, Animation<TextureRegion>> animations;
-    protected HashMap<AnimationState, HashMap<String, Animation<TextureRegion>>> animationsFull;
+    protected Hashtable<ECSEvent.AnimationState, Animation<TextureRegion>> animations;
+    protected HashMap<ECSEvent.AnimationState, HashMap<String, Animation<TextureRegion>>> animationsFull;
 
     protected Animation currentAnimation;
-    protected AnimationState currentAnimationState;
-    protected AnimationDirection currentAnimationDirection;
+    protected ECSEvent.AnimationState currentAnimationState;
+    protected ECSEvent.AnimationDirection currentAnimationDirection;
     protected int left=9;
     protected int up=8;
     protected int down=10;
@@ -47,60 +48,11 @@ public class AnimationManager {
     private boolean debug=false;
     protected boolean idle=true;
 
-    // petu etre utiliser une classe avec une variable reprenant l'enum?
-    public enum AnimationState {
-        SPELLCAST(0, 3, 7),
-        THRUST(4, 7, 8),
-        WALK(8, 11, 9),
-        SLASH(12, 15, 6),
-        SHOOT(16,19,13),
-        HURT(20,20,6);
-
-        private int rowStart;
-        private int rowEnd;
-        private int framesCount;
-
-        AnimationState(int start, int end, int count) {
-            rowStart=start;
-            rowEnd=end;
-            framesCount=count;
-        }
-
-        public int getRowStart() {
-            return rowStart;
-        }
-
-        public int getRowEnd() {
-            return rowEnd;
-        }
-
-        public int getFramesCount() {
-            return framesCount;
-        }
-    }
-
-    public static enum AnimationDirection {
-        UP(0),
-        LEFT(1),
-        DOWN(2),
-        RIGHT(3);
-
-        private int index;
-
-        AnimationDirection(int i) {
-            index=i;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-    }
-
     public AnimationManager() {
         animations = new Hashtable<>();
         animationsFull =new HashMap<>();
-        currentAnimationState =AnimationState.WALK;
-        currentAnimationDirection =AnimationDirection.LEFT;
+        currentAnimationState = ECSEvent.AnimationState.WALK;
+        currentAnimationDirection = ECSEvent.AnimationDirection.LEFT;
     }
 
     private Texture buildTexture() {
@@ -122,11 +74,11 @@ public class AnimationManager {
         elements.add(ROOTPATH+filename);
     }
 
-    protected void loadAnimation(Texture texture, AnimationState animationState) {
+    protected void loadAnimation(Texture texture, ECSEvent.AnimationState animationState) {
         TextureRegion[][] textureFrames = TextureRegion.split(texture, FRAME_WIDTH, FRAME_HEIGHT);
         HashMap<String, Animation<TextureRegion>> animation=new HashMap<>();
 
-        for (AnimationDirection direction : AnimationDirection.values()) {
+        for (ECSEvent.AnimationDirection direction : ECSEvent.AnimationDirection.values()) {
             Array<TextureRegion> frames = new Array<>(animationState.getFramesCount());
 
             for (int i = 0; i < animationState.getFramesCount(); i++) {
@@ -149,21 +101,26 @@ public class AnimationManager {
     protected void loadAllAnimations(){
         Texture texture = buildTexture();
 
-        for (AnimationState state : AnimationState.values()) {
+        for (ECSEvent.AnimationState state : ECSEvent.AnimationState.values()) {
             loadAnimation(texture, state);
         }
+        loadCurrentAnimation();
+    }
 
+    protected void loadCurrentAnimation() {
         HashMap<String, Animation<TextureRegion>> animation= animationsFull.get(currentAnimationState);
         currentAnimation =animation.get(currentAnimationDirection.name());
         currentFrame = (TextureRegion) currentAnimation.getKeyFrame(_frameTime);
     }
 
+
+
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
-    protected void loadAnimationFromDefaultFile(TextureAtlas textureAtlas, AnimationState animationState) {
-        for (AnimationDirection direction : AnimationDirection.values()) {
+    protected void loadAnimationFromDefaultFile(TextureAtlas textureAtlas, ECSEvent.AnimationState animationState) {
+        for (ECSEvent.AnimationDirection direction : ECSEvent.AnimationDirection.values()) {
             Array<TextureAtlas.AtlasRegion> regions = textureAtlas.findRegions(animationState.name()+"_"+direction.name());
             HashMap<String, Animation<TextureRegion>> animation=new HashMap<>();
             animation.put(direction.name(), new Animation(frameDuration, regions, Animation.PlayMode.LOOP));
@@ -194,7 +151,7 @@ public class AnimationManager {
         }
 
         TextureAtlas textureAtlas=new TextureAtlas("images/default_character.atlas");
-        for (AnimationState state : AnimationState.values()) {
+        for (ECSEvent.AnimationState state : ECSEvent.AnimationState.values()) {
             loadAnimationFromDefaultFile(textureAtlas, state);
         }
 
@@ -207,24 +164,21 @@ public class AnimationManager {
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
 
-    public AnimationState getCurrentAnimationState() {
+    public ECSEvent.AnimationState getCurrentAnimationState() {
         return currentAnimationState;
     }
 
-    public void setAnimationState(AnimationState _currentAnimationState) {
-        this.currentAnimationState = _currentAnimationState;
+    public void setAnimationState(ECSEvent.AnimationState currentAnimationState) {
+        this.currentAnimationState = currentAnimationState;
     }
 
     public void setAnimationState(String state) {
-        if (state.compareTo("IDLE") == 0) {
-            setAnimationIdle();
-            return ;
-        }
-
-        for (AnimationState animation : AnimationState.values()) {
+        for (ECSEvent.AnimationState animation : ECSEvent.AnimationState.values()) {
             if (state.compareTo(animation.toString()) == 0) {
-                Gdx.app.debug("ANIMATION", "changement d'état trouvé! "+state);
-                setAnimationState(animation);
+                if (state.compareTo(currentAnimationState.toString()) != 0) {
+                    setAnimationState(animation);
+                    loadCurrentAnimation();
+                }
                 return;
             }
         }
@@ -232,19 +186,33 @@ public class AnimationManager {
 
     public void setAnimationIdle() {
         idle=true;
-        setAnimationState(AnimationState.WALK);
+        setAnimationState(ECSEvent.AnimationState.WALK);
     }
 
     public void unsetAnimationIdle() {
         idle=false;
     }
 
-    public AnimationDirection getCurrentAnimationDirection() {
+    public ECSEvent.AnimationDirection getCurrentAnimationDirection() {
         return currentAnimationDirection;
     }
 
-    public void setAnimationDirection(AnimationDirection _currentAnimationDirection) {
+    public void setAnimationDirection(ECSEvent.AnimationDirection _currentAnimationDirection) {
         this.currentAnimationDirection = _currentAnimationDirection;
+    }
+
+    public void setAnimationDirection(String direction) {
+        for (ECSEvent.AnimationDirection animation : ECSEvent.AnimationDirection.values()) {
+            if (direction.compareTo(animation.toString()) == 0) {
+                if (direction.compareTo(currentAnimationDirection.toString()) != 0) {
+                    setAnimationDirection(animation);
+                    loadCurrentAnimation();
+                }
+
+                return;
+            }
+        }
+
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -287,7 +255,7 @@ public class AnimationManager {
     }
 
     public void update(float delta) {
-        _frameTime = (_frameTime + delta)%5; //Want to avoid overflow
+        _frameTime = (_frameTime + delta)%50; //Want to avoid overflow
         currentFrame = getCurrentFrame(_frameTime);
     }
 

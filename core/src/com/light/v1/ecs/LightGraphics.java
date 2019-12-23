@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.light.v1.tools.AnimationEntity;
-import com.light.v1.tools.AnimationManager;
 import com.light.v1.tools.MyMap;
 
 public abstract class LightGraphics implements Component {
@@ -47,8 +46,8 @@ public abstract class LightGraphics implements Component {
         animationEntity.addEquipment("torso/chain/mail_male.png");
         //animationEntity.addEquipment("hands/gloves/male/metal_gloves_male.png");
         animationEntity.addEquipment("weapons/right hand/male/dagger_male.png");
-        animationEntity.setAnimationDirection(AnimationManager.AnimationDirection.RIGHT);
-        animationEntity.setAnimationState(AnimationManager.AnimationState.WALK);
+        animationEntity.setAnimationDirection(ECSEvent.AnimationDirection.RIGHT);
+        animationEntity.setAnimationState(ECSEvent.AnimationState.IDLE);
         animationEntity.loadAllAnimations();
     }
 }

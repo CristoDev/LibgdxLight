@@ -1,6 +1,5 @@
 package com.light.v1.ecs;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
@@ -34,20 +33,24 @@ public abstract class LightInput implements Component {
         mouseButtons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.IDLE);
     };
 
-    protected void keyPressed(int keycode, ECSEventInput.States state) {
-        //Gdx.app.debug("TAG", "key pressed");
+    protected ECSEvent.AnimationDirection keyPressed(int keycode, ECSEventInput.States state) {
+        ECSEvent.AnimationDirection direction=null;
         switch (keycode) {
             case Input.Keys.LEFT:
                 keyDirections.put(ECSEventInput.Keys.LEFT, state);
+                direction=ECSEvent.AnimationDirection.LEFT;
                 break;
             case Input.Keys.RIGHT:
                 keyDirections.put(ECSEventInput.Keys.RIGHT, state);
+                direction=ECSEvent.AnimationDirection.RIGHT;
                 break;
             case Input.Keys.UP:
                 keyDirections.put(ECSEventInput.Keys.UP, state);
+                direction=ECSEvent.AnimationDirection.UP;
                 break;
             case Input.Keys.DOWN:
                 keyDirections.put(ECSEventInput.Keys.DOWN, state);
+                direction=ECSEvent.AnimationDirection.DOWN;
                 break;
             case Input.Keys.SPACE:
                 keyActions.put(ECSEventInput.Keys.SPACE, state);
@@ -55,6 +58,8 @@ public abstract class LightInput implements Component {
             default:
                 // nothing to do
         }
+
+        return direction;
     }
 
     protected void updateKeys(LightEntity lightEntity, Map<ECSEventInput.Keys, ECSEventInput.States> entries, ECSEvent.Event event) {
@@ -81,15 +86,12 @@ public abstract class LightInput implements Component {
     protected void updateKeyDirections(LightEntity lightEntity) {
         updateKeys(lightEntity, keyDirections, ECSEvent.Event.KEY_DIRECTION);
 
-        /*
         if (idle) {
-            sendmessage...
+            sendMessage((LightPlayerEntity)lightEntity, ECSEvent.Event.SET_STATE, ECSEvent.AnimationState.IDLE.toString());
         }
         else {
-
+            sendMessage((LightPlayerEntity)lightEntity, ECSEvent.Event.SET_STATE, ECSEvent.AnimationState.WALK.toString());
         }
-
-         */
     }
 
     protected void updateKeyActions(LightEntity lightEntity) {

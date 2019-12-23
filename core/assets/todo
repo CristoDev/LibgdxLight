@@ -1,7 +1,13 @@
 en cours
-- gestion des animations
-    -> mettre en place les envois de messages vers animationManager/lightGraphics
-        -> avoir la direction, l'état et éventuellement si le personnage est en mouvement ou pas
+- gestion de la direction en fonction des touches
+    -> avoir une pile des touches appuyées
+        -> direction = dernière touche appuyée
+        -> linked list? peekLast
+        https://docs.oracle.com/javase/9/docs/api/java/util/LinkedList.html
+        -> pb avec la dernière touche, quand on n'appuie plus, ça reste dans la même direction si on a 2 touches appuyées
+            -> exemple:
+                * gauche puis haut : animation vers le haut (OK)
+                * lacher haut: animation vers le haut toujours (KO)
 
 à faire:
 

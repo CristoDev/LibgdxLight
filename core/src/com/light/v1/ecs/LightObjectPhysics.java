@@ -1,10 +1,7 @@
 package com.light.v1.ecs;
 
-import box2dLight.RayHandler;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.physics.box2d.*;
 import com.light.v1.element.WorldManager;
 
 public class LightObjectPhysics extends LightPhysics {

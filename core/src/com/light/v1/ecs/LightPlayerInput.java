@@ -40,12 +40,18 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         keyPressed(keycode, ECSEventInput.States.UP);
+
         return true;
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        keyPressed(keycode, ECSEventInput.States.DOWN);
+        ECSEvent.AnimationDirection direction=keyPressed(keycode, ECSEventInput.States.DOWN);
+
+        if (direction != null) {
+            sendMessage(player, ECSEvent.Event.SET_DIRECTION, direction.toString());
+        }
+
         return true;
     }
 

@@ -82,7 +82,7 @@ public class MyMap {
     }
 
     public void loadMap(String mapName){
-        String currentMapName ="";
+        //String currentMapName ="";
 
         if( mapName == null || mapName.isEmpty() ) {
             Gdx.app.debug(TAG, "Map is invalid");
@@ -96,7 +96,7 @@ public class MyMap {
         loadMapAsset(mapName);
         if( isAssetLoaded(mapName) ) {
             currentMap = getMapAsset(mapName);
-            currentMapName = mapName;
+            //currentMapName = mapName;
         }else{
             Gdx.app.debug(TAG, "Map not loaded");
             return;
