@@ -15,6 +15,10 @@ import com.light.v1.ecs.*;
 import com.light.v1.tools.ContactManager;
 import com.light.v1.tools.LightFactory;
 import com.light.v1.tools.MyMap;
+import sun.awt.image.ImageWatched;
+
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public class LightGame implements ApplicationListener {
     //private static final String TAG = "Box2DLightsSample";
@@ -79,7 +83,6 @@ public class LightGame implements ApplicationListener {
         Gdx.app.debug("V3b", point.x+"/"+point.y);
          */
         Gdx.app.debug("test", "==>"+ ECSEvent.AnimationState.WALK.toString());
-
     }
 
     @Override

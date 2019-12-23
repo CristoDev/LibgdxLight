@@ -1,19 +1,7 @@
-en cours
-- gestion de la direction en fonction des touches
-    -> avoir une pile des touches appuyées
-        -> direction = dernière touche appuyée
-        -> linked list? peekLast
-        https://docs.oracle.com/javase/9/docs/api/java/util/LinkedList.html
-        -> pb avec la dernière touche, quand on n'appuie plus, ça reste dans la même direction si on a 2 touches appuyées
-            -> exemple:
-                * gauche puis haut : animation vers le haut (OK)
-                * lacher haut: animation vers le haut toujours (KO)
-
 à faire:
 
 - github
 https://github.com/CristoDev/LibgdxLight/issues
-
 
 -gestion des points spécifiques sur la carte:
     - téléporteur (départ - arrivée)
@@ -25,8 +13,6 @@ https://github.com/CristoDev/LibgdxLight/issues
 - asset manager
     -> equipement
         -> inventaire
-    -> lightPlayerGraphics et/ou lightGraphics
-        -> prendre en compte la direction (angle ou autre)
 
 - mettre en place un observer?
     exemple: téléportation:

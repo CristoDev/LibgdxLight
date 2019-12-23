@@ -39,7 +39,11 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        keyPressed(keycode, ECSEventInput.States.UP);
+        ECSEvent.AnimationDirection direction=removeQueueDirection(keyPressed(keycode, ECSEventInput.States.UP));
+
+        if (direction != null) {
+            sendMessage(player, ECSEvent.Event.SET_DIRECTION, direction.toString());
+        }
 
         return true;
     }
@@ -49,6 +53,7 @@ public class LightPlayerInput extends LightInput implements InputProcessor {
         ECSEvent.AnimationDirection direction=keyPressed(keycode, ECSEventInput.States.DOWN);
 
         if (direction != null) {
+            addQueueDirection(direction);
             sendMessage(player, ECSEvent.Event.SET_DIRECTION, direction.toString());
         }
 

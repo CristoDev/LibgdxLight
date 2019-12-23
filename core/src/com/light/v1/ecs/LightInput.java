@@ -4,12 +4,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 public abstract class LightInput implements Component {
     public static Vector2 mousePosition=new Vector2(0, 0);
     public static Map<ECSEventInput.Keys, ECSEventInput.States> keyDirections = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();
     private boolean idle=true;
+    protected LinkedList<ECSEvent.AnimationDirection> directionQueue=new LinkedList<>();
 
     static {
         keyDirections.put(ECSEventInput.Keys.LEFT, ECSEventInput.States.IDLE);
@@ -32,6 +34,23 @@ public abstract class LightInput implements Component {
         mouseButtons.put(ECSEventInput.Buttons.LEFT, ECSEventInput.States.IDLE);
         mouseButtons.put(ECSEventInput.Buttons.RIGHT, ECSEventInput.States.IDLE);
     };
+
+    protected void addQueueDirection(ECSEvent.AnimationDirection direction) {
+        if (!directionQueue.contains(direction)) {
+            directionQueue.add(direction);
+        }
+    }
+
+    protected ECSEvent.AnimationDirection removeQueueDirection(ECSEvent.AnimationDirection direction) {
+        directionQueue.remove(direction);
+
+        if (directionQueue.size() > 0) {
+            return directionQueue.getLast();
+        }
+        else {
+            return null;
+        }
+    }
 
     protected ECSEvent.AnimationDirection keyPressed(int keycode, ECSEventInput.States state) {
         ECSEvent.AnimationDirection direction=null;
