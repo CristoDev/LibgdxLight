@@ -37,7 +37,7 @@ public interface ECSEvent {
         WEST
     }
 
-    // petu etre utiliser une classe avec une variable reprenant l'enum?
+    // peut etre utiliser une classe avec une variable reprenant l'enum?
     enum AnimationState {
         SPELLCAST(0, 3, 7),
         THRUST(4, 7, 8),
