@@ -30,6 +30,7 @@ public interface ECSEvent {
         ANIMATION
     }
 
+    // mise à jour pour simplement avoir la derniere version sur le git
     enum Compas {
         NORTH,
         SOUTH,
