@@ -1,7 +1,6 @@
 package com.light.v1.element;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.light.v1.ecs.LightEntity;
 
 import java.util.HashMap;

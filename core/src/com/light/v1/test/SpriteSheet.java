@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class SpriteSheet {
     private static String TAG="SpriteSheet";
     private static final String PATH="Universal-LPC-spritesheet";
-    private int nb=0;
+    private int nbSprites=0;
 
     private ArrayList<String> common=new ArrayList<String>();
     private ArrayList<String>female=new ArrayList<String>();
@@ -34,7 +34,7 @@ public class SpriteSheet {
     }
 
     public void affect(String path, String file, int level) {
-        nb++;
+        nbSprites++;
         String name=path+"/"+file;
 
         int indexFemale=name.indexOf("female");

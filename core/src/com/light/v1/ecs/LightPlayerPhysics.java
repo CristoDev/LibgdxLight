@@ -5,11 +5,15 @@ import box2dLight.Light;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.light.v1.LightGame;
 import com.light.v1.element.WorldTorch;
 import com.light.v1.tools.MyMap;
@@ -61,10 +65,11 @@ public class LightPlayerPhysics extends LightPhysics {
         createSword();
 
     }
-
+/*
     public void init(World world, RayHandler rayHandler, float itemWidth) {
+        // nothing to do here...
     }
-
+*/
     @Override
     public void dispose() {
         Gdx.app.debug(TAG, "dispose");

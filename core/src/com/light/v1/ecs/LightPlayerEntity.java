@@ -3,7 +3,7 @@ package com.light.v1.ecs;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.World;
 import com.light.v1.element.WorldLightTest;
 
 public class LightPlayerEntity extends LightEntity {

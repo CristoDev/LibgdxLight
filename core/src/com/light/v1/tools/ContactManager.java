@@ -1,7 +1,13 @@
 package com.light.v1.tools;
 
-import com.badlogic.gdx.physics.box2d.*;
-import com.light.v1.ecs.*;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.light.v1.ecs.LightObjectEntity;
+import com.light.v1.ecs.SystemManager;
+import com.light.v1.ecs.LightPlayerEntity;
+import com.light.v1.ecs.ECSEvent;
 
 public class ContactManager implements ContactListener {
     //private static final String TAG = "ContactManager";
