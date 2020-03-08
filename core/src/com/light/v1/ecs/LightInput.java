@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+
 public abstract class LightInput implements Component {
     public static Vector2 mousePosition=new Vector2(0, 0);
     public static Map<ECSEventInput.Keys, ECSEventInput.States> keyDirections = new HashMap<ECSEventInput.Keys, ECSEventInput.States>();

@@ -34,7 +34,7 @@ public class AnimationManager {
     protected float FRAME_WIDTH_SCALE = 1/32f;
     protected float FRAME_HEIGHT_SCALE = 1/32f;
 
-    protected Hashtable<ECSEvent.AnimationState, Animation<TextureRegion>> animations;
+    protected HashMap<ECSEvent.AnimationState, Animation<TextureRegion>> animations;
     protected HashMap<ECSEvent.AnimationState, HashMap<String, Animation<TextureRegion>>> animationsFull;
 
     protected Animation currentAnimation;
@@ -49,7 +49,7 @@ public class AnimationManager {
     protected boolean idle=true;
 
     public AnimationManager() {
-        animations = new Hashtable<>();
+        animations = new HashMap<>();
         animationsFull =new HashMap<>();
         currentAnimationState = ECSEvent.AnimationState.WALK;
         currentAnimationDirection = ECSEvent.AnimationDirection.LEFT;
@@ -142,13 +142,14 @@ public class AnimationManager {
             Gdx.app.debug(TAG, "suppression du fichier");
             destFile.delete();
         }
-
+        /*
         try {
             PixmapIO.writePNG(destFile, character);
         }
         catch (Exception exception) {
             Gdx.app.debug(TAG, "EXCEPTION!!!!!! "+exception.getMessage());
         }
+         */
 
         TextureAtlas textureAtlas=new TextureAtlas("images/default_character.atlas");
         for (ECSEvent.AnimationState state : ECSEvent.AnimationState.values()) {
