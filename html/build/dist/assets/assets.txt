@@ -1,0 +1,476 @@
+d:assets:0:application/unknown
+i:background_test_64.png:726:image/png
+i:enemy.png:661:image/png
+i:item.png:190:image/png
+i:Overworld.png:100846:image/png
+b:overworld.tsx:255:application/unknown
+b:test.tmx:16752:application/unknown
+b:todo:869:application/unknown
+d:Universal-LPC-spritesheet:0:application/unknown
+d:Universal-LPC-spritesheet/accessories:0:application/unknown
+d:Universal-LPC-spritesheet/accessories/neck:0:application/unknown
+d:Universal-LPC-spritesheet/accessories/neck/capeclip:0:application/unknown
+d:Universal-LPC-spritesheet/accessories/neck/capeclip/female:0:application/unknown
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_black.png:2852:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_blue.png:2845:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_brown.png:2847:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_gray.png:2853:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_green.png:2852:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_lavender.png:2853:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_maroon.png:2854:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_pink.png:2853:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_red.png:2848:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_white.png:2853:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capeclip/female/capeclip_yellow.png:2853:image/png
+d:Universal-LPC-spritesheet/accessories/neck/capetie:0:application/unknown
+d:Universal-LPC-spritesheet/accessories/neck/capetie/female:0:application/unknown
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_black.png:3283:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_blue.png:3280:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_brown.png:3280:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_gray.png:3285:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_green.png:3283:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_lavender.png:3285:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_maroon.png:3285:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_pink.png:3285:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_red.png:3280:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_white.png:3285:image/png
+i:Universal-LPC-spritesheet/accessories/neck/capetie/female/capetie_yellow.png:3284:image/png
+d:Universal-LPC-spritesheet/accessories/necklaces_female_ no_th-sh:0:application/unknown
+i:Universal-LPC-spritesheet/accessories/necklaces_female_ no_th-sh/bronze.png:4950:image/png
+i:Universal-LPC-spritesheet/accessories/necklaces_female_ no_th-sh/gold.png:4950:image/png
+i:Universal-LPC-spritesheet/accessories/necklaces_female_ no_th-sh/iron.png:4936:image/png
+i:Universal-LPC-spritesheet/accessories/necklaces_female_ no_th-sh/pirate_wc_sc_only.png:4828:image/png
+i:Universal-LPC-spritesheet/accessories/necklaces_female_ no_th-sh/silver.png:4936:image/png
+d:Universal-LPC-spritesheet/behind_body:0:application/unknown
+d:Universal-LPC-spritesheet/behind_body/cape:0:application/unknown
+d:Universal-LPC-spritesheet/behind_body/cape/normal:0:application/unknown
+d:Universal-LPC-spritesheet/behind_body/cape/normal/female:0:application/unknown
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_black.png:8376:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_blue.png:7986:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_brown.png:8388:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_gray.png:8346:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_green.png:8376:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_lavender.png:8346:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_maroon.png:8701:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_pink.png:8346:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_red.png:8569:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_white.png:8346:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/normal/female/cape_yellow.png:8346:image/png
+d:Universal-LPC-spritesheet/behind_body/cape/tattered:0:application/unknown
+d:Universal-LPC-spritesheet/behind_body/cape/tattered/female:0:application/unknown
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_black.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_blue.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_brown.png:10604:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_gray.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_green.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_lavender.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_maroon.png:10659:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_pink.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_red.png:10466:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_white.png:10229:image/png
+i:Universal-LPC-spritesheet/behind_body/cape/tattered/female/tattercape_yellow.png:10229:image/png
+d:Universal-LPC-spritesheet/behind_body/equipment:0:application/unknown
+i:Universal-LPC-spritesheet/behind_body/equipment/quiver.png:5031:image/png
+d:Universal-LPC-spritesheet/belt:0:application/unknown
+d:Universal-LPC-spritesheet/belt/buckles_female_no_th-sh:0:application/unknown
+i:Universal-LPC-spritesheet/belt/buckles_female_no_th-sh/bronze.png:895:image/png
+i:Universal-LPC-spritesheet/belt/buckles_female_no_th-sh/gold.png:895:image/png
+i:Universal-LPC-spritesheet/belt/buckles_female_no_th-sh/iron.png:895:image/png
+i:Universal-LPC-spritesheet/belt/buckles_female_no_th-sh/silver.png:929:image/png
+d:Universal-LPC-spritesheet/belt/cloth:0:application/unknown
+d:Universal-LPC-spritesheet/belt/cloth/female:0:application/unknown
+i:Universal-LPC-spritesheet/belt/cloth/female/black_female_no_th-sh.png:1329:image/png
+i:Universal-LPC-spritesheet/belt/cloth/female/brown_female_no_th-sh.png:1324:image/png
+i:Universal-LPC-spritesheet/belt/cloth/female/teal2_cloth_female.png:3625:image/png
+i:Universal-LPC-spritesheet/belt/cloth/female/white_cloth_female.png:3629:image/png
+d:Universal-LPC-spritesheet/belt/cloth/male:0:application/unknown
+i:Universal-LPC-spritesheet/belt/cloth/male/white_cloth_male.png:3294:image/png
+d:Universal-LPC-spritesheet/belt/leather:0:application/unknown
+d:Universal-LPC-spritesheet/belt/leather/female:0:application/unknown
+i:Universal-LPC-spritesheet/belt/leather/female/leather_female.png:4146:image/png
+d:Universal-LPC-spritesheet/belt/leather/male:0:application/unknown
+i:Universal-LPC-spritesheet/belt/leather/male/leather_male.png:4080:image/png
+d:Universal-LPC-spritesheet/belt/metal:0:application/unknown
+d:Universal-LPC-spritesheet/belt/metal/female:0:application/unknown
+i:Universal-LPC-spritesheet/belt/metal/female/bronze_female_no_th-sh.png:1329:image/png
+i:Universal-LPC-spritesheet/belt/metal/female/gold_female_no_th-sh.png:1329:image/png
+i:Universal-LPC-spritesheet/belt/metal/female/iron_female_no_th-sh.png:1329:image/png
+i:Universal-LPC-spritesheet/belt/metal/female/silver_female_no_th-sh.png:1329:image/png
+d:Universal-LPC-spritesheet/body:0:application/unknown
+d:Universal-LPC-spritesheet/body/female:0:application/unknown
+i:Universal-LPC-spritesheet/body/female/dark.png:29936:image/png
+i:Universal-LPC-spritesheet/body/female/dark2.png:29937:image/png
+i:Universal-LPC-spritesheet/body/female/darkelf.png:29996:image/png
+i:Universal-LPC-spritesheet/body/female/darkelf2.png:31796:image/png
+d:Universal-LPC-spritesheet/body/female/ears:0:application/unknown
+i:Universal-LPC-spritesheet/body/female/ears/bigears_dark.png:2357:image/png
+i:Universal-LPC-spritesheet/body/female/ears/bigears_dark2.png:2357:image/png
+i:Universal-LPC-spritesheet/body/female/ears/bigears_darkelf.png:2357:image/png
+i:Universal-LPC-spritesheet/body/female/ears/bigears_darkelf2.png:2354:image/png
+i:Universal-LPC-spritesheet/body/female/ears/bigears_light.png:2365:image/png
+i:Universal-LPC-spritesheet/body/female/ears/bigears_tanned.png:2365:image/png
+i:Universal-LPC-spritesheet/body/female/ears/bigears_tanned2.png:2354:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_dark.png:1673:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_dark2.png:1673:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_darkelf.png:1680:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_darkelf2.png:1673:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_light.png:1680:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_tanned.png:1673:image/png
+i:Universal-LPC-spritesheet/body/female/ears/elvenears_tanned2.png:1673:image/png
+d:Universal-LPC-spritesheet/body/female/eyes:0:application/unknown
+i:Universal-LPC-spritesheet/body/female/eyes/blue.png:1271:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/brown.png:1271:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/gray.png:958:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/green.png:1271:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/orange.png:998:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/purple.png:1272:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/red.png:1271:image/png
+i:Universal-LPC-spritesheet/body/female/eyes/yellow.png:998:image/png
+i:Universal-LPC-spritesheet/body/female/light.png:29937:image/png
+d:Universal-LPC-spritesheet/body/female/nose:0:application/unknown
+i:Universal-LPC-spritesheet/body/female/nose/bignose_dark.png:1453:image/png
+i:Universal-LPC-spritesheet/body/female/nose/bignose_dark2.png:1456:image/png
+i:Universal-LPC-spritesheet/body/female/nose/bignose_darkelf.png:1455:image/png
+i:Universal-LPC-spritesheet/body/female/nose/bignose_darkelf2.png:1535:image/png
+i:Universal-LPC-spritesheet/body/female/nose/bignose_light.png:1455:image/png
+i:Universal-LPC-spritesheet/body/female/nose/bignose_tanned.png:1455:image/png
+i:Universal-LPC-spritesheet/body/female/nose/bignose_tanned2.png:1455:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_dark.png:1265:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_dark2.png:1268:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_darkelf.png:1268:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_darkelf2.png:1266:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_light.png:1268:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_tanned.png:1264:image/png
+i:Universal-LPC-spritesheet/body/female/nose/buttonnose_tanned2.png:1268:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_dark.png:1354:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_dark2.png:1358:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_darkelf.png:1357:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_darkelf2.png:1354:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_light.png:1357:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_tanned.png:1357:image/png
+i:Universal-LPC-spritesheet/body/female/nose/straightnose_tanned2.png:1357:image/png
+i:Universal-LPC-spritesheet/body/female/orc.png:31877:image/png
+i:Universal-LPC-spritesheet/body/female/red_orc.png:31562:image/png
+i:Universal-LPC-spritesheet/body/female/tanned.png:29937:image/png
+i:Universal-LPC-spritesheet/body/female/tanned2.png:29983:image/png
+d:Universal-LPC-spritesheet/body/male:0:application/unknown
+i:Universal-LPC-spritesheet/body/male/dark.png:33226:image/png
+i:Universal-LPC-spritesheet/body/male/dark2.png:31114:image/png
+i:Universal-LPC-spritesheet/body/male/darkelf.png:33247:image/png
+i:Universal-LPC-spritesheet/body/male/darkelf2.png:33232:image/png
+d:Universal-LPC-spritesheet/body/male/ears:0:application/unknown
+i:Universal-LPC-spritesheet/body/male/ears/bigears_dark.png:2297:image/png
+i:Universal-LPC-spritesheet/body/male/ears/bigears_dark2.png:2294:image/png
+i:Universal-LPC-spritesheet/body/male/ears/bigears_darkelf.png:2294:image/png
+i:Universal-LPC-spritesheet/body/male/ears/bigears_darkelf2.png:2291:image/png
+i:Universal-LPC-spritesheet/body/male/ears/bigears_light.png:2296:image/png
+i:Universal-LPC-spritesheet/body/male/ears/bigears_tanned.png:2296:image/png
+i:Universal-LPC-spritesheet/body/male/ears/bigears_tanned2.png:2291:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_dark.png:1326:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_dark2.png:1327:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_darkelf.png:2320:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_darkelf2.png:2331:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_light.png:1560:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_tanned.png:1560:image/png
+i:Universal-LPC-spritesheet/body/male/ears/elvenears_tanned2.png:1560:image/png
+d:Universal-LPC-spritesheet/body/male/eyes:0:application/unknown
+i:Universal-LPC-spritesheet/body/male/eyes/blue.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/brown.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/casting_eyeglow_skeleton.png:1479:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/gray.png:926:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/green.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/orange.png:998:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/purple.png:966:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/red.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/eyes/yellow.png:1272:image/png
+i:Universal-LPC-spritesheet/body/male/light.png:33734:image/png
+d:Universal-LPC-spritesheet/body/male/nose:0:application/unknown
+i:Universal-LPC-spritesheet/body/male/nose/bignose_dark.png:1384:image/png
+i:Universal-LPC-spritesheet/body/male/nose/bignose_dark2.png:1387:image/png
+i:Universal-LPC-spritesheet/body/male/nose/bignose_darkelf.png:1386:image/png
+i:Universal-LPC-spritesheet/body/male/nose/bignose_darkelf2.png:1383:image/png
+i:Universal-LPC-spritesheet/body/male/nose/bignose_light.png:1387:image/png
+i:Universal-LPC-spritesheet/body/male/nose/bignose_tanned.png:1387:image/png
+i:Universal-LPC-spritesheet/body/male/nose/bignose_tanned2.png:1386:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_dark.png:1223:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_dark2.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_darkelf.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_darkelf2.png:1223:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_light.png:1225:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_tanned.png:1222:image/png
+i:Universal-LPC-spritesheet/body/male/nose/buttonnose_tanned2.png:1226:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_dark.png:1321:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_dark2.png:1321:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_darkelf.png:1320:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_darkelf2.png:1317:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_light.png:1320:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_tanned.png:1320:image/png
+i:Universal-LPC-spritesheet/body/male/nose/straightnose_tanned2.png:1320:image/png
+i:Universal-LPC-spritesheet/body/male/orc.png:54495:image/png
+i:Universal-LPC-spritesheet/body/male/red_orc.png:34724:image/png
+i:Universal-LPC-spritesheet/body/male/skeleton.png:35874:image/png
+i:Universal-LPC-spritesheet/body/male/tanned.png:33351:image/png
+i:Universal-LPC-spritesheet/body/male/tanned2.png:32036:image/png
+d:Universal-LPC-spritesheet/feet:0:application/unknown
+d:Universal-LPC-spritesheet/feet/armor:0:application/unknown
+d:Universal-LPC-spritesheet/feet/armor/female:0:application/unknown
+i:Universal-LPC-spritesheet/feet/armor/female/golden_boots_female.png:5633:image/png
+i:Universal-LPC-spritesheet/feet/armor/female/metal_boots_female.png:5743:image/png
+d:Universal-LPC-spritesheet/feet/armor/male:0:application/unknown
+i:Universal-LPC-spritesheet/feet/armor/male/golden_boots_male.png:5504:image/png
+i:Universal-LPC-spritesheet/feet/armor/male/metal_boots_male.png:5579:image/png
+d:Universal-LPC-spritesheet/feet/boots:0:application/unknown
+d:Universal-LPC-spritesheet/feet/boots/female:0:application/unknown
+i:Universal-LPC-spritesheet/feet/boots/female/brown_longboots_female.png:7485:image/png
+i:Universal-LPC-spritesheet/feet/boots/female/maroon_longboots_female.png:7294:image/png
+i:Universal-LPC-spritesheet/feet/ghillies_female_no_th-sh.png:2824:image/png
+d:Universal-LPC-spritesheet/feet/shoes:0:application/unknown
+d:Universal-LPC-spritesheet/feet/shoes/female:0:application/unknown
+i:Universal-LPC-spritesheet/feet/shoes/female/black_shoes_female.png:5175:image/png
+i:Universal-LPC-spritesheet/feet/shoes/female/brown_shoes_female.png:5175:image/png
+i:Universal-LPC-spritesheet/feet/shoes/female/maroon_shoes_female.png:5228:image/png
+d:Universal-LPC-spritesheet/feet/shoes/male:0:application/unknown
+i:Universal-LPC-spritesheet/feet/shoes/male/black_shoes_male.png:5432:image/png
+i:Universal-LPC-spritesheet/feet/shoes/male/brown_shoes_male.png:6334:image/png
+i:Universal-LPC-spritesheet/feet/shoes/male/maroon_shoes_male.png:6335:image/png
+d:Universal-LPC-spritesheet/feet/slippers_female:0:application/unknown
+i:Universal-LPC-spritesheet/feet/slippers_female/black.png:2352:image/png
+i:Universal-LPC-spritesheet/feet/slippers_female/brown.png:3509:image/png
+i:Universal-LPC-spritesheet/feet/slippers_female/gray.png:3509:image/png
+i:Universal-LPC-spritesheet/feet/slippers_female/white.png:3509:image/png
+d:Universal-LPC-spritesheet/formal_male_no_th-sh:0:application/unknown
+i:Universal-LPC-spritesheet/formal_male_no_th-sh/bowtie.png:1384:image/png
+i:Universal-LPC-spritesheet/formal_male_no_th-sh/pants.png:5375:image/png
+i:Universal-LPC-spritesheet/formal_male_no_th-sh/shirt.png:8961:image/png
+i:Universal-LPC-spritesheet/formal_male_no_th-sh/tie.png:1725:image/png
+i:Universal-LPC-spritesheet/formal_male_no_th-sh/vest.png:4536:image/png
+i:Universal-LPC-spritesheet/formal_male_no_th-sh/vest_w_shirt_cutout.png:4514:image/png
+d:Universal-LPC-spritesheet/hands:0:application/unknown
+d:Universal-LPC-spritesheet/hands/bracelets:0:application/unknown
+i:Universal-LPC-spritesheet/hands/bracelets/bracelet.png:890:image/png
+d:Universal-LPC-spritesheet/hands/bracers:0:application/unknown
+d:Universal-LPC-spritesheet/hands/bracers/female:0:application/unknown
+i:Universal-LPC-spritesheet/hands/bracers/female/cloth_bracers_female.png:4779:image/png
+i:Universal-LPC-spritesheet/hands/bracers/female/leather_bracers_female.png:4777:image/png
+i:Universal-LPC-spritesheet/hands/bracers/female/white_cloth_bandages.png:6429:image/png
+i:Universal-LPC-spritesheet/hands/bracers/female/white_cloth_bracers.png:6425:image/png
+d:Universal-LPC-spritesheet/hands/bracers/male:0:application/unknown
+i:Universal-LPC-spritesheet/hands/bracers/male/leather_bracers_male.png:4854:image/png
+d:Universal-LPC-spritesheet/hands/gloves:0:application/unknown
+d:Universal-LPC-spritesheet/hands/gloves/female:0:application/unknown
+i:Universal-LPC-spritesheet/hands/gloves/female/golden_gloves_female.png:8285:image/png
+i:Universal-LPC-spritesheet/hands/gloves/female/metal_gloves_female.png:8481:image/png
+d:Universal-LPC-spritesheet/hands/gloves/male:0:application/unknown
+i:Universal-LPC-spritesheet/hands/gloves/male/golden_gloves_male.png:8298:image/png
+i:Universal-LPC-spritesheet/hands/gloves/male/metal_gloves_male.png:8528:image/png
+d:Universal-LPC-spritesheet/head:0:application/unknown
+d:Universal-LPC-spritesheet/head/bandanas:0:application/unknown
+d:Universal-LPC-spritesheet/head/bandanas/female:0:application/unknown
+i:Universal-LPC-spritesheet/head/bandanas/female/red.png:3787:image/png
+d:Universal-LPC-spritesheet/head/bandanas/male:0:application/unknown
+i:Universal-LPC-spritesheet/head/bandanas/male/red.png:3644:image/png
+d:Universal-LPC-spritesheet/head/caps:0:application/unknown
+d:Universal-LPC-spritesheet/head/caps/female:0:application/unknown
+i:Universal-LPC-spritesheet/head/caps/female/leather_cap_female.png:10753:image/png
+d:Universal-LPC-spritesheet/head/caps/male:0:application/unknown
+i:Universal-LPC-spritesheet/head/caps/male/leather_cap_male.png:10416:image/png
+d:Universal-LPC-spritesheet/head/helms:0:application/unknown
+d:Universal-LPC-spritesheet/head/helms/female:0:application/unknown
+i:Universal-LPC-spritesheet/head/helms/female/chainhat_female.png:9905:image/png
+i:Universal-LPC-spritesheet/head/helms/female/golden_helm_female.png:11890:image/png
+i:Universal-LPC-spritesheet/head/helms/female/metal_helm_female.png:10761:image/png
+d:Universal-LPC-spritesheet/head/helms/male:0:application/unknown
+i:Universal-LPC-spritesheet/head/helms/male/chainhat_male.png:9571:image/png
+i:Universal-LPC-spritesheet/head/helms/male/golden_helm_male.png:11563:image/png
+i:Universal-LPC-spritesheet/head/helms/male/metal_helm_male.png:10185:image/png
+d:Universal-LPC-spritesheet/head/hoods:0:application/unknown
+d:Universal-LPC-spritesheet/head/hoods/female:0:application/unknown
+i:Universal-LPC-spritesheet/head/hoods/female/chain_hood_female.png:11852:image/png
+i:Universal-LPC-spritesheet/head/hoods/female/cloth_hood_female.png:16616:image/png
+d:Universal-LPC-spritesheet/head/hoods/male:0:application/unknown
+i:Universal-LPC-spritesheet/head/hoods/male/chain_hood_male.png:11823:image/png
+i:Universal-LPC-spritesheet/head/hoods/male/cloth_hood_male.png:16433:image/png
+d:Universal-LPC-spritesheet/head/tiaras_female:0:application/unknown
+i:Universal-LPC-spritesheet/head/tiaras_female/bronze.png:1776:image/png
+i:Universal-LPC-spritesheet/head/tiaras_female/gold.png:1777:image/png
+i:Universal-LPC-spritesheet/head/tiaras_female/iron.png:1776:image/png
+i:Universal-LPC-spritesheet/head/tiaras_female/purple.png:1466:image/png
+i:Universal-LPC-spritesheet/head/tiaras_female/silver.png:1776:image/png
+d:Universal-LPC-spritesheet/legs:0:application/unknown
+d:Universal-LPC-spritesheet/legs/armor:0:application/unknown
+d:Universal-LPC-spritesheet/legs/armor/female:0:application/unknown
+i:Universal-LPC-spritesheet/legs/armor/female/golden_greaves_female.png:7738:image/png
+i:Universal-LPC-spritesheet/legs/armor/female/metal_pants_female.png:7793:image/png
+d:Universal-LPC-spritesheet/legs/armor/male:0:application/unknown
+i:Universal-LPC-spritesheet/legs/armor/male/golden_greaves_male.png:8304:image/png
+i:Universal-LPC-spritesheet/legs/armor/male/metal_pants_male.png:8227:image/png
+d:Universal-LPC-spritesheet/legs/pants:0:application/unknown
+d:Universal-LPC-spritesheet/legs/pants/female:0:application/unknown
+i:Universal-LPC-spritesheet/legs/pants/female/magenta_pants_female.png:6463:image/png
+i:Universal-LPC-spritesheet/legs/pants/female/red_pants_female.png:6472:image/png
+i:Universal-LPC-spritesheet/legs/pants/female/teal_pants_female.png:6410:image/png
+i:Universal-LPC-spritesheet/legs/pants/female/white_pants_female.png:6473:image/png
+d:Universal-LPC-spritesheet/legs/pants/male:0:application/unknown
+i:Universal-LPC-spritesheet/legs/pants/male/magenta_pants_male.png:8322:image/png
+i:Universal-LPC-spritesheet/legs/pants/male/red_pants_male.png:7585:image/png
+i:Universal-LPC-spritesheet/legs/pants/male/teal_pants_male.png:8322:image/png
+i:Universal-LPC-spritesheet/legs/pants/male/white_pants_male.png:7581:image/png
+d:Universal-LPC-spritesheet/legs/skirt:0:application/unknown
+d:Universal-LPC-spritesheet/legs/skirt/female:0:application/unknown
+i:Universal-LPC-spritesheet/legs/skirt/female/robe_skirt_female_incomplete.png:9151:image/png
+d:Universal-LPC-spritesheet/legs/skirt/male:0:application/unknown
+i:Universal-LPC-spritesheet/legs/skirt/male/robe_skirt_male.png:9132:image/png
+d:Universal-LPC-spritesheet/torso:0:application/unknown
+d:Universal-LPC-spritesheet/torso/back:0:application/unknown
+d:Universal-LPC-spritesheet/torso/back/cape:0:application/unknown
+d:Universal-LPC-spritesheet/torso/back/cape/normal:0:application/unknown
+d:Universal-LPC-spritesheet/torso/back/cape/normal/female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_black.png:7185:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_blue.png:7185:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_brown.png:7910:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_gray.png:7185:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_green.png:7186:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_lavender.png:7185:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_maroon.png:7917:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_pink.png:7185:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_red.png:7910:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_white.png:7185:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/normal/female/cape_yellow.png:7184:image/png
+d:Universal-LPC-spritesheet/torso/back/cape/tattered:0:application/unknown
+d:Universal-LPC-spritesheet/torso/back/cape/tattered/female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_black.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_blue.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_brown.png:8723:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_gray.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_green.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_maroon.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_pink.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_red.png:8723:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_white.png:8167:image/png
+i:Universal-LPC-spritesheet/torso/back/cape/tattered/female/tattercape_yellow.png:8168:image/png
+d:Universal-LPC-spritesheet/torso/back/cape/trimmed:0:application/unknown
+d:Universal-LPC-spritesheet/torso/back/cape/trimmed/female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/back/cape/trimmed/female/trimcape_whiteblue.png:7865:image/png
+d:Universal-LPC-spritesheet/torso/back/wings:0:application/unknown
+i:Universal-LPC-spritesheet/torso/back/wings/wings_no_th-sh.png:10114:image/png
+d:Universal-LPC-spritesheet/torso/chain:0:application/unknown
+i:Universal-LPC-spritesheet/torso/chain/mail_female.png:29796:image/png
+i:Universal-LPC-spritesheet/torso/chain/mail_male.png:30053:image/png
+d:Universal-LPC-spritesheet/torso/chain/tabard:0:application/unknown
+i:Universal-LPC-spritesheet/torso/chain/tabard/jacket_female.png:12476:image/png
+i:Universal-LPC-spritesheet/torso/chain/tabard/jacket_male.png:12180:image/png
+d:Universal-LPC-spritesheet/torso/corset_female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/corset_female/corset_black.png:5516:image/png
+i:Universal-LPC-spritesheet/torso/corset_female/corset_brown.png:5578:image/png
+i:Universal-LPC-spritesheet/torso/corset_female/corset_red.png:6237:image/png
+d:Universal-LPC-spritesheet/torso/dress_female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/dress_female/blue_vest.png:7141:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/dress_w_sash_female.png:11667:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/overskirt.png:8083:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/tightdress_black.png:11833:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/tightdress_lightblue.png:11333:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/tightdress_red.png:11336:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/tightdress_white.png:11333:image/png
+i:Universal-LPC-spritesheet/torso/dress_female/underdress.png:14210:image/png
+d:Universal-LPC-spritesheet/torso/gold:0:application/unknown
+i:Universal-LPC-spritesheet/torso/gold/arms_female.png:10120:image/png
+i:Universal-LPC-spritesheet/torso/gold/arms_male.png:12678:image/png
+i:Universal-LPC-spritesheet/torso/gold/chest_female.png:10480:image/png
+i:Universal-LPC-spritesheet/torso/gold/chest_male.png:10049:image/png
+i:Universal-LPC-spritesheet/torso/gold/spikes_male.png:935:image/png
+d:Universal-LPC-spritesheet/torso/leather:0:application/unknown
+i:Universal-LPC-spritesheet/torso/leather/chest_female.png:11487:image/png
+i:Universal-LPC-spritesheet/torso/leather/chest_male.png:10940:image/png
+i:Universal-LPC-spritesheet/torso/leather/shoulders_female.png:4089:image/png
+i:Universal-LPC-spritesheet/torso/leather/shoulders_male.png:4262:image/png
+d:Universal-LPC-spritesheet/torso/plate:0:application/unknown
+i:Universal-LPC-spritesheet/torso/plate/arms_female.png:11007:image/png
+i:Universal-LPC-spritesheet/torso/plate/arms_male.png:12738:image/png
+i:Universal-LPC-spritesheet/torso/plate/chest_female.png:10981:image/png
+i:Universal-LPC-spritesheet/torso/plate/chest_male.png:10561:image/png
+d:Universal-LPC-spritesheet/torso/robes_female_no_th-sh:0:application/unknown
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/black.png:8101:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/blue.png:10458:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/brown.png:10458:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/dark brown.png:23864:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/dark gray.png:22867:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/forest green.png:24364:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/light gray.png:23772:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/purple.png:10458:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/red.png:10458:image/png
+i:Universal-LPC-spritesheet/torso/robes_female_no_th-sh/white.png:10458:image/png
+d:Universal-LPC-spritesheet/torso/shirts:0:application/unknown
+d:Universal-LPC-spritesheet/torso/shirts/longsleeve:0:application/unknown
+d:Universal-LPC-spritesheet/torso/shirts/longsleeve/male:0:application/unknown
+i:Universal-LPC-spritesheet/torso/shirts/longsleeve/male/brown_longsleeve.png:14252:image/png
+i:Universal-LPC-spritesheet/torso/shirts/longsleeve/male/maroon_longsleeve.png:15643:image/png
+i:Universal-LPC-spritesheet/torso/shirts/longsleeve/male/teal_longsleeve.png:15643:image/png
+i:Universal-LPC-spritesheet/torso/shirts/longsleeve/male/white_longsleeve.png:15643:image/png
+d:Universal-LPC-spritesheet/torso/shirts/sleeveless:0:application/unknown
+d:Universal-LPC-spritesheet/torso/shirts/sleeveless/female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/brown_pirate.png:5906:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/brown_sleeveless.png:6608:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/maroon_pirate.png:5908:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/maroon_sleeveless.png:6452:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/teal_pirate.png:5906:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/teal_sleeveless.png:6608:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/white_pirate.png:6346:image/png
+i:Universal-LPC-spritesheet/torso/shirts/sleeveless/female/white_sleeveless.png:6458:image/png
+d:Universal-LPC-spritesheet/torso/tunics:0:application/unknown
+d:Universal-LPC-spritesheet/torso/tunics/female:0:application/unknown
+i:Universal-LPC-spritesheet/torso/tunics/female/brown_tunic.png:8535:image/png
+i:Universal-LPC-spritesheet/torso/tunics/female/maroon_tunic.png:8538:image/png
+i:Universal-LPC-spritesheet/torso/tunics/female/teal_tunic.png:8538:image/png
+i:Universal-LPC-spritesheet/torso/tunics/female/white_tunic.png:8541:image/png
+d:Universal-LPC-spritesheet/weapons:0:application/unknown
+d:Universal-LPC-spritesheet/weapons/both hand:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/both hand/spear.png:7744:image/png
+d:Universal-LPC-spritesheet/weapons/left hand:0:application/unknown
+d:Universal-LPC-spritesheet/weapons/left hand/either:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/left hand/either/arrow.png:6168:image/png
+i:Universal-LPC-spritesheet/weapons/left hand/either/arrow_skeleton.png:6168:image/png
+d:Universal-LPC-spritesheet/weapons/left hand/male:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/left hand/male/shield_male_cutoutforbody.png:16402:image/png
+i:Universal-LPC-spritesheet/weapons/left hand/male/shield_male_cutoutforhat.png:16020:image/png
+d:Universal-LPC-spritesheet/weapons/oversize:0:application/unknown
+d:Universal-LPC-spritesheet/weapons/oversize/right hand:0:application/unknown
+d:Universal-LPC-spritesheet/weapons/oversize/right hand/female:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/female/longsword_female.png:13940:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/female/mace_female.png:7473:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/female/rapier_female.png:11085:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/female/saber_female.png:6929:image/png
+d:Universal-LPC-spritesheet/weapons/oversize/right hand/male:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/male/longsword_male.png:13982:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/male/mace_male.png:7653:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/male/rapier_male.png:11029:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/right hand/male/saber_male.png:6970:image/png
+d:Universal-LPC-spritesheet/weapons/oversize/two hand:0:application/unknown
+d:Universal-LPC-spritesheet/weapons/oversize/two hand/either:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/oversize/two hand/either/dragonspear.png:20020:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/two hand/either/spear.png:13889:image/png
+i:Universal-LPC-spritesheet/weapons/oversize/two hand/either/trident.png:20744:image/png
+d:Universal-LPC-spritesheet/weapons/right hand:0:application/unknown
+d:Universal-LPC-spritesheet/weapons/right hand/either:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/right hand/either/bow.png:10355:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/either/bow_skeleton.png:10355:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/either/greatbow.png:13728:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/either/recurvebow.png:13752:image/png
+d:Universal-LPC-spritesheet/weapons/right hand/female:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/right hand/female/dagger_female.png:8072:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/female/spear_female.png:12062:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/female/steelwand_female.png:5664:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/female/woodwand_female.png:5755:image/png
+d:Universal-LPC-spritesheet/weapons/right hand/male:0:application/unknown
+i:Universal-LPC-spritesheet/weapons/right hand/male/dagger_male.png:8096:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/male/spear_male.png:11959:image/png
+i:Universal-LPC-spritesheet/weapons/right hand/male/woodwand_male.png:5724:image/png
+d:Universal-LPC-spritesheet/_special:0:application/unknown
+i:Universal-LPC-spritesheet/_special/hurt_blood.png:8152:image/png
+t:com/badlogic/gdx/graphics/g3d/particles/particles.fragment.glsl:859:application/unknown
+t:com/badlogic/gdx/graphics/g3d/particles/particles.vertex.glsl:2996:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/default.fragment.glsl:6084:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:9441:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/depth.fragment.glsl:904:application/unknown
+t:com/badlogic/gdx/graphics/g3d/shaders/depth.vertex.glsl:3056:application/unknown
+t:com/badlogic/gdx/utils/arial-15.fnt:21743:application/unknown
+i:com/badlogic/gdx/utils/arial-15.png:21814:image/png

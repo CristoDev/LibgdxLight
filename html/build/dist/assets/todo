@@ -1,0 +1,27 @@
+à faire:
+
+- github
+https://github.com/CristoDev/LibgdxLight/issues
+
+-gestion des points spécifiques sur la carte:
+    - téléporteur (départ - arrivée)
+    - entrée grotte
+    - entrée maison
+    --> utiliser un layer qui ne sera pas directement intégré sur la map
+        --> gestion de points (ou zones) uniquement avec une action indiquée dans le fichier TMX
+
+- asset manager
+    -> equipement
+        -> inventaire
+
+- mettre en place un observer?
+    exemple: téléportation:
+                - lancer une animation (départ)
+                - jouer un son
+                - déplacer le personnage
+                - lancer une animation (arrivée)
+                - jouer un son
+
+
+- utilisation du clic gauche -> envoyer une action suivant le type d'objet rencontré
+    - ne pas prendre en compte l'arme dans un premier temps
