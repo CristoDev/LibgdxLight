@@ -174,6 +174,7 @@ public class AnimationManager {
     }
 
     public void setAnimationState(String state) {
+        Gdx.app.debug("STATE", "=== " + state);
         for (ECSEvent.AnimationState animation : ECSEvent.AnimationState.values()) {
             if (state.compareTo(animation.toString()) == 0) {
                 if (state.compareTo(currentAnimationState.toString()) != 0) {
