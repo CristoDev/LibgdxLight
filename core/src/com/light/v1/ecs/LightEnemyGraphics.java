@@ -37,12 +37,19 @@ public class LightEnemyGraphics extends LightGraphics {
 
     @Override
     public void receiveMessage(ECSEvent.Event event, String message) {
+        String[] string=message.split(ECSEvent.MESSAGE_TOKEN);
+
         if (event == ECSEvent.Event.SET_POSITION) {
-            String[] string=message.split(ECSEvent.MESSAGE_TOKEN);
             //sprite.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE / 2, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
             //Gdx.app.debug("POS", message);
             animationEntity.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE / 2, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
             Gdx.app.debug("POS", message);
+        }
+        else if (event == ECSEvent.Event.SET_STATE) {
+            animationEntity.setAnimationState(message);
+        }
+        else if (event == ECSEvent.Event.SET_DIRECTION) {
+            animationEntity.setAnimationDirection(message);
         }
     }
 }

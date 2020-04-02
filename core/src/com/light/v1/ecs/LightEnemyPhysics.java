@@ -17,10 +17,12 @@ public class LightEnemyPhysics extends LightPhysics {
     private Vector2 startPosition;
     private Vector2 goalPosition;
     private Vector2[] positions=new Vector2[4];
+    private ECSEvent.AnimationDirection[] directions= new ECSEvent.AnimationDirection[4];
     private int currentIndex=0;
     private float velocity=0.4f;
     private Vector2 currentVelocity;
     private Vector2 deltaPosition;
+    private ECSEvent.AnimationDirection currentDirection;
     //private Vector2 deltaNorme;
 
     public LightEnemyPhysics(LightEnemyEntity entity) {
@@ -95,9 +97,13 @@ public class LightEnemyPhysics extends LightPhysics {
 
     private void initPositions() {
         positions[0]=startPosition.cpy();
+        directions[0]= ECSEvent.AnimationDirection.RIGHT;
         positions[1]=new Vector2(startPosition.x+1, startPosition.y);
+        directions[1]= ECSEvent.AnimationDirection.UP;
         positions[2]=new Vector2(startPosition.x+1, startPosition.y+1);
+        directions[2]= ECSEvent.AnimationDirection.LEFT;
         positions[3]=new Vector2(startPosition.x, startPosition.y+1);
+        directions[3]= ECSEvent.AnimationDirection.DOWN;
     }
 
     private boolean isChangingPosition() {
@@ -122,9 +128,21 @@ public class LightEnemyPhysics extends LightPhysics {
 
     private void updateVelocity() {
         Vector2 pStart=positions[currentIndex];
+        currentDirection=directions[currentIndex];
         goalPosition=positions[(currentIndex+1)%positions.length];
         deltaPosition=goalPosition.cpy().sub(pStart);
         Vector2 deltaNorme=deltaPosition.cpy().nor();
         currentVelocity=new Vector2(deltaNorme.x * velocity, deltaNorme.y * velocity);
+        SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.SET_DIRECTION, currentDirection.toString());
     }
+
+    /*
+    @TODO
+    1- problème au début du déplacement, la direction n'est pas la bonne
+    2- pas d'animation => trouver un moyen de changer l'état (SET_STATE = WALK)
+
+
+
+
+     */
 }
