@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 public class SystemManager {
     //private static final String TAG = "SystemManager";
-    private ArrayList<LightEntity> entities=new ArrayList<LightEntity>();
-    private HashMap<String, ArrayList<Component>> ecsData=new HashMap<String, ArrayList<Component>>();
+    private ArrayList<LightEntity> entities= new ArrayList<>();
+    private HashMap<String, ArrayList<Component>> ecsData= new HashMap<>();
     private static SystemManager systemManager=new SystemManager();
 
     private SystemManager() {
@@ -24,7 +24,7 @@ public class SystemManager {
 
     public void addEntity(LightEntity entity) {
         entities.add(entity);
-        addEntityComponents(entity, new ArrayList<Component>());
+        addEntityComponents(entity, new ArrayList<>());
     }
 
     public Component getComponent(LightEntity entity, String className) {
@@ -120,25 +120,4 @@ public class SystemManager {
 
     }
 
-    public void codeTest() {
-        /*
-        systemManager.addEntity(lightPlayerEntity);
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerInput());
-        systemManager.addEntityComponent(lightPlayerEntity, new LightPlayerGraphics());
-
-        ArrayList<Component> elements=systemManager.getEntityComponents(lightPlayerEntity);
-        for (int i=0; i<elements.size(); i++) {
-            String name=elements.get(i).getClass().getSimpleName();
-            Gdx.app.debug(TAG, "element "+name);
-            if (name.compareTo(LightPlayerGraphics.class.getSimpleName()) == 0) {
-                Gdx.app.debug(TAG, "element graphic trouvé");
-                Gdx.app.debug(TAG, ((LightPlayerGraphics)elements.get(i)).getData());
-            }
-        }
-
-        // nécessite un test  == null
-        LightPlayerGraphics x =(LightPlayerGraphics)systemManager.getComponent(lightPlayerEntity, LightPlayerGraphics.class.getSimpleName());
-        Gdx.app.debug(TAG, "test sur x "+x.getData());
-         */
-    }
 }

@@ -23,7 +23,6 @@ public class LightEnemyPhysics extends LightPhysics {
     private Vector2 currentVelocity;
     private Vector2 deltaPosition;
     private ECSEvent.AnimationDirection currentDirection;
-    //private Vector2 deltaNorme;
 
     public LightEnemyPhysics(LightEnemyEntity entity) {
         this.entity=entity;
@@ -55,9 +54,6 @@ public class LightEnemyPhysics extends LightPhysics {
 
         bodyItem.setLinearVelocity(currentVelocity);
         SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.SET_POSITION, bodyItem.getPosition().x+ECSEvent.MESSAGE_TOKEN+bodyItem.getPosition().y);
-        //entity.setPosition(bodyItem.getPosition());
-
-        //entity.getSprite().setRotation(bodyItem.getAngle()*180f/(float)Math.PI);
     }
 
     @Override
@@ -67,32 +63,28 @@ public class LightEnemyPhysics extends LightPhysics {
 
     public void addItem(Rectangle rectangle) {
         PolygonShape boxItem = new PolygonShape();
-        boxItem.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
+        boxItem.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2 , rectangle.getHeight() * MyMap.UNIT_SCALE / 2, new Vector2(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, 0), 0);
 
         BodyDef boxBodyDef = new BodyDef();
-        boxBodyDef.position.set(rectangle.getX() * MyMap.UNIT_SCALE + rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getY() * MyMap.UNIT_SCALE + rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
+        boxBodyDef.position.set(rectangle.getX() * MyMap.UNIT_SCALE, rectangle.getY() * MyMap.UNIT_SCALE);
         boxBodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        PolygonShape box2 = new PolygonShape();
-        box2.setAsBox(rectangle.getWidth() * MyMap.UNIT_SCALE / 2, rectangle.getHeight() * MyMap.UNIT_SCALE / 2);
-
-        FixtureDef fixture=new FixtureDef();
-        fixture.filter.categoryBits = ECSFilter.ENEMY;
-        fixture.filter.maskBits = ECSFilter.MASK_ENEMY;
-        fixture.restitution = 0.1f;
-        fixture.friction=100f;
-        fixture.density = 100f;
-        fixture.shape = box2;
-
         bodyItem=entity.getWorld().createBody(boxBodyDef);
+        FixtureDef fixtureDef=new FixtureDef();
+        fixtureDef.filter.categoryBits = ECSFilter.ENEMY;
+        fixtureDef.filter.maskBits = ECSFilter.MASK_ENEMY;
+        fixtureDef.restitution = 0.1f;
+        fixtureDef.friction=100f;
+        fixtureDef.density = 100f;
+        fixtureDef.shape = boxItem;
+
+        bodyItem.createFixture(fixtureDef);
         bodyItem.setLinearDamping(2f);
         bodyItem.setAngularDamping(10f);
-        bodyItem.createFixture(fixture);
-
-        box2.dispose();
-
         bodyItem.setUserData(entity);
         startPosition=bodyItem.getPosition();
+
+        boxItem.dispose();
     }
 
     private void initPositions() {
@@ -135,14 +127,4 @@ public class LightEnemyPhysics extends LightPhysics {
         currentVelocity=new Vector2(deltaNorme.x * velocity, deltaNorme.y * velocity);
         SystemManager.getInstance().sendMessage(entity, ECSEvent.Event.SET_DIRECTION, currentDirection.toString());
     }
-
-    /*
-    @TODO
-    1- problème au début du déplacement, la direction n'est pas la bonne
-    2- pas d'animation => trouver un moyen de changer l'état (SET_STATE = WALK)
-
-
-
-
-     */
 }

@@ -12,10 +12,8 @@ public class AnimationEntity {
     protected AnimationManager animationManager=new AnimationManager();
 
     public void init() {
-        //Gdx.app.debug(TAG, "default sprite path "+ defaultSpritePath);
         animationManager.setDefaultSpritePath(defaultSpritePath);
         animationManager.loadTextureAsset(defaultSpritePath);
-        //animationManager.loadDefaultSprite();
     }
 
     public void loadAllAnimations() {

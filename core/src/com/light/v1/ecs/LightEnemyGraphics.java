@@ -9,23 +9,17 @@ public class LightEnemyGraphics extends LightGraphics {
 
     public LightEnemyGraphics(LightEnemyEntity entity) {
         this.entity=entity;
-        //createSprite("enemy.png");
         createEnemy();
-
-        // test pour l'animation (idle actuellement)
-        animationEntity.setAnimationState(ECSEvent.AnimationState.WALK);
-
     }
 
     @Override
     public void update(float delta) {
-        // update
+        animationEntity.update(delta);
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.begin();
-        //sprite.draw(batch);
         animationEntity.render(batch);
         batch.end();
     }
@@ -40,10 +34,7 @@ public class LightEnemyGraphics extends LightGraphics {
         String[] string=message.split(ECSEvent.MESSAGE_TOKEN);
 
         if (event == ECSEvent.Event.SET_POSITION) {
-            //sprite.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE / 2, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
-            //Gdx.app.debug("POS", message);
             animationEntity.setPosition(Float.parseFloat(string[0])- itemWidth * MyMap.UNIT_SCALE / 2, Float.parseFloat(string[1])- itemWidth * MyMap.UNIT_SCALE / 2);
-            Gdx.app.debug("POS", message);
         }
         else if (event == ECSEvent.Event.SET_STATE) {
             animationEntity.setAnimationState(message);

@@ -11,18 +11,15 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		config.title="BludBourne v0.8";
+		config.title="LightGame POC v0.1";
 		config.useGL30=false;
 		config.width=1000;
 		config.height=800;
 
-		Application app=new LwjglApplication(new LightGame(), config);
-
-		Gdx.app=app;
+		Gdx.app=new LwjglApplication(new LightGame(), config);;
 		//Gdx.app.setLogLevel(Application.LOG_INFO);
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		//Gdx.app.setLogLevel(Application.LOG_ERROR);
 		//Gdx.app.setLogLevel(Application.LOG_NONE);
-		//Gdx.app.debug(TAG, "");
 	}
 }

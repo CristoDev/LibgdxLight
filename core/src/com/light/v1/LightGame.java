@@ -63,7 +63,7 @@ public class LightGame implements ApplicationListener {
         debugRenderer = new Box2DDebugRenderer();
 
         lightFactory.init(world, rayHandler, camera);
-        mapRenderer = new OrthogonalTiledMapRenderer(lightFactory.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
+        mapRenderer = new OrthogonalTiledMapRenderer(LightFactory.getMap().getCurrentMap(), MyMap.UNIT_SCALE);
         lightFactory.buildMap();
 
         LightPlayerEntity lightPlayerEntity;
@@ -74,14 +74,7 @@ public class LightGame implements ApplicationListener {
     }
 
     private  void test() {
-        //Vector3 point=new Vector3(37, 279, 0);
-        /*
-        Vector3 point=new Vector3(11, 27, 0);
-        Gdx.app.debug("V3a", point.x+"/"+point.y);
-        camera.unproject(point);
-        Gdx.app.debug("V3b", point.x+"/"+point.y);
-         */
-        Gdx.app.debug("test", "==>"+ ECSEvent.AnimationState.WALK.toString());
+
     }
 
     @Override

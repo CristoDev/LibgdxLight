@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.06.20" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="14" nextobjectid="99">
+<map version="1.2" tiledversion="2019.06.20" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="106">
  <tileset firstgid="1" name="overworld" tilewidth="16" tileheight="16" tilecount="1440" columns="40">
   <image source="Overworld.png" trans="ff00ff" width="640" height="576"/>
  </tileset>
@@ -216,13 +216,16 @@
   </object>
  </objectgroup>
  <objectgroup id="10" name="enemy_object">
-  <object id="28" type="ennemy" x="178.333" y="194.333" width="11.6667" height="12.3333"/>
-  <object id="34" type="ennemy" x="193.5" y="194.5" width="11.6667" height="12.3333"/>
-  <object id="35" type="ennemy" x="210.5" y="194.5" width="11.6667" height="12.3333"/>
-  <object id="36" type="ennemy" x="178.167" y="241.833" width="11.6667" height="12.3333"/>
   <object id="37" type="ennemy" x="130.167" y="242.167" width="11.6667" height="12.3333"/>
-  <object id="38" type="ennemy" x="129.833" y="290.833" width="11.6667" height="12.3333"/>
-  <object id="39" type="ennemy" x="177.5" y="289.167" width="11.6667" height="12.3333"/>
+ </objectgroup>
+ <objectgroup id="14" name="enemy_object_full" visible="0">
+  <object id="99" type="ennemy" x="178.333" y="194.333" width="11.6667" height="12.3333"/>
+  <object id="100" type="ennemy" x="193.5" y="194.5" width="11.6667" height="12.3333"/>
+  <object id="101" type="ennemy" x="210.5" y="194.5" width="11.6667" height="12.3333"/>
+  <object id="102" type="ennemy" x="178.167" y="241.833" width="11.6667" height="12.3333"/>
+  <object id="103" type="ennemy" x="130.167" y="242.167" width="11.6667" height="12.3333"/>
+  <object id="104" type="ennemy" x="129.833" y="290.833" width="11.6667" height="12.3333"/>
+  <object id="105" type="ennemy" x="177.5" y="289.167" width="11.6667" height="12.3333"/>
  </objectgroup>
  <objectgroup id="9" name="floor_object">
   <object id="66" type="swamp" x="129.333" y="0.333334" width="77.6667" height="78.3334">

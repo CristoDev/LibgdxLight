@@ -26,7 +26,7 @@ public class AnimationManager {
     protected static InternalFileHandleResolver filePathResolver =  new InternalFileHandleResolver();
 
     protected Pixmap character=null;
-    protected List<String> elements=new ArrayList<String>();
+    protected List<String> elements= new ArrayList<>();
     protected float frameDuration=0.1f;
     protected TextureRegion currentFrame = null;
     protected int FRAME_WIDTH = 64;
@@ -114,7 +114,6 @@ public class AnimationManager {
     }
 
 
-
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////
@@ -174,7 +173,6 @@ public class AnimationManager {
     }
 
     public void setAnimationState(String state) {
-        Gdx.app.debug("STATE", "=== " + state);
         for (ECSEvent.AnimationState animation : ECSEvent.AnimationState.values()) {
             if (state.compareTo(animation.toString()) == 0) {
                 if (state.compareTo(currentAnimationState.toString()) != 0) {

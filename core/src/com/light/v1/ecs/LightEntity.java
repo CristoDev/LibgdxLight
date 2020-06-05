@@ -34,19 +34,6 @@ public class LightEntity {
         this.mapProperties=mapProperties;
     }
 
-    /*
-    public void setPosition(Vector2 _position) {
-        position.x=_position.x - itemWidth * MyMap.UNIT_SCALE / 2;
-        position.y=_position.y - itemWidth * MyMap.UNIT_SCALE / 2;
-
-        if (sprite != null) {
-            //Gdx.app.debug("POS", "position " + position.x+"/"+position.y);
-            sprite.setPosition(position.x, position.y);
-        }
-    }
-
-     */
-
     public void setType(MapProperties mapProperties) {
         if (mapProperties.containsKey("type")) {
             type=mapProperties.get("type").toString();

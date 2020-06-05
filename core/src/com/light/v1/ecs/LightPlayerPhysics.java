@@ -52,24 +52,17 @@ public class LightPlayerPhysics extends LightPhysics {
     private LightPlayerEntity entity;
 
     public LightPlayerPhysics(LightPlayerEntity entity) {
-        //player=entity;
         this.entity=entity;
     }
 
     public void init(String message) {
-        //Gdx.app.debug("tag", "init physics");
         String[] string = getMessage(message);
-        //init(player.getWorld(), player.getRayHandler(), );
         itemDiag=Math.sqrt(Math.pow(Float.parseFloat(string[0])/2d, 2)*2);
         addItem(Float.parseFloat(string[0]));
         createSword();
 
     }
-/*
-    public void init(World world, RayHandler rayHandler, float itemWidth) {
-        // nothing to do here...
-    }
-*/
+
     @Override
     public void dispose() {
         Gdx.app.debug(TAG, "dispose");
@@ -93,7 +86,6 @@ public class LightPlayerPhysics extends LightPhysics {
             reverseTranslateCoef(message);
         }
         else if (event == ECSEvent.Event.INIT_COMPONENT) {
-            //Gdx.app.debug("MSG", "message recu, lancement init");
             init(message);
         }
 
@@ -125,7 +117,7 @@ public class LightPlayerPhysics extends LightPhysics {
 
         for(Fixture currentFixture : bodyItem.getFixtureList()) {
             if (currentFixture.testPoint(2.5f, 12.5f)) {
-                Gdx.app.debug("!!!", "point");
+                Gdx.app.debug(TAG, "LightPlayerPhysics::udpate point");
                 bodyItem.setTransform(11.5f, 2.5f, 0);
             }
         }
@@ -144,14 +136,14 @@ public class LightPlayerPhysics extends LightPhysics {
         boxBodyDef.type= BodyDef.BodyType.DynamicBody;
 
         bodyItem = entity.getWorld().createBody(boxBodyDef);
-        FixtureDef boxFixtureDef = new FixtureDef();
-        boxFixtureDef.filter.categoryBits=ECSFilter.PLAYER;
-        boxFixtureDef.filter.maskBits = ECSFilter.MASK_PLAYER;
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.filter.categoryBits=ECSFilter.PLAYER;
+        fixtureDef.filter.maskBits = ECSFilter.MASK_PLAYER;
 
-        boxFixtureDef.shape = boxItem;
-        boxFixtureDef.restitution = 0f;
-        boxFixtureDef.density = 0f;
-        bodyItem.createFixture(boxFixtureDef);
+        fixtureDef.shape = boxItem;
+        fixtureDef.restitution = 0f;
+        fixtureDef.density = 0f;
+        bodyItem.createFixture(fixtureDef);
         bodyItem.setUserData(entity);
         boxItem.dispose();
 
