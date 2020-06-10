@@ -126,3 +126,7 @@ Thumbs.db
 /vpproject/
 /core/out/production/classes/META-INF/LibgdxLight.core.main.kotlin_module
 /html/build/
+
+## specifique au pc pour eviter la compilation html/android
+settings.gradle
+build.gradle
