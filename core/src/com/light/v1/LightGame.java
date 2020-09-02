@@ -23,7 +23,7 @@ public class LightGame implements ApplicationListener {
     //private static final String TAG = "Box2DLightsSample";
 
     private SpriteBatch batch;
-    private OrthographicCamera camera;
+    private OrthographicCamera camera, camera2;
     private World world;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Box2DDebugRenderer debugRenderer;
@@ -74,7 +74,11 @@ public class LightGame implements ApplicationListener {
     }
 
     private  void test() {
-
+        setupViewport(5, 5);
+        camera2 = new OrthographicCamera();
+        camera2.setToOrtho(false, ViewportUtils.viewportWidth, ViewportUtils.viewportHeight);
+        camera2.position.set(ViewportUtils.viewportWidth / 2f, ViewportUtils.viewportHeight / 2, 0);
+        camera2.update();
     }
 
     @Override
@@ -104,21 +108,31 @@ public class LightGame implements ApplicationListener {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // permet de modifier la taille de la vue pour la camero
+        Gdx.gl.glViewport( 0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight() );
+
         mapRenderer.setView(camera);
         mapRenderer.render(lightFactory.getBackLayers());
 
         batch.setProjectionMatrix(camera.combined);
         systemManager.render(batch);
-
-        batch.begin();
         camera.update();
-        batch.end();
+
 
         mapRenderer.render(lightFactory.getFrontLayers());
 
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
         debugRenderer.render(world, camera.combined);
+
+
+        // test avec une 2eme camera
+        Gdx.gl.glViewport( 0, 0, Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/8 );
+        mapRenderer.setView(camera2);
+        mapRenderer.render(lightFactory.getBackLayers());
+        batch.setProjectionMatrix(camera2.combined);
+        systemManager.render(batch);
+        camera2.update();
     }
 
     @Override
