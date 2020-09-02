@@ -118,13 +118,10 @@ public class LightGame implements ApplicationListener {
         systemManager.render(batch);
         camera.update();
 
-
         mapRenderer.render(lightFactory.getFrontLayers());
-
         rayHandler.setCombinedMatrix(camera);
         rayHandler.updateAndRender();
         debugRenderer.render(world, camera.combined);
-
 
         // test avec une 2eme camera
         Gdx.gl.glViewport( 0, 0, Gdx.graphics.getWidth()/8,Gdx.graphics.getHeight()/8 );
@@ -165,10 +162,6 @@ public class LightGame implements ApplicationListener {
 
     public Vector3 unproject(Vector3 point) {
         return camera.unproject(point);
-    }
-
-    public Vector3 unproject(float x, float y, float z) {
-        return unproject(new Vector3(x, y, z));
     }
 
 }
