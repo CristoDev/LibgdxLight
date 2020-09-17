@@ -74,10 +74,10 @@ public class LightGame implements ApplicationListener {
     }
 
     private  void test() {
-        setupViewport(5, 5);
+        setupViewport(4, 4);
         camera2 = new OrthographicCamera();
         camera2.setToOrtho(false, ViewportUtils.viewportWidth, ViewportUtils.viewportHeight);
-        camera2.position.set(ViewportUtils.viewportWidth / 2f, ViewportUtils.viewportHeight / 2, 0);
+        camera2.position.set(10,10,0);
         camera2.update();
     }
 
@@ -99,6 +99,9 @@ public class LightGame implements ApplicationListener {
         //camera.position.set(lightPlayerEntity.getPosition().x, lightPlayerEntity.getPosition().y, 0);
         world.step(delta, 8, 3);
         systemManager.update(delta);
+
+        // test du déplacement automatique de la caméra 2
+        camera2.position.add(0.01f,0,0);
     }
 
     @Override
