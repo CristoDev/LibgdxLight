@@ -8,8 +8,6 @@ import com.light.v1.LightGame;
 
 
 public class DesktopLauncher {
-	// test du commit avec GIT...
-	private String test="";
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 

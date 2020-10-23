@@ -44,8 +44,11 @@ public abstract class LightGraphics implements Component {
         //animationEntity.setPosition(200, 50);
         animationEntity.setPosition(position.x - itemWidth * MyMap.UNIT_SCALE, position.y - itemWidth * MyMap.UNIT_SCALE / 2);
         animationEntity.addEquipment("torso/chain/mail_male.png");
-        //animationEntity.addEquipment("hands/gloves/male/metal_gloves_male.png");
-        animationEntity.addEquipment("weapons/right hand/male/dagger_male.png");
+        animationEntity.addEquipment("torso/gold/chest_male.png");
+        animationEntity.addEquipment("hands/gloves/male/golden_gloves_male.png");
+        animationEntity.addEquipment("weapons/right hand/male/spear_male.png");
+        animationEntity.addEquipment("feet/armor/male/golden_boots_male.png");
+        animationEntity.addEquipment("head/helms/male/chainhat_male.png");
         animationEntity.setAnimationDirection(ECSEvent.AnimationDirection.RIGHT);
         animationEntity.setAnimationState(ECSEvent.AnimationState.IDLE);
         animationEntity.loadAllAnimations();
@@ -56,9 +59,9 @@ public abstract class LightGraphics implements Component {
 
         animationEntity.createOrc();
         animationEntity.init();
-        //animationEntity.addEquipment("torso/chain/mail_male.png");
-        //animationEntity.addEquipment("hands/gloves/male/metal_gloves_male.png");
-        //animationEntity.addEquipment("weapons/right hand/male/dagger_male.png");
+        animationEntity.addEquipment("torso/chain/mail_male.png");
+        animationEntity.addEquipment("hands/gloves/male/metal_gloves_male.png");
+        animationEntity.addEquipment("weapons/right hand/male/dagger_male.png");
         animationEntity.setAnimationDirection(ECSEvent.AnimationDirection.RIGHT);
         animationEntity.setAnimationState(ECSEvent.AnimationState.WALK);
         animationEntity.loadAllAnimations();
