@@ -8,6 +8,8 @@ import com.light.v1.LightGame;
 
 
 public class DesktopLauncher {
+	// test du commit avec GIT...
+	private String test="";
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
@@ -16,7 +18,7 @@ public class DesktopLauncher {
 		config.width=1000;
 		config.height=800;
 
-		Gdx.app=new LwjglApplication(new LightGame(), config);;
+		Gdx.app=new LwjglApplication(new LightGame(), config);
 		//Gdx.app.setLogLevel(Application.LOG_INFO);
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		//Gdx.app.setLogLevel(Application.LOG_ERROR);
